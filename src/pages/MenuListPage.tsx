@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios'
 import { Button, Card, List } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import LOGO from './img/YSU_LOGO.png'
 
 export const MenuListPage =  ():JSX.Element => {
     const navigate = useNavigate();
@@ -50,7 +49,7 @@ export const MenuListPage =  ():JSX.Element => {
               <List.Item>({menu['menu_corner']})</List.Item>
               <List.Item>({menu['menu_price']})</List.Item>
               <List.Item>({menu['menu_pack']})</List.Item>
-              <List.Item><img src={`${process.env.PUBLIC_URL}/img/${menu['menu_image']}`} alt={menu['menu_name']} /></List.Item>
+              <List.Item> <img className='M_Img' src={require(`../img/${decodeURIComponent(menu['menu_image'])}`)} alt={menu['menu_name']} /></List.Item>
               <List.Item>({menu['menu_sales']})</List.Item>
               <List.Item>({menu['menu_regist']})</List.Item>
             </List.Item>

@@ -2,19 +2,11 @@ import React from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   Button,
-  Cascader,
-  Checkbox,
-  DatePicker,
   Form,
+  Space,
   message,
   Input,
-  InputNumber,
   Radio,
-  Select,
-  Slider,
-  Switch,
-  TreeSelect,
-  Upload,
 } from 'antd';
 import { JSX } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
@@ -22,11 +14,19 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import '../css/main.css';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface'
+import {
+  HomeOutlined,
+  RollbackOutlined
+} from '@ant-design/icons';
 
 export const MenuInsert =  ():JSX.Element => {
     const navigate = useNavigate();
 
-    const MenuListPagle = () => {
+    const MainPage = () => {
+        navigate("/");
+        };  
+
+    const MenuListPage = () => {
         navigate("/menu");
         };  
 
@@ -69,7 +69,7 @@ type FieldType = {
     });
     setUploading(true);
     // You can use any AJAX library you like
-    fetch('https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188', {
+    fetch('./menuinsert', {
       method: 'POST',
       body: formData,
     })
@@ -105,7 +105,10 @@ return (
     <body>
         <div className='content'>
             <div className='btnArea'>
-    <Button type="primary" onClick={MenuListPagle}>메뉴List</Button>
+    <Space>
+    <HomeOutlined onClick={MainPage} />
+    <RollbackOutlined onClick={MenuListPage}/>
+  </Space>
         <Form
             name="basic"
             labelCol={{ span: 8 }}
@@ -119,6 +122,7 @@ return (
 
             <Form.Item<FieldType>
             label="이름"
+            id="menuname"
             name="menuname"
             rules={[{ required: true, message: '메뉴이름을 입력해 주세요.' }]}
             >
@@ -128,6 +132,7 @@ return (
             <Form.Item<FieldType>
             label="코너"
             name="menucorner"
+            id="menucorner"
             rules={[{ required: true, message: '코너종류을 클릭해 주세요.' }]}>
            <Radio.Group>
             <Radio value="S"> S </Radio>
@@ -138,6 +143,7 @@ return (
 
             <Form.Item<FieldType>
               label="가격"
+              id="menuprice"
               name="menuprice"
               rules={[{ required: true, message: '메뉴가격을 입력해 주세요.' }]}
             >
@@ -146,35 +152,30 @@ return (
 
             <Form.Item<FieldType>
             label="포장가능"
+            id="menupack"
             name="menupack"
-            rules={[{ required: true, message: '코너종류을 클릭해 주세요.' }]}>
+            rules={[{ required: true, message: '포장여부를 클릭해 주세요.' }]}>
            <Radio.Group>
-            <Radio value="S"> O </Radio>
-            <Radio value="B"> X </Radio>
+            <Radio value="1"> O </Radio>
+            <Radio value="0"> X </Radio>
             </Radio.Group>
             </Form.Item>
 
             <Form.Item<FieldType>
             label="이미지"
+            id="menuimage"
             name="menuimage"
-            rules={[{ required: true, message: '메뉴사진을 업로드해 주세요.' }]}
+            rules={[{ required: true, message: '메뉴이미지를 업로드해 주세요.' }]}
             >
+            <Input />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+            label="이미지"
+            valuePropName="fileList" getValueFromEvent={normFile}>
             <Form.Item wrapperCol={{ offset: 0, span: 16 }}>
         
-            <>
-      <Upload {...props}>
-        <Button >Select File</Button>
-      </Upload>
-      <Button
-        type="primary"
-        onClick={handleUpload}
-        disabled={fileList.length === 0}
-        loading={uploading}
-        style={{ marginTop: 16 }}
-      > 
-        {uploading ? 'Uploading' : 'Start Upload'}
-      </Button>
-    </>
+          
           </Form.Item>
 
           

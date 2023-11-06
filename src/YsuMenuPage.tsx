@@ -30,8 +30,6 @@ export const YsuMenuPage =  ():JSX.Element => {
       <div className='body'>
        <div className='content'>
         <div className='btnArea'>
-        <img src={`${process.env.PUBLIC_URL}/라면.jpg`}/>
-        <img src="./img/라면.jpg" />
         <img className='img' src={LOGO}/>
             <a className="te">ID/PW는 연성대학교 홈페이지와 동일합니다.</a>
         <Card></Card>
