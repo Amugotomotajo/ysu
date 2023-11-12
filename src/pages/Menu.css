@@ -6,6 +6,7 @@ body {
     margin: 0;
     background-color: #f1f1f1;
     width:100%;
+    font-family: "SUIT-Regular";
 }
 
 Link {
@@ -35,14 +36,16 @@ Link {
     width: 100%;
     height: 60px;
     display: flex;
-    justify-content: space-between; /* 아이콘들을 좌우 끝에 배치 */
+    justify-content: space-between;
     align-items: center;
+    z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
 }
 
 #logo {
     width: 100%;
     max-width: 160px;
     height: 100%;
+    margin: 0 auto; /* 로고를 가운데에 고정 */
 }
 
 #S.active, #B.active, #F.active {
@@ -75,6 +78,7 @@ nav ul {
     flex-direction: row;
     align-items: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+    z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
 }
 
 li {
@@ -113,7 +117,7 @@ li a:hover {
     color: white;
 }
 
-button {
+.menuList button {
     margin: 0 auto;
     padding: 10px;
     border: none;
@@ -128,31 +132,10 @@ button {
     width: 100%;
 }
 
-button:hover {
+.menuList button:hover {
     background-color: #dfdfdf;
     transition: 0.7s;
 }
-
-footer {
-    position: fixed;
-    background-color: #333;
-    color: white;
-    left: 0;
-    right: auto;
-    bottom: 0;
-    width: 100%;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row;
-}
-
-#footer-buttons {
-    display: flex;
-    flex-direction: row;
-}
-
 
 .hidden {
     display: none;
@@ -161,6 +144,37 @@ footer {
 .menuInfo div {
     letter-spacing: 2px;
 }
+
+.sold-out-overlay {
+    position: relative;
+    display: inline-block;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.sold-out-overlay img {
+    flex: 1;
+}
+
+.sold-out-overlay::before {
+    content: 'Sold Out';
+    position: absolute;
+    font-weight: bolder;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10%;
+    background: rgba(0, 0, 0, 0.4); /* 배경색과 투명도를 조절하세요 */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
 
 @media screen and (min-width: 700px) {
 
@@ -190,6 +204,7 @@ footer {
     
     .menuPrice {
         font-size: 17px;
+        margin-bottom: 15px;
     }
 
     .menuList {
@@ -237,21 +252,6 @@ footer {
         max-width: 200px;
     }
 
-    footer {
-        position: fixed;
-        background-color: #333;
-        color: white;
-        left: 0;
-        right: auto;
-        bottom: 0;
-        width: 100%;
-        height: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: row;
-    }
-
     nav ul {
         list-style-type: none;
         margin: 0;
@@ -264,16 +264,11 @@ footer {
         align-items: center;
     }
 
-    #footer-buttons {
-        display: flex;
-        flex-direction: row;
-    }
-
     #menuHr {
         display: none;
     }
 
-    button {
+    .menuList button {
         margin: 0 auto;
         padding: 10px;
         border: none;

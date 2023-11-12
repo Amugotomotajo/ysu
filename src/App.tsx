@@ -28,8 +28,7 @@ export const App =  ():JSX.Element => {
     
     <Router>
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/Login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/Menu" element={<Menu />} />
         <Route path="/MenuDetail" element={<MenuDetail />} />
       </Routes>
