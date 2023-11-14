@@ -1,0 +1,210 @@
+.content {
+  padding: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 400px;
+  margin: 0 auto;
+}
+
+#logo {
+  width: 100%;
+  max-width: 160px;
+  height: 100%;
+  cursor: pointer;
+}
+
+#faArrowLeft {
+  width: 50px;
+  font-size: 30px;
+  color: #000;
+}
+
+#faCartShopping {
+  width: 50px;
+  font-size: 30px;
+  color: #000;
+}
+
+#faPlus {
+  width: 50px;
+  font-size: 30px;
+  color: #000;
+}
+
+#head {
+  box-sizing: border-box;
+  background-color: #000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  padding: 10px;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between; /* 아이콘들을 좌우 끝에 배치 */
+  align-items: center;
+}
+
+.btnArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.btnArea svg {
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form p {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+input[type="file"] {
+  margin: 5px 0;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* 추가한 스타일과 색상 */
+form p, input[type="text"], input[type="radio"], input[type="file"], button {
+  background-color: #f7f7f7;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+form p {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+input[type="text"], input[type="radio"], input[type="file"], button {
+  padding: 10px;
+  border-radius: 3px;
+  margin: 5px 0;
+}
+
+input[type="radio"]:hover {
+  background-color: #ddd;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+@media screen and (max-width: 1000px) {
+  footer {
+      position: fixed;
+      background-color: #333;
+      color: white;
+      left: 0;
+      right: auto;
+      bottom: 0;
+      width: 100%;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+  }
+
+  nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background-color: #f1f1f1;
+      position: fixed;
+      height: 100px;
+      overflow: auto;
+      align-items: center;
+  }
+
+  #footer-buttons {
+      display: flex;
+      flex-direction: row;
+  }
+
+  #menuDetailImg {
+      width: 100%;
+      border-radius: 10%;
+      margin-bottom: 10px;
+      max-width: 250px;
+      border-radius: 5%;
+  }
+
+  .menuDetail {
+      height: 100%;
+      padding: 20px;
+      border-radius: 6px;
+      grid-gap: 20px;
+      letter-spacing: 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; /* 화면 중앙 정렬 */
+      font-size: 1.2rem;
+      background-color: white;
+      text-align: center;
+      margin: 20px; /* 좌우 중앙 정렬 */
+      margin-bottom:100px;
+      margin-top: 70px;
+  }
+
+  #menuDetailHr {
+      display: block;
+  }
+
+  .menuDetailInfo {
+      padding-left: 18px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .menuDetailName {
+      font-size: 25px;
+      margin-top:7px;
+      margin-bottom: 9px;
+      font-weight:600;
+  }
+
+  .menuDetailPrice {
+      font-size: 20px;
+  }
+}

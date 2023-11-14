@@ -9,43 +9,35 @@ import { useNavigate } from 'react-router-dom';
 // import './main.css'
 
 
-export const MainPage = ():JSX.Element => {
+export const MainPage = (): JSX.Element => {
     const navigate = useNavigate();
 
     const Mainpage = () => {
         navigate("/");
-        };  
+    };
 
     const [admin, setAdmin] = useState([]);
-
     
-    useEffect(() => {
-        // fetch(url, options) : Http 요청 함수
-        axios.get("/mainpage").then((res) => {
-            setAdmin(res.data)
-        console.log(res)
-        })
-    },[])
- 
-return (
-<div className='body'>
 
-    <div className='content'>
+    return (
+        <div className='body'>
 
-        <div className='btnArea'>
+            <div className='content'>
 
-            
-            <Link to='/cafeteria'>
-                <button className='cfBtn'> <MdOutlineRestaurant/> 학생식당 </button> </Link>
-              
-            <Link to='/packaging'>
-                <button className='pkBtn'> <BsHandbagFill />  포장주문 </button> </Link>
+                <div className='btnArea'>
+
+
+                    <Link to='/cafeteria'>
+                        <button className='cfBtn'> <MdOutlineRestaurant /> 학생식당 </button> </Link>
+
+                    <Link to='/packaging'>
+                        <button className='pkBtn'> <BsHandbagFill />  포장주문 </button> </Link>
+                </div>
+
+            </div>
+
         </div>
-
-    </div>
-
-</div>
-)
+    )
 }
 
 export default MainPage;

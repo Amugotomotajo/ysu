@@ -1,0 +1,315 @@
+html {
+    width: 100%;
+}
+
+.body {
+    margin: 0;
+    background-color: #f1f1f1;
+    width:100%;
+    font-family: "SUIT-Regular";
+}
+
+.head {
+    box-sizing: border-box;
+    background-color: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    padding: 10px;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
+}
+
+.link {
+    text-decoration: none;
+}
+
+.logo {
+    width: 100%;
+    max-width: 160px;
+    height: 100%;
+    margin: 0 auto; /* 로고를 가운데에 고정 */
+}
+
+.faArrowLeft, .faCartShopping, .faArrowRightFromBracket {
+    width: 50px;
+    font-size: 30px;
+    color: #000;
+}
+
+nav ul {
+    list-style-type: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    top: 60px;
+    left: 0;
+    height: 100px;
+    background-color: #f1f1f1;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+    z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
+}
+
+.menuList #S.active, .menuList #B.active,.menuList #F.active {
+    height: auto;
+}
+
+.menuList #S.hidden, .menuList .hidden,.menuList .hidden {
+    display: none;
+}
+
+.menuList button:hover {
+    background-color: #dfdfdf;
+    transition: 0.7s;
+}
+
+.menuList p {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+li {
+    flex-grow: 1;
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+li a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: #000;
+    text-decoration: none;
+    height: 100%;
+}
+
+li a.active {
+    background-color: #555;
+    color: white;
+}
+
+li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+
+li a:hover {
+    background-color: #555;
+    color: white;
+}
+
+.menuList button {
+    margin: 0 auto;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    place-content: center;
+    font-size: 1.2rem;
+    width: 100%;
+}
+
+.menuList button:hover {
+    background-color: #dfdfdf;
+    transition: 0.7s;
+}
+
+.menuList .hidden {
+    display: none;
+}
+
+.menuInfo div {
+    letter-spacing: 2px;
+}
+
+.soldOutOverlay {
+    position: relative;
+    display: inline-block;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.soldOutOverlay img {
+    flex: 1;
+}
+
+.soldOutOverlay::before {
+    content: 'Sold Out';
+    position: absolute;
+    font-weight: bolder;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10%;
+    background: rgba(0, 0, 0, 0.4); /* 배경색과 투명도를 조절하세요 */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+
+@media screen and (min-width: 700px) {
+
+    img {
+        height: 100%;
+        min-width: 60px;
+        border-radius: 10%;
+        margin-bottom: 10px;
+        max-width: 500px;
+        margin: 0 auto;
+        max-width: 200px;
+    }
+
+    .menuInfo {
+        padding-left: 10px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menuName {
+        font-size: 20px;
+        margin-top:5px;
+        margin-bottom: 9px;
+        font-weight:600;
+    }
+    
+    .menuPrice {
+        font-size: 17px;
+        margin-bottom: 15px;
+    }
+
+    .menuList {
+        height: 100%;
+        padding:20px;
+        margin-top: 160px;
+        border-radius: 6px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
+        grid-gap:20px; 
+        letter-spacing: 2px;
+    }
+
+    .menuInfo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menuName {
+        font-size: 18px;
+        margin-top:10px;
+        margin-bottom: 9px;
+        font-weight:600;
+    }
+
+    .menuPrice {
+        font-size: 15px;
+        margin-bottom: 15px;
+    }
+
+}
+
+@media screen and (max-width: 700px) {
+
+    .menuList {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .menuList img {
+        width: 110px;
+        border-radius: 10%;
+        max-width: 200px;
+    }
+
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background-color: #f1f1f1;
+        position: fixed;
+        height: 100px;
+        overflow: auto;
+        align-items: center;
+    }
+
+    .menuHr {
+        display: none;
+    }
+
+    .menuList button {
+        margin: 0 auto;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background-color: white;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        place-content: center;
+        justify-content: flex-start;
+        font-size: 1.2rem;
+        width: 100%;
+    }
+
+    .menuInfo {
+        padding-left: 18px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menuList {
+        height: 100%;
+        padding:20px;
+        margin-top: 160px;
+        border-radius: 6px;
+        display: grid;
+        grid-gap:15px; 
+        letter-spacing: 2px;
+    }
+
+    .menuInfo div {
+        letter-spacing: 2px;
+    }
+
+    .menuName {
+        font-size: 20px;
+        margin-top:5px;
+        margin-bottom: 9px;
+        font-weight:600;
+    }
+
+    .menuPrice {
+        font-size: 17px;
+        margin-bottom: 45px;
+    }
+}

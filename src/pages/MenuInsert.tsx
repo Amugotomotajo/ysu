@@ -1,193 +1,194 @@
 import React from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import {
-  Button,
-  Form,
-  Space,
-  message,
-  Input,
-  Radio,
-} from 'antd';
+import { Space } from 'antd';
 import { JSX } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-import '../css/main.css';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface'
-import {
-  HomeOutlined,
-  RollbackOutlined
-} from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import ysuLogo from '../img/ysu_logo.jpg';
+import { faPlus, faArrowLeft, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import './MenuInsert.css';
 
-export const MenuInsert =  ():JSX.Element => {
-    const navigate = useNavigate();
+export const MenuInsert = (): JSX.Element => {
+  const navigate = useNavigate();
 
-    const MainPage = () => {
-        navigate("/");
-        };  
-
-    const MenuListPage = () => {
-        navigate("/menu");
-        };  
-
-const onFinish =  (values: any) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
-
-
-
-
-
-
-const normFile = (e: any) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e?.fileList;
-};
-
-type FieldType = {
-  menuname?: string;
-  menucorner?: string;
-  menuprice?: number;
-  menupack?: number;
-  menuimage?: string;
-};
-
-
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [uploading, setUploading] = useState(false);
-
-  const handleUpload = () => {
-    const formData = new FormData();
-    fileList.forEach((file) => {
-      formData.append('files[]', file as RcFile);
-    });
-    setUploading(true);
-    // You can use any AJAX library you like
-    fetch('./menuinsert', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setFileList([]);
-        message.success('upload successfully.');
-      })
-      .catch(() => {
-        message.error('upload failed.');
-      })
-      .finally(() => {
-        setUploading(false);
-      });
+  const MainPage = () => {
+    navigate("/");
   };
 
-  const props: UploadProps = {
-    onRemove: (file) => {
-      const index = fileList.indexOf(file);
-      const newFileList = fileList.slice();
-      newFileList.splice(index, 1);
-      setFileList(newFileList);
-    },
-    beforeUpload: (file) => {
-      setFileList([...fileList, file]);
+  const MenuListPage = () => {
+    navigate("/adminmenu");
+  };
+  const [menu_name, setMenuName] = useState('');
+  const [menu_corner, setMenuCorner] = useState('');
+  const [menu_price, setMenuPrice] = useState<number>(0);
+  const [menu_pack, setMenuPack] = useState<number>(0);
+  const [menu_image, setMenuImage] = useState<File | null>(null);
 
-      return false;
-    },
-    fileList,
+  const handleAddToMenu = () => {
+    const shouldInsert = window.confirm("메뉴를 추가하시겠습니까?");
+    if (shouldInsert) {
+      // FormData 객체 생성
+      const formData = new FormData();
+
+      // 폼 데이터에 필드 추가
+      formData.append('menu_name', menu_name);
+      formData.append('menu_corner', menu_corner);
+      formData.append('menu_price', menu_price.toString());
+      formData.append('menu_pack', menu_pack.toString());
+      if (menu_image) {
+        // 이미지 파일 추가 (menu_image)
+        formData.append('menu_image', menu_image);
+      }
+
+      // Axios를 사용하여 서버로 폼 데이터를 보냄
+      axios.post('/adminmenu/menuinsert', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // 폼 데이터로 보냄
+        },
+      })
+        .then(response => {
+          console.log('Data inserted successfully', response.data, formData);
+        })
+        .catch(error => {
+          console.error('Failed to insert data', error, formData);
+        });
+      alert("메뉴가 추가되었습니다.");
+      window.location.href = "/adminmenu";
+    } else {
+      alert("취소하였습니다.");
+    }
   };
 
-return (
-    <body>
-        <div className='content'>
-            <div className='btnArea'>
-    <Space>
-    <HomeOutlined onClick={MainPage} />
-    <RollbackOutlined onClick={MenuListPage}/>
-  </Space>
-        <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"  >
 
-
-            <Form.Item<FieldType>
-            label="이름"
-            id="menuname"
-            name="menuname"
-            rules={[{ required: true, message: '메뉴이름을 입력해 주세요.' }]}
-            >
-            <Input />
-            </Form.Item>
-
-            <Form.Item<FieldType>
-            label="코너"
-            name="menucorner"
-            id="menucorner"
-            rules={[{ required: true, message: '코너종류을 클릭해 주세요.' }]}>
-           <Radio.Group>
-            <Radio value="S"> S </Radio>
-            <Radio value="B"> B </Radio>
-            <Radio value="F"> F </Radio>
-            </Radio.Group>
-            </Form.Item>
-
-            <Form.Item<FieldType>
-              label="가격"
-              id="menuprice"
-              name="menuprice"
-              rules={[{ required: true, message: '메뉴가격을 입력해 주세요.' }]}
-            >
-            <Input />
-            </Form.Item>
-
-            <Form.Item<FieldType>
-            label="포장가능"
-            id="menupack"
-            name="menupack"
-            rules={[{ required: true, message: '포장여부를 클릭해 주세요.' }]}>
-           <Radio.Group>
-            <Radio value="1"> O </Radio>
-            <Radio value="0"> X </Radio>
-            </Radio.Group>
-            </Form.Item>
-
-            <Form.Item<FieldType>
-            label="이미지"
-            id="menuimage"
-            name="menuimage"
-            rules={[{ required: true, message: '메뉴이미지를 업로드해 주세요.' }]}
-            >
-            <Input />
-            </Form.Item>
-
-            <Form.Item<FieldType>
-            label="이미지"
-            valuePropName="fileList" getValueFromEvent={normFile}>
-            <Form.Item wrapperCol={{ offset: 0, span: 16 }}>
-        
-          
-          </Form.Item>
-
-          
-          
-            <Button type="primary" htmlType="submit">
-                Submit
-            </Button>
-            </Form.Item>
-        </Form>
+  return (
+    <>
+      <head>
+        <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+      </head>
+      <body>
+        <div id="head">
+          <Link to="/adminmenu">
+            <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} />
+          </Link>
+          <img id="logo" src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
+          <Link to="./menuinsert">
+            <FontAwesomeIcon id="faPlus" icon={faPlus} />
+          </Link>
+          <Link to="/">
+            <FontAwesomeIcon id="faCartShopping" icon={faCartShopping} />
+          </Link>
         </div>
-    </div>
-  </body>
-);
+        <div className="menuDetail">
+        <div className='content'>
+          <div className='btnArea'>
+            <form>
+              <a>메뉴이름</a>
+              <br />
+              <input type="text"
+                placeholder="메뉴이름"
+                value={menu_name}
+                onChange={(e) => setMenuName(e.target.value)} />
+              <br />
 
+              <a>코너종류</a>
+              <br />
+              <label>B
+                <input
+                  type="radio"
+                  name="corner"
+                  value="B"
+                  onChange={(e) => setMenuCorner(e.target.value)} />
+              </label>
+              <label>S
+                <input
+                  type="radio"
+                  name="corner"
+                  value="S"
+                  onChange={(e) => setMenuCorner(e.target.value)} />
+              </label>
+              <label>F
+                <input
+                  type="radio"
+                  name="corner"
+                  value="F"
+                  onChange={(e) => setMenuCorner(e.target.value)} />
+              </label>
+              <br />
+
+              <a>메뉴가격</a>
+              <br />
+              <input type="text"
+                placeholder="메뉴가격"
+                value={menu_price}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  const numericValue = Number(inputValue);
+
+                  if (!isNaN(numericValue)) {
+                    setMenuPrice(numericValue);
+                  } else {
+                    console.log("fail");
+                  }
+                }} />
+              <br />
+
+              <a>포장가능여부</a>
+              <br />
+              <label>
+                <input type="radio"
+                  name="pack"
+                  value="1"
+                  onChange={(e) => {
+                    const inputValue = e.target.value;
+                    const numericValue = Number(inputValue);
+
+                    if (!isNaN(numericValue)) {
+                      setMenuPack(numericValue);
+                    } else {
+                      console.log("fail");
+                    }
+                  }} />O
+              </label>
+              <label>
+                <input type="radio"
+                  name="pack"
+                  value="0"
+                  onChange={(e) => {
+                    const inputValue = e.target.value;
+                    const numericValue = Number(inputValue);
+
+                    if (!isNaN(numericValue)) {
+                      setMenuPack(numericValue);
+                    } else {
+                      console.log("fail");
+                    }
+                  }} />X
+              </label>
+              <br />
+
+              <a>메뉴이미지</a>
+              <br />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setMenuImage(file);
+                  }
+                }}
+              />
+              <br />
+              <button type="button" onClick={handleAddToMenu}>메뉴추가</button>
+            </form>
+          </div>
+        </div>
+        </div>
+      </body>
+    </>
+  );
 }
+export default MenuInsert;

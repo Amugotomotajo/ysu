@@ -1,0 +1,166 @@
+.menuDetail {
+    height: 100%;
+    padding: 20px;
+    border-radius: 6px;
+    grid-gap: 20px;
+    letter-spacing: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 화면 중앙 정렬 */
+    font-size: 1.2rem;
+    background-color: white;
+    text-align: center;
+    margin: 20px; /* 좌우 중앙 정렬 */
+    margin-bottom:100px;
+    margin-top: 70px;
+    flex-direction: column;
+}
+
+.bodydetail{
+    background-color: f1f1f1;
+}
+
+#logo {
+    width: 100%;
+    max-width: 160px;
+    height: 100%;
+    cursor: pointer;
+}
+
+#faArrowLeft {
+    width: 50px;
+    font-size: 30px;
+    color: #000;
+  }
+
+#menuDetailHr {
+    width: 100%;
+}
+
+.menuDetail #S, .menuDetail #B, .menuDetail #F {
+    width: 100%;
+}
+
+.menuDetail button {
+    background-color:  rgb(181, 220, 16);
+    color: white;
+    justify-content: center;
+    width: 100%;
+}
+
+#menuDetailImg {
+    width: 100%;
+    border-radius: 10%;
+    margin-bottom: 10px;
+    max-width: 300px;
+    border-radius: 5%;
+}
+
+.menuDetailInfo label {
+    display: inline-block; /* 라디오 버튼과 레이블을 한 줄에 나란히 표시 */
+  }
+
+@media screen and (min-width: 1000px) {
+
+    .menuDetailInfo {
+        padding-left: 18px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menuDetailName {
+        font-size: 25px;
+        margin-top:7px;
+        margin-bottom: 9px;
+        font-weight:600;
+    }
+
+    .menuDetailPrice {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    footer {
+        position: fixed;
+        background-color: #333;
+        color: white;
+        left: 0;
+        right: auto;
+        bottom: 0;
+        width: 100%;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+    }
+
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background-color: #f1f1f1;
+        position: fixed;
+        height: 100px;
+        overflow: auto;
+        align-items: center;
+    }
+
+    #footer-buttons {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #menuDetailImg {
+        width: 100%;
+        border-radius: 10%;
+        margin-bottom: 10px;
+        max-width: 250px;
+        border-radius: 5%;
+    }
+
+    .menuDetail {
+        height: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        grid-gap: 20px;
+        letter-spacing: 2px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center; /* 화면 중앙 정렬 */
+        font-size: 1.2rem;
+        background-color: white;
+        text-align: center;
+        margin: 10px; /* 좌우 중앙 정렬 */
+        margin-bottom:50px;
+        margin-top: 80px;
+        
+    }
+
+    #menuDetailHr {
+        display: block;
+    }
+
+    .menuDetailInfo {
+        padding-left: 18px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menuDetailName {
+        font-size: 25px;
+        margin-top:7px;
+        margin-bottom: 9px;
+        font-weight:600;
+    }
+
+    .menuDetailPrice {
+        font-size: 20px;
+    }
+}
