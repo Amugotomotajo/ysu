@@ -1,31 +1,21 @@
 html {
     width: 100%;
+    height: 100%;
 }
 
 body {
+    margin: 0;
+    background-color: #f1f1f1;
+}
+
+.mnbody {
     margin: 0;
     background-color: #f1f1f1;
     width:100%;
     font-family: "SUIT-Regular";
 }
 
-Link {
-    text-decoration: none;
-}
-
-#faArrowLeft {
-    width: 50px;
-    font-size: 30px;
-    color: #000;
-}
-
-#faCartShopping {
-    width: 50px;
-    font-size: 30px;
-    color: #000;
-}
-
-#head {
+.head {
     box-sizing: border-box;
     background-color: #000;
     position: fixed;
@@ -41,27 +31,27 @@ Link {
     z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
 }
 
-#logo {
+.link {
+    text-decoration: none;
+}
+
+.logo {
     width: 100%;
     max-width: 160px;
     height: 100%;
     margin: 0 auto; /* 로고를 가운데에 고정 */
 }
 
-#S.active, #B.active, #F.active {
-    height: auto;
+.faArrowLeft, .faCartShopping, .faArrowRightFromBracket {
+    width: 15%;
+    min-width: 30px;
+    max-width: 35px;
+    font-size: 30px;
+    color: rgb(42, 52, 55);
 }
 
-#menuHr {
-    background:#d5d5d5;
-    height: 1px;
-    border:0;
-    width: 100%;
-}
-
-.menuList p {
-    font-size: 20px;
-    font-weight: 500;
+.faArrowRightFromBracket {
+    margin-right: 10px;
 }
 
 nav ul {
@@ -81,6 +71,28 @@ nav ul {
     z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
 }
 
+.menuList #S.active, .menuList #B.active,.menuList #F.active {
+    height: auto;
+}
+
+.menuList #S.hidden, .menuList .hidden,.menuList .hidden {
+    display: none;
+}
+
+.menuList button:hover {
+    background-color: #dfdfdf;
+    transition: 0.7s;
+}
+
+.menuList p {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.menuHr {
+    width: 100%;
+}
+
 li {
     flex-grow: 1;
     height: 100%;
@@ -98,6 +110,7 @@ li a {
     font-size: 18px;
     letter-spacing: 3px;
     color: #000;
+    font-weight: bold;
     text-decoration: none;
     height: 100%;
 }
@@ -113,7 +126,7 @@ li a:hover:not(.active) {
 }
 
 li a:hover {
-    background-color: #555;
+    background-color: #555; /* rgb(42, 52, 55) */
     color: white;
 }
 
@@ -137,7 +150,7 @@ li a:hover {
     transition: 0.7s;
 }
 
-.hidden {
+.menuList .hidden {
     display: none;
 }
 
@@ -145,7 +158,7 @@ li a:hover {
     letter-spacing: 2px;
 }
 
-.sold-out-overlay {
+.soldOutOverlay {
     position: relative;
     display: inline-block;
     overflow: auto;
@@ -153,11 +166,11 @@ li a:hover {
     flex-direction: column;
 }
 
-.sold-out-overlay img {
+.soldOutOverlay img {
     flex: 1;
 }
 
-.sold-out-overlay::before {
+.soldOutOverlay::before {
     content: 'Sold Out';
     position: absolute;
     font-weight: bolder;
@@ -178,7 +191,7 @@ li a:hover {
 
 @media screen and (min-width: 700px) {
 
-    img {
+    .menuList img {
         height: 100%;
         min-width: 60px;
         border-radius: 10%;
@@ -246,8 +259,8 @@ li a:hover {
         grid-template-columns: 1fr;
     }
 
-    img {
-        width: 110px;
+    .menuList img {
+        width: 90px;
         border-radius: 10%;
         max-width: 200px;
     }
@@ -262,9 +275,11 @@ li a:hover {
         height: 100px;
         overflow: auto;
         align-items: center;
+        white-space: normal;
+        white-space: normal;
     }
 
-    #menuHr {
+    .menuHr {
         display: none;
     }
 
@@ -316,4 +331,9 @@ li a:hover {
         font-size: 17px;
         margin-bottom: 45px;
     }
+
+    .soldOutOverlay::before {
+        font-size: 1.2em;
+    }
+
 }

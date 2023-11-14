@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import './Menu.css';
+import style from './Menu.module.css';
 import axios from 'axios';
 import { faArrowLeft, faCartShopping, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
 import ysuLogo from './img/ysu_logo.jpg';
-import { isDisabled } from '@testing-library/user-event/dist/utils';
 
 export const Menu = (): JSX.Element => {
     const corner = ['S', 'B', 'F', 'P']
@@ -71,45 +70,47 @@ export const Menu = (): JSX.Element => {
         sessionStorage.setItem("user_id", '');
         sessionStorage.setItem("user_name", '');
         sessionStorage.setItem("user_dept", '');
-    
+
         // 로그인 페이지로 이동
         navigate('/');
-      };
+    };
+
 
     return (
         <>
+
             <head>
                 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
             </head>
-            <body>
+            <body className={style.mnbody}>
                 <div>
-                    <div id="head">
-                        <Link to="/">
-                            <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} />
+                    <div id="head" className={style.head}>
+                        <Link className={style.link} to="/">
+                            <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={style.faArrowLeft} />
                         </Link>
-                        <Link to="">
-                            <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} style={{color: 'transparent'}} />
+                        <Link className={style.link} to="">
+                            <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
                         </Link>
-                        
-                        <img id="logo" src={ysuLogo} alt={"logo"} />
-                        <Link to="/" onClick={handleLogout}>
-                            <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} />
+
+                        <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
+                        <Link to="/" className={style.link} onClick={handleLogout}>
+                            <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
                         </Link>
-                        <Link to="/">
-                            <FontAwesomeIcon id="faCartShopping" icon={faCartShopping} />
+                        <Link className={style.link} to="/">
+                            <FontAwesomeIcon id="faCartShopping" icon={faCartShopping} className={style.faCartShopping} />
                         </Link>
                     </div>
-                    <nav>
-                        <ul>
+                    <nav className={style.nav}>
+                        <ul className={style.ul}>
                             {corner.map((section) => (
-                                <li key={section}>
+                                <li key={section} className={style.li}>
                                     <a
                                         href={`#${section}`}
                                         onClick={(e) => {
                                             e.preventDefault();
                                             handleSectionClick(section);
                                         }}
-                                        className={activeSection === section ? 'active' : ''}
+                                        className={activeSection === section ? style.active : ''}
                                     >
                                         {section === 'S' && '면분식류'}
                                         {section === 'B' && '비빔밥덮밥류'}
@@ -122,12 +123,16 @@ export const Menu = (): JSX.Element => {
                     </nav>
                 </div>
 
-                <div className="menuList">
+                <div className={style.menuList} >
                     {sections.map((section, idx) => (
-                        <div key={`${idx}-${section['menu_corner']}`} id={section['menu_corner']} className={activeSection === section['menu_corner'] || (activeSection === 'P' && section['menu_pack'] === 1) ? 'active' : 'hidden'}>
+                        <div key={`${idx}-${section['menu_corner']}`} id={section['menu_corner']} className={activeSection === section['menu_corner'] || (activeSection === 'P' && section['menu_pack'] === 1) ? style.active : style.hidden}>
                             <button
                                 key={section['menu_id']}
                                 onClick={() => {
+                                    if (section['menu_sales'] === 0) {
+                                        return;
+                                    }
+
                                     navigate('/MenuDetail', {
                                         state: {
                                             u_id: userId,
@@ -139,7 +144,7 @@ export const Menu = (): JSX.Element => {
                             >
                                 {/* Sold Out 오버레이 */}
                                 {section['menu_sales'] === 0 && (
-                                    <div className="sold-out-overlay">
+                                    <div className={style.soldOutOverlay}>
                                         <img src={require(`./img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
                                     </div>
                                 )}
@@ -148,14 +153,13 @@ export const Menu = (): JSX.Element => {
                                     <img src={require(`./img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
                                 )}
 
-                                <hr id="menuHr"></hr>
-                                <div className="menuInfo">
-                                    <div className="menuName">{section['menu_name']}</div>
-                                    <div className="menuPrice">가격 : {(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
+                                <hr id="menuHr" className={style.menuHr}></hr>
+                                <div className={style.menuInfo}>
+                                    <div className={style.menuName}>{section['menu_name']}</div>
+                                    <div className={style.menuPrice}>가격 : {(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
                                 </div>
                             </button>
                         </div>
-
                     ))}
                 </div>
 

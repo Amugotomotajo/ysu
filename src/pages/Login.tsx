@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import style from './Login.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import ysuLogo from './img/ysu_logo2.png';
 
 export const Login = (): JSX.Element => {
     const [u_id, setUid] = useState(""); // 사용자 ID 상태
@@ -81,7 +79,11 @@ export const Login = (): JSX.Element => {
 
     return (
         <>
-            <body id={style.loginDiv}>
+        <body className={style.bodyCSS}>
+            <div className={style.logoDiv}>
+                <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
+            </div>
+            <div id={style.loginDiv}>
                 <div className={style.loginWrapper}>
                     <div id={style.loginForm}>
                         <h2 id={style.loginH2}>Login</h2>
@@ -93,6 +95,7 @@ export const Login = (): JSX.Element => {
                         <input type="submit" value="Login" onClick={() => handleLogin(u_id, u_pw)} />
                     </div>
                 </div>
+            </div>
             </body>
         </>
     );
