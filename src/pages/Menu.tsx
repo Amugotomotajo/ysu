@@ -6,6 +6,9 @@ import { faArrowLeft, faCartShopping, faArrowRightFromBracket } from "@fortaweso
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
 import ysuLogo from './img/ysu_logo.jpg';
+import { BiArrowBack } from "react-icons/bi";
+import { MdLogout } from "react-icons/md";
+import { IoCartSharp } from "react-icons/io5";
 
 export const Menu = (): JSX.Element => {
     const corner = ['S', 'B', 'F', 'P']
@@ -86,18 +89,18 @@ export const Menu = (): JSX.Element => {
                 <div>
                     <div id="head" className={style.head}>
                         <Link className={style.link} to="/">
-                            <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={style.faArrowLeft} />
+                            <BiArrowBack className={style.faArrowLeft} />
                         </Link>
                         <Link className={style.link} to="">
-                            <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
+                            <BiArrowBack className={style.faArrowLeft} style={{color: 'transparent'}} />
                         </Link>
 
                         <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
                         <Link to="/" className={style.link} onClick={handleLogout}>
-                            <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
+                            <MdLogout className={style.faArrowRightFromBracket} />
                         </Link>
                         <Link className={style.link} to="/">
-                            <FontAwesomeIcon id="faCartShopping" icon={faCartShopping} className={style.faCartShopping} />
+                            <IoCartSharp className={style.faCartShopping} />
                         </Link>
                     </div>
                     <nav className={style.nav}>

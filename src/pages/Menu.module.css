@@ -13,6 +13,7 @@ body {
     background-color: #f1f1f1;
     width:100%;
     font-family: "SUIT-Regular";
+    
 }
 
 .head {
@@ -43,11 +44,13 @@ body {
 }
 
 .faArrowLeft, .faCartShopping, .faArrowRightFromBracket {
-    width: 15%;
+    width: 100%;
     min-width: 30px;
     max-width: 35px;
-    font-size: 30px;
+    font-size: 2em;
     color: rgb(42, 52, 55);
+    display: flex;
+    align-items: center;
 }
 
 .faArrowRightFromBracket {
