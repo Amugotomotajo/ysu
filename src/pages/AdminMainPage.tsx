@@ -7,6 +7,9 @@ import { faArrowLeft, faPlus, faArrowRightFromBracket } from "@fortawesome/free-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import style from '../css/main.module.css'
 import ysuLogo from '../img/ysu_logo.jpg';
+import { MdOutlineRestaurantMenu } from "react-icons/md";
+import { FaUser } from "react-icons/fa"
+import { PiNoteLight } from "react-icons/pi";
 
 
 export const AdminMainPage = (): JSX.Element => {
@@ -57,29 +60,26 @@ export const AdminMainPage = (): JSX.Element => {
     <div className={style.container}>
         <div className={style.card}>
             <div className={style.circle}>
-                <h2>사용자 관리</h2>
+                <h2><FaUser /></h2>
             </div>
             <div className={style.content}>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 <a  onClick={studentPage}>사용자 관리</a>
              </div>
         </div>
         <div className={style.card}>
             <div className={style.circle}>
-                <h2>메뉴 관리</h2>
+                <h2><MdOutlineRestaurantMenu /></h2>
             </div>
             <div className={style.content}>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 <a onClick={menuPage}>메뉴 관리</a>
              </div>
  
         </div>
         <div className={style.card}>
             <div className={style.circle}>
-                <h2>리뷰 관리</h2>
+                <h2><PiNoteLight /></h2>
             </div>
             <div className={style.content}>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 <a onClick={mainPage}>리뷰 관리</a>
             </div>
         </div>

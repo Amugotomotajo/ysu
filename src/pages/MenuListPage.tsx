@@ -6,6 +6,7 @@ import { faArrowLeft, faPlus, faArrowRightFromBracket } from "@fortawesome/free-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
 import ysuLogo from '../img/ysu_logo.jpg';
+import Select from "react-select"
 
 export const MenuListPage = (): JSX.Element => {
     const corner = ['S', 'B', 'F', 'P']
@@ -28,10 +29,22 @@ export const MenuListPage = (): JSX.Element => {
     const userName = sessionStorage.getItem("user_name");
     const userDept = sessionStorage.getItem("user_dept")
 
+    const [originalSections, setOriginalSections] = useState<{
+        menu_id: number,
+        menu_name: string,
+        menu_corner: string,
+        menu_price: number,
+        menu_pack: number,
+        menu_image: string,
+        menu_sales: number,
+        menu_regist: number
+    }[]>([]); // 초기 데이터를 저장할 상태
+
     useEffect(() => {
         window.scrollTo(0, 0);
         axios.get("/adminmenu").then((res) => {
             setSections(res.data);
+            setOriginalSections(res.data);
             console.log(res);
         })
     }, [])
@@ -46,15 +59,83 @@ export const MenuListPage = (): JSX.Element => {
         sessionStorage.setItem("user_id", '');
         sessionStorage.setItem("user_name", '');
         sessionStorage.setItem("user_dept", '');
-    
+
         // 로그인 페이지로 이동
         navigate('/');
-      };
+    };
+
+    const options = [
+        {
+            label: '포장 여부', options: [
+                { value: 'packtrue', label: '포장가능메뉴확인' },
+                { value: 'packfalse', label: '포장불가능메뉴확인' }
+            ]
+        },
+        {
+            label: '판매 여부', options: [
+                { value: 'saletrue', label: '판매가능메뉴확인' },
+                { value: 'salefalse', label: '판매불가능메뉴확인' }
+            ]
+        },
+        {
+            label: '등록 여부', options: [
+                { value: 'registtrue', label: '등록메뉴확인' },
+                { value: 'registfalse', label: '미등록메뉴확인' }
+            ]
+        },
+        {
+            label: '기타', options: [
+                { value: 'allmenulist', label: '전체메뉴확인' }
+            ]
+        }
+    ]
+
+    const handleOptionChange = (selectedOption: any) => {
+        if (selectedOption && selectedOption.value === 'packtrue') {
+            // 판매가능메뉴확인이 선택되었을 때, menu_pack 1인 메뉴만 필터링
+            const filteredSections = originalSections.filter(section => section.menu_pack === 1);
+            setSections(filteredSections);
+            console.log(filteredSections);
+        }
+        else if (selectedOption && selectedOption.value === 'packfalse') {
+            // 판매가능메뉴확인이 선택되었을 때, menu_pack 0인 메뉴만 필터링
+            const filteredSections = originalSections.filter(section => section.menu_pack === 0);
+            setSections(filteredSections);
+            console.log(filteredSections);
+        }
+        else if (selectedOption && selectedOption.value === 'saletrue') {
+            // 판매가능메뉴확인이 선택되었을 때, menu_sales 1인 메뉴만 필터링
+            const filteredSections = originalSections.filter(section => section.menu_sales === 1);
+            setSections(filteredSections);
+            console.log(filteredSections);
+        }
+        else if (selectedOption && selectedOption.value === 'salefalse') {
+            // 판매가능메뉴확인이 선택되었을 때, menu_sales 0인 메뉴만 필터링
+            const filteredSections = originalSections.filter(section => section.menu_sales === 0);
+            setSections(filteredSections);
+            console.log(filteredSections);
+        }
+        else if (selectedOption && selectedOption.value === 'registtrue') {
+            // 판매가능메뉴확인이 선택되었을 때, menu_regist가 1인 메뉴만 필터링
+            const filteredSections = originalSections.filter(section => section.menu_regist === 1);
+            setSections(filteredSections);
+            console.log(filteredSections);
+        }
+        else if (selectedOption && selectedOption.value === 'registfalse') {
+            // 판매가능메뉴확인이 선택되었을 때, menu_regist가 0인 메뉴만 필터링
+            const filteredSections = originalSections.filter(section => section.menu_regist === 0);
+            setSections(filteredSections);
+            console.log(filteredSections);
+        } else {
+            // 다른 옵션이 선택되었을 때, 모든 메뉴를 보여줌
+            setSections(originalSections);
+        }
+    };
 
 
     return (
         <>
-    
+
             <head>
                 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
             </head>
@@ -62,12 +143,12 @@ export const MenuListPage = (): JSX.Element => {
                 <div>
                     <div id="head" className={style.head}>
                         <Link className={style.link} to="/">
-                            <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={style.faArrowLeft}/>
+                            <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={style.faArrowLeft} />
                         </Link>
                         <Link className={style.link} to="">
-                            <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{color: 'transparent'}} />
+                            <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
                         </Link>
-                        
+
                         <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
                         <Link to="/" className={style.link} onClick={handleLogout}>
                             <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
@@ -89,16 +170,33 @@ export const MenuListPage = (): JSX.Element => {
                                         }}
                                         className={activeSection === section ? style.active : ''}
                                     >
-                                        {section === 'S' && '면분식류'}
-                                        {section === 'B' && '비빔밥덮밥류'}
-                                        {section === 'F' && '돈까스라이스류'}
-                                        {section === 'P' && '포장'}
+                                        {section === 'S' && '면분식류(S)'}
+                                        {section === 'B' && '비빔밥덮밥류(B)'}
+                                        {section === 'F' && '돈까스라이스류(F)'}
+                                        {section === 'P' && '포장(P)'}
                                     </a>
                                 </li>
                             ))}
                         </ul>
                     </nav>
                 </div>
+                {/*
+                {(activeSection === 'S' || activeSection === 'B' || activeSection === 'F') && (
+                    <div className={style.selectMenu}>
+                        <Select options={options} className={style.selectoption} onChange={handleOptionChange}  />
+                    </div>
+                )}
+                {activeSection === 'P' && (
+                    <div className={style.selectMenu}>
+                        <Select options={options} className={style.selectoption} onChange={handleOptionChange} />
+                    </div>
+                )}
+                */}
+                <div className={style.selectMenu}>
+                    <Select options={options} className={style.selectoption} onChange={handleOptionChange} />
+                </div>
+
+
 
                 <div className={style.menuList} >
                     {sections.map((section, idx) => (

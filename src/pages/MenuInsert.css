@@ -97,10 +97,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #0056b3;
-}
-
 /* 추가한 스타일과 색상 */
 form p, input[type="text"], input[type="radio"], input[type="file"], button {
   background-color: #f7f7f7;
@@ -121,10 +117,6 @@ input[type="text"], input[type="radio"], input[type="file"], button {
 
 input[type="radio"]:hover {
   background-color: #ddd;
-}
-
-button:hover {
-  background-color: #0056b3;
 }
 
 @media screen and (max-width: 1000px) {

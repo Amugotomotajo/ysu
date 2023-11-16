@@ -1,0 +1,228 @@
+/*---------------------------------------*/
+/* Font */
+/*---------------------------------------*/
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+
+/*---------------------------------------*/
+/* Register Form */
+/*---------------------------------------*/
+.body {
+  margin: 0;
+  background-color: #f1f1f1;
+}
+
+
+.signupform {
+    font-family: "Roboto", sans-serif;
+    width:650px;
+    margin:30px auto;
+    background:linear-gradient(to right, #ffffff 0%, #fafafa 50%, #ffffff 99%);
+    border-radius: 10px;
+    margin-top:100px;
+  }
+  
+  /*---------------------------------------*/
+  /* Form Header */
+  /*---------------------------------------*/
+  .formheader  {
+    background-color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .formheader h1 {
+    font-size: 30px;
+    text-align:center;
+    color:#666;
+    padding:20px 0;
+  }
+
+  .hrline1{
+    width : 90%;
+    border: 1px solid #666;
+    margin-left : auto;
+	  margin-right : auto;
+  }
+  
+  .hrline2{
+    width : 100%;
+    border: 1px solid #666;
+    margin-left : auto;
+	  margin-right : auto;
+  }
+
+  /*---------------------------------------*/
+  /* Form Body */
+  /*---------------------------------------*/
+  .formbody {
+    padding:10px 40px;
+    color:#666;
+    background-color: white;
+  }
+  
+  .formgroup{
+    margin-bottom:20px;
+  }
+  
+  .formbody .labeltitle {
+    color:#737373;
+    font-size: 17px;
+    font-weight: bold;
+  }
+  
+  .formbody .forminput {
+      font-size: 17px;
+      box-sizing: border-box;
+      width: 100%;
+      height: 34px;
+      padding-left: 10px;
+      padding-right: 10px;
+      color: #333333;
+      text-align: left; 
+      border: 1px solid #d6d6d6;
+      border-radius: 4px;
+      background: white;
+      outline: none;
+  }
+
+  .formbody .forminput:focus {
+    border: 2px solid black;
+  }
+  
+  
+  
+  .horizontalgroup .left{
+    float:left;
+    width:49%;
+  }
+  
+  .horizontalgroup .right{
+    float:right;
+    width:49%;
+  }
+
+  .radioGroup {
+    justify-content: space-between; /* 라디오 간격 조절을 위한 CSS 속성 */
+  }
+
+  .horizontalgroup .inputgroup label {
+    margin-right: 10px; /* 라디오 버튼 간격 조절을 위한 마진 설정 */
+  }
+  
+  input[type="file"] {
+    outline: none;
+    cursor:pointer;
+    font-size: 17px;
+  }
+  
+  #rangelabel {
+    width:15%;
+    padding:5px;
+    background-color: #1BBA93;
+    color:white;
+    border-radius: 5px;
+    font-size: 17px;
+    position: relative;
+    top:-8px;
+  }
+  
+  
+  ::-webkit-input-placeholder  {
+    color:#d9d9d9;
+  }
+  
+  /*---------------------------------------*/
+  /* Form Footer */
+  /*---------------------------------------*/
+  .signupform .formfooter  {
+    background-color: #EFF0F1;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding:10px 40px;
+    text-align: right;
+    clear:both;
+    background-color: white;
+  }
+
+  .formfooter span {
+    float:left;
+    margin-top: 10px;
+    color:#999;  
+    font-style: italic;
+    font-weight: thin;
+  }
+  
+  .btncancel {
+     width: 100px;
+     display:inline-block;
+     padding:10px 20px;
+     background-color: #666;
+     font-size:17px;
+     border:none;
+     border-radius:5px;
+     color:white;
+     cursor:pointer;
+     margin-top: -5px;
+     margin-right: 5px;
+  }
+
+  .btninsert {
+    width: 100px;
+    display:inline-block;
+    padding:10px 20px;
+    background-color: rgb(181, 220, 16);
+    font-size:17px;
+    border:none;
+    border-radius:5px;
+    color:white;
+    cursor:pointer;
+    margin-top: -5px;
+    margin-right: 5px;
+ }
+  
+  .btncancel:hover .btninsert:hover {
+    box-shadow: 0 15px 25px rgba(0,0,0,0.6);
+    background: none;
+    color:white;
+  }
+
+  @media screen and (max-width: 700px) {
+    .signupform {
+      width: 90%;
+    }
+
+    .formgroup {
+      margin-bottom: 10px;
+    }
+  
+    .horizontalgroup .formgroup {
+      width: 100%;
+    }
+  
+    input[type="file"] {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .formbody {
+      padding: 10px;
+    }
+  
+    .horizontalgroup .left,
+    .horizontalgroup .right {
+      width: 100%;
+    }
+  
+    .horizontalgroup .inputgroup label {
+      display: block;
+      margin-bottom: 10px;
+    }
+  
+    .btncancel,
+    .btninsert {
+      width: 100%;
+      margin-top: 10px;
+      margin-right: 0;
+    }
+  }
