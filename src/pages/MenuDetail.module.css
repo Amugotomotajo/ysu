@@ -32,13 +32,12 @@
     padding: 10px;
     border: none;
     border-radius: 10px;
-    background-color: rgb(181, 220, 16);
+    background-color: rgb(80, 176, 209);
     text-align: center;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    /* 이 부분을 추가하고 수정합니다 */
     font-size: 1.2rem;
     width: 100%;
     color: white;
@@ -137,7 +136,7 @@ footer {
 }
 
 .modal img {
-    width: 30px;
+    width: 200px;
 }
 
 .close {

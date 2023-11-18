@@ -2,17 +2,43 @@ import React, { useState, useEffect } from 'react';
 import style from './Login.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import ysuLogo from './img/ysu_logo2.png';
 
 export const Login = (): JSX.Element => {
     const [u_id, setUid] = useState(""); // 사용자 ID 상태
     const [u_pw, setUpw] = useState(""); // 메뉴 ID 상태 (숫자)
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(["rememberUserId"]);
+    const [isRemember, setIsRemember] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(sessionStorage.getItem('user_name'))
-    }, [])
+        console.log(localStorage.getItem('user_name'));
+        const storedInformation = localStorage.getItem("isLoggedIn");
+
+        if (storedInformation) {
+            setIsLoggedIn(true);
+        }
+        console.log(cookies.rememberUserId);
+
+        if (cookies.rememberUserId !== undefined) {
+            setUid(cookies.rememberUserId);
+            setIsRemember(true);
+        }
+
+    }, [cookies.rememberUserId])
+
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setIsRemember(e.target.checked);
+        if (e.target.checked) {
+            setCookie('rememberUserId', u_id, { maxAge: 2000 });
+        } else {
+            removeCookie('rememberUserId');
+        }
+    };
+
     const [userInfo, setUserInfo] = useState<{
         u_id: String,
         u_pw: String,
@@ -28,7 +54,8 @@ export const Login = (): JSX.Element => {
             u_dept: null
         };
 
-        console.log(u_id);
+        localStorage.setItem("isLoggedIn", "LOGGED_IN");
+        setIsLoggedIn(true);
 
         // 서버로 데이터를 보냄
         axios.post(`/user/${userId}`, userInfoDTO)
@@ -38,12 +65,13 @@ export const Login = (): JSX.Element => {
                 console.log("res.data.u_pw :: ", res.data.u_pw);
                 console.log("res.data.u_name :: ", res.data.u_name);
                 console.log("res.data.u_dept :: ", res.data.u_dept);
-                if (res.data.u_id === userId && res.data.u_pw === password) {
+
+                if (res.data.u_id == userId && res.data.u_pw == password) {
                     // id, pw 모두 일치 userId = userId1, msg = undefined
                     console.log("======================", "로그인 성공");
-                    sessionStorage.setItem("user_id", userId);
-                    sessionStorage.setItem("user_name", res.data.u_name);
-                    sessionStorage.setItem("user_dept", res.data.u_dept);
+                    localStorage.setItem("user_id", userId);
+                    localStorage.setItem("user_name", res.data.u_name);
+                    localStorage.setItem("user_dept", res.data.u_dept);
                     if (res.data.u_dept === "admin") {
                         navigate('/AdminPage', {
                             state: {
@@ -69,8 +97,6 @@ export const Login = (): JSX.Element => {
                     );
                     window.alert("입력하신 아이디나 비밀번호가 일치하지 않습니다.");
                 }
-                // // 작업 완료 되면 페이지 이동(새로고침)
-                // document.location.href = "/";
             })
             .catch(() => {
                 window.alert("입력하신 아이디나 비밀번호가 일치하지 않습니다.");
@@ -79,23 +105,36 @@ export const Login = (): JSX.Element => {
 
     return (
         <>
-        <body className={style.bodyCSS}>
-            <div className={style.logoDiv}>
-                <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
-            </div>
-            <div id={style.loginDiv}>
-                <div className={style.loginWrapper}>
-                    <div id={style.loginForm}>
-                        <h2 id={style.loginH2}>Login</h2>
-                        <input type="text" name="userName" placeholder="Email" value={u_id} onChange={(e) => setUid(e.target.value)} />
-                        <input type="password" name="userPassword" placeholder="Password" value={u_pw} onChange={(e) => setUpw(e.target.value)} />
-                        {/* <label htmlFor="remember-check">
-                            <input type="checkbox" id={style['remember-check']} />아이디 저장하기
-                        </label> */}
-                        <input type="submit" value="Login" onClick={() => handleLogin(u_id, u_pw)} />
+            <body className={style.bodyCSS}>
+                <div className={style.logoDiv}>
+                    <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
+                </div>
+                <div id={style.loginDiv}>
+                    <div className={style.loginWrapper}>
+                        <div id={style.loginForm}>
+                            <h2 id={style.loginH2}>Login</h2>
+                            <input type="text" name="userName" placeholder="아이디" value={u_id} onChange={(e) => {
+                                setUid(e.target.value);
+                            }} />
+                            <input type="password" name="userPassword" placeholder="비밀번호" value={u_pw} onChange={(e) => setUpw(e.target.value)} />
+
+                            <label htmlFor="saveId">
+                                <input
+                                    type="checkbox"
+                                    className="saveId-cb"
+                                    id="saveId"
+                                    name="saveId"
+                                    onChange={(e) => {
+                                        handleOnChange(e);
+                                    }}
+                                checked={isRemember}
+                                />{" "}
+                                아이디 저장하기
+                            </label>
+                            <input type="submit" value="Login" onClick={() => handleLogin(u_id, u_pw)} />
+                        </div>
                     </div>
                 </div>
-            </div>
             </body>
         </>
     );

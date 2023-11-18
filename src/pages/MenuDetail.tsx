@@ -4,14 +4,16 @@ import MdStyle from './MenuDetail.module.css';
 import ysuLogo from './img/ysu_logo.jpg';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { faArrowLeft, faCartShopping, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { BiArrowBack } from "react-icons/bi";
+import { MdLogout } from "react-icons/md";
+import { IoCartSharp } from "react-icons/io5";
 
 export const MenuDetail = (): JSX.Element => {
     const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
     const location = useLocation();
     const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [section, setSection] = useState<{
         menu_id: number,
         menu_name: string,
@@ -21,9 +23,7 @@ export const MenuDetail = (): JSX.Element => {
         menu_image: string,
         menu_sales: number,
         menu_regist: number
-    }>(
-
-    );
+    }>();
 
 
     const [userInfo, setUserInfo] = useState<{
@@ -40,10 +40,10 @@ export const MenuDetail = (): JSX.Element => {
     const menuPack = location.state.menu_pack;
     useEffect(() => {
 
-        // sessionStorage에서 유저 정보 가져오기
-        const userId = sessionStorage.getItem("user_id") || '';
-        const userName = sessionStorage.getItem("user_name") || '';
-        const userDept = sessionStorage.getItem("user_dept") || '';
+        // localStorage에서 유저 정보 가져오기
+        const userId = localStorage.getItem("user_id") || '';
+        const userName = localStorage.getItem("user_name") || '';
+        const userDept = localStorage.getItem("user_dept") || '';
 
         setMenuId(menuId);
         setUserInfo({ u_id: userId, u_name: userName, u_dept: userDept });
@@ -60,14 +60,15 @@ export const MenuDetail = (): JSX.Element => {
                     console.error('메뉴 데이터를 불러오는 데 실패했습니다.', error);
                 });
         }
-    }, [location.state, sessionStorage]);
+    }, [location.state, localStorage]);
 
 
-    const handleAddToCart = (userId: string, menuId: number) => {
+    const handleAddToCart = (userId: string, menuId: number, isPacked: number) => {
         // 사용자 ID와 메뉴 ID를 이용해서 InsertCartDTO 객체를 생성
         const insertCartDTO = {
             menu_id: menuId,
-            u_id: userId
+            u_id: userId,
+            is_packed: isPacked
         };
 
         console.log(insertCartDTO);
@@ -86,10 +87,12 @@ export const MenuDetail = (): JSX.Element => {
 
     const handleLogout = () => {
         // 세션 초기화
-        sessionStorage.setItem("user_id", '');
-        sessionStorage.setItem("user_name", '');
-        sessionStorage.setItem("user_dept", '');
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("user_name");
+        localStorage.removeItem("user_dept");
+        localStorage.removeItem("isLoggedIn");
 
+        setIsLoggedIn(false);
         // 로그인 페이지로 이동
         navigate('/');
     };
@@ -101,10 +104,10 @@ export const MenuDetail = (): JSX.Element => {
 
         const timeoutId = setTimeout(() => {
             setShowModal(false);
-          }, 3000);
-      
-          // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
-          return () => clearTimeout(timeoutId);
+        }, 3000);
+
+        // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
+        return () => clearTimeout(timeoutId);
     };
 
     const closeModal = () => {
@@ -115,39 +118,49 @@ export const MenuDetail = (): JSX.Element => {
         <>
             <div id="head" className={MenuStyle.head}>
                 <Link className={MenuStyle.link} to="/Menu">
-                    <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={MenuStyle.faArrowLeft} />
+                    <BiArrowBack className={MenuStyle.faArrowLeft} />
                 </Link>
                 <Link className={MenuStyle.link} to="">
-                    <FontAwesomeIcon id="faArrowRightFromBracket" className={MenuStyle.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
+                    <BiArrowBack className={MenuStyle.faArrowLeft} style={{ color: 'transparent' }} />
                 </Link>
 
                 <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} />
                 <Link to="/" className={MenuStyle.link} onClick={handleLogout}>
-                    <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={MenuStyle.faArrowRightFromBracket} />
+                    <MdLogout className={MenuStyle.faArrowRightFromBracket} />
                 </Link>
                 <Link className={MenuStyle.link} to="/">
-                    <FontAwesomeIcon id="faCartShopping" icon={faCartShopping} className={MenuStyle.faCartShopping} />
+                    <IoCartSharp className={MenuStyle.faCartShopping} />
                 </Link>
             </div>
             <div className={MdStyle.menuDetail}>
                 {section && (
                     <div id={section['menu_corner']}>
                         <img id="menuDetailImg" className={MdStyle.menuDetailImg} src={require(`./img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
-                        <hr id="menuDetailHr"  className={MdStyle.menuDetailHr}></hr>
+                        <hr id="menuDetailHr" className={MdStyle.menuDetailHr}></hr>
                         <div className={MdStyle.menuDetailInfo}>
                             <div className={MdStyle.menuDetailName}>{section['menu_name']}</div>
                             <div className={MdStyle.menuDetailPrice}>가격 : {(menuPack === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
                         </div>
                     </div>
                 )}
-                <button id="reviewButton" className={MdStyle.reviewButton}>메뉴 리뷰</button>
+                <button id="reviewButton" className={MdStyle.reviewButton} 
+                                onClick={() => {
+
+                                    navigate('/Review', {
+                                        state: {
+                                            u_id: userInfo.u_id,
+                                            menu_id: menuId
+                                        },
+                                    });
+                                }}>메뉴 리뷰</button>
+                <button id="inputCart" className={MdStyle.reviewButton} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); openModal(); }}> 장바구니에 담기</button>
             </div>
 
-            <footer className={MdStyle.footer}>
+            {/* <footer className={MdStyle.footer}>
                 <div id="footer-buttons" >
-                    <button id="inputCart" className={MdStyle.inputCart} onClick={() => {handleAddToCart(userInfo.u_id, menuId); openModal();}}> 장바구니에 담기</button>
+                    <button id="inputCart" className={MdStyle.inputCart} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); openModal(); }}> 장바구니에 담기</button>
                 </div>
-            </footer>
+            </footer> */}
 
             {/* 모달 창 */}
             {showModal && (

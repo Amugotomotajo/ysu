@@ -1,0 +1,109 @@
+.logoDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: white; */
+    border-bottom: 1px soild rgb(173, 173, 173);
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    position: fixed;
+}
+
+.logo {
+    width: 12%;
+    min-width: 150px;
+    padding-left: 10%;
+    margin: 20px 0px;
+}
+
+.logoDiv button {
+    margin-right: 110px;
+    background-color: rgb(80, 176, 209);
+    color: white;
+    padding: 10px 20px;
+}
+
+.logoDiv button:hover {
+    background-color: rgb(40, 176, 209);
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+.backGround {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-image: url('./img/ysu_image.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    background-color: #fff;
+    width: 100%;
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+    position: relative;
+}
+
+.backGround::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('./img/ysu_image.jpeg');
+    /* background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 100%); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: blur(5px);
+    z-index: -1;
+}
+
+.mainBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 350px;
+    width: 35%;
+    box-sizing: border-box;
+    margin-top: 70px;
+    background-color: white; 
+    padding: 20px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    align-items: center; 
+}
+
+.mainBox h1 {
+    font-size: 2rem;
+    color: #000000; /* 텍스트 색상 설정 */
+}
+
+.mainBox button {
+    margin: 0 auto;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #555;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    width: 100%;
+    color: white;
+    text-decoration: none; /* 텍스트의 밑줄 제거 */
+}

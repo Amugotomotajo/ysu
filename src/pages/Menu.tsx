@@ -16,6 +16,7 @@ export const Menu = (): JSX.Element => {
     const location = useLocation();
     const [activeSection, setActiveSection] = useState('S');
     const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [sections, setSections] = useState<{
         menu_id: number,
         menu_name: string,
@@ -27,9 +28,9 @@ export const Menu = (): JSX.Element => {
         menu_regist: number
     }[]>([]);
 
-    const userId = sessionStorage.getItem("user_id");
-    const userName = sessionStorage.getItem("user_name");
-    const userDept = sessionStorage.getItem("user_dept")
+    const userId = localStorage.getItem("user_id");
+    const userName = localStorage.getItem("user_name");
+    const userDept = localStorage.getItem("user_dept")
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -44,40 +45,18 @@ export const Menu = (): JSX.Element => {
         window.scrollTo(0, 0);
     };
 
-    const handleAddToCart = (menuId: number, userId: string) => {
-        // 사용자 ID와 메뉴 ID를 이용해서 InsertCartDTO 객체를 생성
-        const insertCartDTO = {
-            u_id: userId,
-            menu_id: menuId
-        };
-
-        // 서버로 데이터를 보냄
-        axios.post('/cart/insertCart', insertCartDTO)
-            .then(response => {
-                console.log('Data inserted successfully');
-                // Navigate to MenuDetail with u_id and menu_id
-                navigate('/MenuDetail', {
-                    state: {
-                        u_id: userId,
-                        menu_id: menuId
-                    }
-                });
-            })
-            .catch(error => {
-                console.error('Failed to insert data', error);
-            });
-    };
 
     const handleLogout = () => {
         // 세션 초기화
-        sessionStorage.setItem("user_id", '');
-        sessionStorage.setItem("user_name", '');
-        sessionStorage.setItem("user_dept", '');
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("user_name");
+        localStorage.removeItem("user_dept");
+        localStorage.removeItem("isLoggedIn");
 
+        setIsLoggedIn(false);
         // 로그인 페이지로 이동
         navigate('/');
     };
-
 
     return (
         <>
@@ -88,10 +67,10 @@ export const Menu = (): JSX.Element => {
             <body className={style.mnbody}>
                 <div>
                     <div id="head" className={style.head}>
-                        <Link className={style.link} to="/">
-                            <BiArrowBack className={style.faArrowLeft} />
+                        <Link className={style.link} to="" style={{cursor:'default'}}>
+                            <BiArrowBack className={style.faArrowLeft} style={{color: 'transparent'}} />
                         </Link>
-                        <Link className={style.link} to="">
+                        <Link className={style.link} to="" style={{cursor:'default'}}>
                             <BiArrowBack className={style.faArrowLeft} style={{color: 'transparent'}} />
                         </Link>
 
@@ -148,12 +127,12 @@ export const Menu = (): JSX.Element => {
                                 {/* Sold Out 오버레이 */}
                                 {section['menu_sales'] === 0 && (
                                     <div className={style.soldOutOverlay}>
-                                        <img src={require(`./img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
+                                        <img src={require(`./img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} loading="lazy"/>
                                     </div>
                                 )}
 
                                 {section['menu_sales'] === 1 && (
-                                    <img src={require(`./img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
+                                    <img src={require(`./img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} loading="lazy" />
                                 )}
 
                                 <hr id="menuHr" className={style.menuHr}></hr>
