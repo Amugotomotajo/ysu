@@ -5,7 +5,7 @@ import { MdOutlineRestaurant } from "react-icons/md"
 import { Link } from 'react-router-dom';
 import { faArrowLeft, faPlus, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import style from '../css/main.module.css'
+import style from '../css/AdminMain.module.css'
 import ysuLogo from '../img/ysu_logo.jpg';
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { FaUser } from "react-icons/fa"
@@ -15,8 +15,8 @@ import { PiNoteLight } from "react-icons/pi";
 export const AdminMainPage = (): JSX.Element => {
   const navigate = useNavigate();
 
-  const studentPage = () => {
-    navigate("/student");
+  const userPage = () => {
+    navigate("/user");
   };
 
   const menuPage = () => {
@@ -28,7 +28,7 @@ export const AdminMainPage = (): JSX.Element => {
   }
 
   const mainPage = () => {
-    navigate("/mainpage");
+    navigate("/main");
   }
 
   const handleLogout = () => {
@@ -63,7 +63,7 @@ export const AdminMainPage = (): JSX.Element => {
                 <h2><FaUser /></h2>
             </div>
             <div className={style.content}>
-                <a  onClick={studentPage}>사용자 관리</a>
+                <a onClick={userPage}>사용자 관리</a>
              </div>
         </div>
         <div className={style.card}>

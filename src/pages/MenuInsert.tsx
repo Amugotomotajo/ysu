@@ -7,10 +7,9 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import ysuLogo from '../img/ysu_logo.jpg';
-import { faPlus, faArrowLeft, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faArrowLeft, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import './MenuInsert.css';
-import style from '../css/NewMenu.module.css'
+import style from '../css/MenuInsert.module.css'
 
 export const MenuInsert = (): JSX.Element => {
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ export const MenuInsert = (): JSX.Element => {
   const [menu_pack, setMenuPack] = useState<number>(0);
   const [menu_image, setMenuImage] = useState<File | null>(null);
 
-  const handleAddToMenu = () => {
+  const handleAddToMenu = async () => {
     const shouldInsert = window.confirm("메뉴를 추가하시겠습니까?");
     if (shouldInsert) {
       // FormData 객체 생성
@@ -49,7 +48,8 @@ export const MenuInsert = (): JSX.Element => {
       }
 
       // Axios를 사용하여 서버로 폼 데이터를 보냄
-      axios.post('/adminmenu/menuinsert', formData, {
+      try{
+        await axios.post('/adminmenu/menuinsert', formData, {
         headers: {
           'Content-Type': 'multipart/form-data', // 폼 데이터로 보냄
         },
@@ -61,7 +61,10 @@ export const MenuInsert = (): JSX.Element => {
           console.error('Failed to insert data', error, formData);
         });
       alert("메뉴가 추가되었습니다.");
-      window.location.href = "/adminmenu";
+      navigate('/adminmenu'); // 페이지 이동
+      }catch (error) {
+        console.error('메뉴 업데이트 오류:', error, formData);
+    }
     } else {
       alert("취소하였습니다.");
     }
@@ -74,14 +77,21 @@ export const MenuInsert = (): JSX.Element => {
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
       </head>
       <body className={style.body}>
-        <div id="head">
-          <Link to="/adminmenu">
-            <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} />
-          </Link>
-          <img id="logo" src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
-          <Link to="/">
-            <FontAwesomeIcon id="faCartShopping" icon={faCartShopping} />
-          </Link>
+        <div id="head" className={style.head}>
+        <Link className={style.link} to="/adminmenu">
+                            <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={style.faArrowLeft} />
+                        </Link>
+                        <Link className={style.link} to="">
+                            <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
+                        </Link>
+
+                        <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} onClick={MainPage}/>
+                        <Link to="/" className={style.link}>
+                            <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracketopacity} />
+                        </Link>
+                        <Link to="/" className={style.link}>
+                            <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
+                        </Link>
         </div>
         <div className={style.signupform}>
           {/* 제목 */}
@@ -102,8 +112,8 @@ export const MenuInsert = (): JSX.Element => {
               <div className={style.formgroup}>
                 <label className={style.labeltitle}>코너종류</label>
                 <div className={style.inputgroup}>
-                  <label><input type="radio" name="corner" value="B" onChange={(e) => setMenuCorner(e.target.value)} /> B</label>
                   <label><input type="radio" name="corner" value="S" onChange={(e) => setMenuCorner(e.target.value)} /> S</label>
+                  <label><input type="radio" name="corner" value="B" onChange={(e) => setMenuCorner(e.target.value)} /> B</label>
                   <label><input type="radio" name="corner" value="F" onChange={(e) => setMenuCorner(e.target.value)} /> F</label>
                 </div>
               </div>

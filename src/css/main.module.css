@@ -1,170 +1,111 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins',sans-serif;
-}
-
-.bodymain {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #f1f1f1;;
-    background-attachment: fixed;
-}
-
-.head {
-    box-sizing: border-box;
-    background-color: #000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #fff;
-    padding: 10px;
-    width: 100%;
-    height: 60px;
+.logoDiv {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
-}
-
-.link {
-    text-decoration: none;
-}
-
-.linkicon {
-    text-decoration: none;
-    opacity: 0;
-    pointer-events : none;
+    /* background-color: white; */
+    border-bottom: 1px soild rgb(173, 173, 173);
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    position: fixed;
 }
 
 .logo {
-    width: 100%;
-    max-width: 160px;
-    height: 100%;
-    margin: 0 auto; /* 로고를 가운데에 고정 */
+    width: 12%;
+    min-width: 150px;
+    padding-left: 10%;
+    margin: 20px 0px;
 }
 
-.faArrowLeft, .faCartShopping, .faArrowRightFromBracket {
-    width: 50px;
-    font-size: 30px;
-    color: #000;
+.logoDiv button {
+    margin-right: 110px;
+    background-color: rgb(80, 176, 209);
+    color: white;
+    padding: 10px 20px;
 }
 
-.container {
-    position: relative;
-    width: 1150px;
-    padding: 20px;
+.logoDiv button:hover {
+    background-color: rgb(40, 176, 209);
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+.backGround {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    flex-wrap: wrap;
-
-}
-.container .card {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    background: #fff;
-    margin: 20px;
-    border-radius: 20px;
+    height: 100vh;
+    background-color: black;
+    background-image: url('../L_img/ysu.jpg');
+    background-size: contain;
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    background-position: center;
+    background-color: #fff;
+    width: 100%;
     overflow: hidden;
-    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
-    transition: 0.5s;
+    position: relative;
+}
+
+.backGround::before {
+    content: "";
+    position: absolute;
+    top: -10%;
+    left: 0;
+    right: 0;
+    bottom: -10%; /* 아래 여백 크기 조절 (음수로 설정하여 이미지를 아래로 이동) */
+    background-color: black;
+    background-image: url('../L_img/ysu.jpg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: blur(5px);
+    z-index: -1;
+}
+
+.mainBox {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    
+    min-width: 350px;
+    width: 35%;
+    box-sizing: border-box;
+    margin-top: 70px;
+    background-color: white; 
+    padding: 20px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    align-items: center; 
 }
 
-
-.container .card:hover {
-    filter: blur(0px);
-    transform: scale(1.1);
-    box-shadow: 0 15px 25px rgba(0,0,0,0.6);
-    opacity: 1;
+.mainBox h1 {
+    font-size: 2rem;
+    color: #000000; /* 텍스트 색상 설정 */
 }
 
-.container .card .circle {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    clip-path: circle(180px at center 0);
-    text-align: center;
-}
-
-.container .card .circle h2 {
-    color: #fff;
-    font-size: 70px;
-    padding: 30px 0;
-    
-}
-
-
-.container .card .content {
-    position: absolute;
-    bottom: 10px;
-    padding: 20px;
-    page-break-after: 20px;
+.mainBox button {
+    margin: 0 auto;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #555;
     text-align: center;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
-}
-
-.container .card .content p {
-    position: relative;
-    color: #666;
-    font-size: 100px;
-    text-align: center;
-    display: flex;
     justify-content: center;
-    align-items: center;
+    font-size: 1.2rem;
     width: 100%;
-    height: 100%; /* 컨테이너가 전체 높이를 차지하도록 합니다. */
+    color: white;
+    text-decoration: none; /* 텍스트의 밑줄 제거 */
 }
-
-.container .card .content a {
-    position: relative;
-    display: inline-block;
-    padding: 10px 20px;
-    background: #000;
-    color: #fff;
-    border-radius: 40px;
-    text-decoration: none;
-    cursor: pointer; 
-}
-
-.container .card:nth-child(1) .circle,
-.container .card:nth-child(1) .content a {
-    background-color:rgb(239, 35, 142);
-}
-
-.container .card:nth-child(2) .circle,
-.container .card:nth-child(2) .content a {
-    background-color:rgb(80, 176, 209);
-}
-
-.container .card:nth-child(3) .circle,
-.container .card:nth-child(3) .content a {
-    background-color:rgb(181, 220, 16);
-}
-
-@media screen and (max-width: 700px) {
-    .container {
-      padding: 10px; /* 더 작은 화면에 대한 패딩 조정 */
-      margin: 10px 0; /* 작은 화면에서 간격을 줄임 */
-      margin-top: 50px;
-    }
-  
-    .container .card {
-      margin: 10px 0; /* 작은 화면에서 간격을 줄임 */
-      margin-top: 50px;
-    }
-  }

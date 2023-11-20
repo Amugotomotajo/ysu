@@ -22,6 +22,17 @@ export const MenuDetail = (): JSX.Element => {
         menu_sales: number,
         menu_regist: number
     }>();
+
+    const [originalSection, setOriginalSection] = useState<{
+        menu_id: number,
+        menu_name: string,
+        menu_corner: string,
+        menu_price: number,
+        menu_pack: number,
+        menu_image: string,
+        menu_sales: number,
+        menu_regist: number
+    }>();
     const [selectedImage, setSelectedImage] = useState<File | null>(null); // 추가: 선택한 이미지 파일을 저장
 
     const MainPage = () => {
@@ -42,6 +53,7 @@ export const MenuDetail = (): JSX.Element => {
             axios.get(`/adminmenu/menudetail/${menuId}`)
                 .then((res) => {
                     setSection(res.data);
+                    setOriginalSection(res.data);
                     console.log(res);
                 })
                 .catch((error) => {
@@ -60,8 +72,8 @@ export const MenuDetail = (): JSX.Element => {
         navigate('/');
     };
 
-
     const handleBackClick = () => {
+        setSection(originalSection);
         setIsEditing(false);
     };
 
@@ -103,9 +115,6 @@ export const MenuDetail = (): JSX.Element => {
                     navigate('/adminmenu'); // 페이지 이동
                 } catch (error) {
                     console.error('메뉴 업데이트 오류:', error, formData);
-                    console.log(section.menu_id, section.menu_name, section.menu_corner,
-                        section.menu_price, section.menu_pack, section.menu_sales
-                        , section.menu_regist, section.menu_image, selectedImage);
                 }
             }
         } else {
@@ -141,7 +150,7 @@ export const MenuDetail = (): JSX.Element => {
                     <FontAwesomeIcon id="faArrowRightFromBracket" className={MenuStyle.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
                 </Link>
 
-                <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} />
+                <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} onClick={MainPage} />
                 <Link to="/" className={MenuStyle.link} onClick={handleLogout}>
                     <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={MenuStyle.faArrowRightFromBracket} />
                 </Link>
@@ -162,6 +171,7 @@ export const MenuDetail = (): JSX.Element => {
                                 <input
                                     type="file"
                                     accept="image/*"
+                                    className={MdStyle.fileForm}
                                     onChange={(e) => {
                                         const files = e.target.files;
                                         if (files && files.length > 0) {
@@ -186,8 +196,8 @@ export const MenuDetail = (): JSX.Element => {
                                     <div className={MdStyle.formGroup}>
                                         <label>코너종류</label>
                                         <div className={MdStyle.radioGroup}>
-                                            <label><input type="radio" name="corner" value="B" checked={section['menu_corner'] === 'B'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> B</label>
                                             <label><input type="radio" name="corner" value="S" checked={section['menu_corner'] === 'S'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> S</label>
+                                            <label><input type="radio" name="corner" value="B" checked={section['menu_corner'] === 'B'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> B</label>
                                             <label><input type="radio" name="corner" value="F" checked={section['menu_corner'] === 'F'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> F</label>
                                         </div>
                                     </div>

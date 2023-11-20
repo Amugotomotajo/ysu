@@ -206,11 +206,6 @@ li a:hover {
     width: 220px;
 }
 
-.selectoptionP{
-    width: 220px;
-    opacity: 0;
-}
-
 .selectoption:hover, .selectoption:focus {
     background-color: #f1f1f1; /* 마우스를 올렸을 때와 포커스 시 배경색 변경 */
     outline: none; /* 포커스 효과 제거 */
@@ -440,28 +435,6 @@ li a:hover {
     .CircleText{
         margin-right: 20px;
         font-size: 15px;
-    }
-    .priceIcons {
-        display: flex;
-        align-items: center;
-        margin-top:-30px;
-        justify-content: flex-end;
-    }
-    
-    .redCircle,
-    .blueCircle {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        margin-right: 5px;
-    }
-    
-    .redCircle {
-        background-color: rgb(80, 176, 209);
-    }
-    
-    .blueCircle {
-        background-color: rgb(181, 220, 16);
     }
 
 }

@@ -38,10 +38,10 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    /* 이 부분을 추가하고 수정합니다 */
     font-size: 1.2rem;
     width: 100%;
-    color: white; 
+    color: white;
+    cursor: pointer;
 }
 
 .optionButton2 {
@@ -55,10 +55,10 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    /* 이 부분을 추가하고 수정합니다 */
     font-size: 1.2rem;
     width: 100%;
-    color: white; 
+    color: white;
+    cursor: pointer;
 }
 
 .menuDetailImg {
@@ -157,11 +157,41 @@ footer {
     text-align: left;
 }
 
-.formGroup input[type="text"],
+.formGroup input[type="text"] {
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f7f7f7;
+    color: #333;
+    border: 1px solid #ddd;
+
+}
+
 .formGroup input[type="radio"] {
     margin-right: 5px;
     margin-bottom: 5px;
     font-size: 20px;
+    background-color: #f7f7f7;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.formGroup input[type="radio"]:hover {
+    background-color: #ddd;
+}
+
+.fileForm {
+    width: 18%;
+    background-color: #f7f7f7;
+    color: #333;
+    margin: 5px 0;
+    margin-left:0px;
+    
 }
 
 .radioGroup label {
@@ -190,6 +220,7 @@ footer {
 .menuDetailInfo.isEditing button:last-child {
     float: right;
 }
+
 
 @media screen and (min-width: 1000px) {
 
@@ -255,6 +286,7 @@ footer {
 
     .menuDetailHr {
         display: block;
+        margin-top: 10px;
     }
 
     .menuDetailInfo {
