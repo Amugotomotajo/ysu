@@ -10,7 +10,7 @@ export const Main = (): JSX.Element => (
   <>
     <div className={style.logoDiv}>
       <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
-      <Link to="/Login">
+      <Link to="/login">
         <button>로그인</button>
       </Link>
     </div>

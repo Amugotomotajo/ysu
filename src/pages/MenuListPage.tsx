@@ -5,13 +5,14 @@ import axios from 'axios';
 import { faArrowLeft, faPlus, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
-import ysuLogo from '../img/ysu_logo.jpg';
+import ysuLogo from '../L_img/ysu_logo.jpg';
 import Select from "react-select"
 
 export const MenuListPage = (): JSX.Element => {
     const corner = ['S', 'B', 'F', 'P']
     const navigate = useNavigate();
     const location = useLocation();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [activeSection, setActiveSection] = useState('S');
     const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
     const [sections, setSections] = useState<{
@@ -49,8 +50,8 @@ export const MenuListPage = (): JSX.Element => {
         })
     }, [])
 
-    const MainPage = () => {
-        navigate("/");
+    const MenuListPage = () => {
+        navigate("/adminmain");
     };
 
     const [resetSelect, setResetSelect] = useState<undefined | null>(undefined);
@@ -66,39 +67,44 @@ export const MenuListPage = (): JSX.Element => {
         }
     };
 
-    const handleLogout = () => {
-        // 세션 초기화
-        sessionStorage.setItem("user_id", '');
-        sessionStorage.setItem("user_name", '');
-        sessionStorage.setItem("user_dept", '');
 
-        // 로그인 페이지로 이동
-        navigate('/');
+    const handleLogout = () => {
+    // 세션 초기화
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("user_name");
+    localStorage.removeItem("user_dept");
+    localStorage.removeItem("isLoggedIn");
+
+    setIsLoggedIn(false);
+
+    // 로그인 페이지로 이동
+    navigate('/login');
+    window.alert("로그아웃 되었습니다.");
     };
 
 
     const options = [
         {
             label: '포장 여부', options: [
-                { value: 'packtrue', label: '포장가능메뉴확인' },
-                { value: 'packfalse', label: '포장불가능메뉴확인' }
+                { value: 'packtrue', label: '포장가능메뉴' },
+                { value: 'packfalse', label: '포장불가능메뉴' }
             ]
         },
         {
             label: '판매 여부', options: [
-                { value: 'saletrue', label: '판매가능메뉴확인' },
-                { value: 'salefalse', label: '판매불가능메뉴확인' }
+                { value: 'saletrue', label: '판매가능메뉴' },
+                { value: 'salefalse', label: '판매불가능메뉴' }
             ]
         },
         {
             label: '등록 여부', options: [
-                { value: 'registtrue', label: '등록메뉴확인' },
-                { value: 'registfalse', label: '미등록메뉴확인' }
+                { value: 'registtrue', label: '등록메뉴' },
+                { value: 'registfalse', label: '미등록메뉴' }
             ]
         },
         {
             label: '기타', options: [
-                { value: 'allmenulist', label: '전체메뉴확인' }
+                { value: 'allmenulist', label: '전체메뉴' }
             ]
         }
     ]
@@ -157,15 +163,15 @@ export const MenuListPage = (): JSX.Element => {
             <body className={style.body}>
                 <div>
                     <div id="head" className={style.head}>
-                        <Link className={style.link} to="/">
+                        <Link className={style.link} to="/adminmain">
                             <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={style.faArrowLeft} />
                         </Link>
                         <Link className={style.link} to="">
                             <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
                         </Link>
 
-                        <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} onClick={MainPage} />
-                        <Link to="/" className={style.link} onClick={handleLogout}>
+                        <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
+                        <Link to="/login" className={style.link} onClick={handleLogout}>
                             <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
                         </Link>
                         <Link className={style.link} to="./menuinsert">

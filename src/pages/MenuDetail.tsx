@@ -6,12 +6,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { faArrowLeft, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import ysuLogo from '../img/ysu_logo.jpg';
+import ysuLogo from '../L_img/ysu_logo.jpg';
 
 export const MenuDetail = (): JSX.Element => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [action, setAction] = useState('update');
     const [section, setSection] = useState<{
         menu_id: number,
         menu_name: string,
@@ -40,7 +42,7 @@ export const MenuDetail = (): JSX.Element => {
     };
 
     const MenuListPage = () => {
-        navigate("/adminmenu");
+        navigate("/adminmain");
     };
 
     const menuId = location.state.menu_id;
@@ -64,12 +66,16 @@ export const MenuDetail = (): JSX.Element => {
 
     const handleLogout = () => {
         // 세션 초기화
-        sessionStorage.setItem("user_id", '');
-        sessionStorage.setItem("user_name", '');
-        sessionStorage.setItem("user_dept", '');
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("user_name");
+        localStorage.removeItem("user_dept");
+        localStorage.removeItem("isLoggedIn");
+
+        setIsLoggedIn(false);
 
         // 로그인 페이지로 이동
-        navigate('/');
+        navigate('/login');
+        window.alert("로그아웃 되었습니다.");
     };
 
     const handleBackClick = () => {
@@ -81,64 +87,75 @@ export const MenuDetail = (): JSX.Element => {
         setIsEditing(true);
     }
 
-    const handleImageChangeAndSubmit = async () => {
-        const shouldUpdate = window.confirm("메뉴를 수정하시겠습니까?");
-        if (shouldUpdate) {
-            // 서버로 데이터를 전송하기 위한 FormData 객체를 생성
-            const formData = new FormData();
-            formData.append('menu_name', section!.menu_name);
-            formData.append('menu_corner', section!.menu_corner);
-            formData.append('menu_price', section!.menu_price.toString());
-            formData.append('menu_pack', section!.menu_pack.toString());
-            formData.append('menu_sales', section!.menu_sales.toString());
-            formData.append('menu_regist', section!.menu_regist.toString());
-            // 이미지 파일이 선택된 경우 FormData에 추가
-            if (selectedImage) {
-                formData.append('menu_image', selectedImage || "");
-            } else {
-                // 이미지 파일이 선택되지 않은 경우, 기존 이미지 파일명을 서버에 전달
-                formData.append('menu_image', section!.menu_image);
-            }
-
-
-            if (section) {
-                try {
-                    await axios.post(`/adminmenu/menudetail/${section.menu_id}`, formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data', // 폼 데이터로 보냄
-                        },
-                    });
-
-                    console.log('메뉴 업데이트 성공:', section.menu_image, selectedImage);
-                    setIsEditing(false);
-                    alert("메뉴가 수정되었습니다.");
-                    navigate('/adminmenu'); // 페이지 이동
-                } catch (error) {
-                    console.error('메뉴 업데이트 오류:', error, formData);
-                }
-            }
+    const handleUpdateClick = async () => {
+        setAction('update');
+        // 서버로 데이터를 전송하기 위한 FormData 객체를 생성
+        const formData = new FormData();
+        formData.append('menu_name', section!.menu_name);
+        formData.append('menu_corner', section!.menu_corner);
+        formData.append('menu_price', section!.menu_price.toString());
+        formData.append('menu_pack', section!.menu_pack.toString());
+        formData.append('menu_sales', section!.menu_sales.toString());
+        formData.append('menu_regist', section!.menu_regist.toString());
+        // 이미지 파일이 선택된 경우 FormData에 추가
+        if (selectedImage) {
+            formData.append('menu_image', selectedImage || "");
         } else {
-            alert("취소하였습니다.");
+            // 이미지 파일이 선택되지 않은 경우, 기존 이미지 파일명을 서버에 전달
+            formData.append('menu_image', section!.menu_image);
         }
+
+
+        if (section) {
+            try {
+                await axios.post(`/adminmenu/menudetail/${section.menu_id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data', // 폼 데이터로 보냄
+                    },
+                });
+
+                console.log('메뉴 업데이트 성공:', section.menu_image, selectedImage);
+                setIsEditing(false);
+
+            } catch (error) {
+                console.error('메뉴 업데이트 오류:', error, formData);
+            }
+        }
+
     };
 
     const handleDeleteClick = () => {
-        const shouldDelete = window.confirm("메뉴를 삭제하시겠습니까?");
-        if (shouldDelete) {
-            const menuId = location.state && location.state.menu_id;
-            axios.delete(`/adminmenu/menudetail/${menuId}`)
-                .then((res) => {
-                    console.log('메뉴 삭제 성공:', res.data);
-                    alert("메뉴가 삭제되었습니다.");
-                    navigate('/adminmenu'); // 페이지 이동
-                })
-                .catch((error) => {
-                    console.error('메뉴 삭제 오류:', error, menuId);
-                });
-        } else {
-            alert("취소하였습니다.");
-        }
+        setAction('back');
+        const menuId = location.state && location.state.menu_id;
+        axios.delete(`/adminmenu/menudetail/${menuId}`)
+            .then((res) => {
+                console.log('메뉴 삭제 성공:', res.data);
+
+            })
+            .catch((error) => {
+                console.error('메뉴 삭제 오류:', error, menuId);
+            });
+
     };
+
+    const [showModal, setShowModal] = useState(false);
+
+    const openModal = () => {
+        setShowModal(true);
+
+        const timeoutId = setTimeout(() => {
+            setShowModal(false);
+            navigate('/adminmenu');
+        }, 3000);
+
+        // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
+        return () => clearTimeout(timeoutId);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
 
     return (
         <>
@@ -146,12 +163,12 @@ export const MenuDetail = (): JSX.Element => {
                 <Link className={MenuStyle.link} to="/adminmenu">
                     <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={MenuStyle.faArrowLeft} />
                 </Link>
-                <Link className={MenuStyle.link} to="">
+                <Link className={MenuStyle.link} to="adminmain">
                     <FontAwesomeIcon id="faArrowRightFromBracket" className={MenuStyle.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
                 </Link>
 
-                <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} onClick={MainPage} />
-                <Link to="/" className={MenuStyle.link} onClick={handleLogout}>
+                <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
+                <Link to="/login" className={MenuStyle.link} onClick={handleLogout}>
                     <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={MenuStyle.faArrowRightFromBracket} />
                 </Link>
             </div>
@@ -251,17 +268,37 @@ export const MenuDetail = (): JSX.Element => {
                 {isEditing ? (
                     // 편집 모드일 때, 저장 버튼을 표시
                     <>
-                        <button id="optionButton" className={MdStyle.optionButton1} onClick={handleImageChangeAndSubmit}>저장</button>
+                        <button id="optionButton" className={MdStyle.optionButton1} onClick={() => { handleUpdateClick(); openModal(); }}>저장</button>
                         <button id="optionButton" className={MdStyle.optionButton2} onClick={handleBackClick}>취소</button>
                     </>
                 ) : (
                     // 편집 모드가 아닐 때, 메뉴 수정 및 삭제 버튼 표시
                     <>
                         <button id="optionButton" className={MdStyle.optionButton1} onClick={handleUpdateFormClick}>메뉴 수정</button>
-                        <button id="optionButton" className={MdStyle.optionButton2} onClick={handleDeleteClick}>메뉴 삭제</button>
+                        <button id="optionButton" className={MdStyle.optionButton2} onClick={() => { handleDeleteClick(); openModal(); }}>메뉴 삭제</button>
                     </>
                 )}
             </div>
+
+            {/* 모달 창 */}
+            {showModal && (
+                <div className={MdStyle.modal}>
+                    <div className={MdStyle.modalContent}>
+                        <span className={MdStyle.close} onClick={closeModal}>&times;</span>
+                        {action === 'update' ? (
+                            <div>
+                                <img src={require(`../img/${decodeURIComponent('InMenu.gif')}`)} alt="업데이트 이미지" />
+                                <p>메뉴를 수정하였습니다.</p>
+                            </div>
+                        ) : (
+                            <div>
+                                <img src={require(`../img/${decodeURIComponent('DeMenu.gif')}`)} alt="삭제 이미지" />
+                                <p>메뉴를 삭제하였습니다.</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </>
     );
 }

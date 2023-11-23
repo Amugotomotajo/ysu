@@ -6,7 +6,7 @@ import style from '../css/UserList.module.css';
 import { faArrowLeft, faPlus, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
-import ysuLogo from '../img/ysu_logo.jpg';
+import ysuLogo from '../L_img/ysu_logo.jpg';
 import Select from "react-select"
 
 export const UsertListPage = (): JSX.Element => {
@@ -145,7 +145,6 @@ export const UsertListPage = (): JSX.Element => {
                 <div className={style.menuName}>이름 : {section['u_name']}</div>
                 <div className={style.menuPrice}>학번 : {section['u_id']}</div>
                 <div className={style.menuPrice}>학과 : {section['u_dept']}</div>
-                <div className={style.menuPrice}>이름 : {section['u_pw']}</div>
               </div>
             </button>
             </>

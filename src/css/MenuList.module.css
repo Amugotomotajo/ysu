@@ -464,4 +464,17 @@ li a:hover {
         background-color: rgb(181, 220, 16);
     }
 
+    .CircleText{
+        font-size: 12px;
+        margin-right: 20px;
+        white-space: pre-wrap;
+    }
+
+    .selectoption{
+        width: 200px;
+        font-size: 11px;
+        margin-right: -20px;
+    }
+
+
 }

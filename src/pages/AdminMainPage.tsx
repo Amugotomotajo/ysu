@@ -1,4 +1,5 @@
 import { Button, Card } from "antd"
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { BsHandbagFill } from "react-icons/bs"
 import { MdOutlineRestaurant } from "react-icons/md"
@@ -6,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { faArrowLeft, faPlus, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import style from '../css/AdminMain.module.css'
-import ysuLogo from '../img/ysu_logo.jpg';
+import ysuLogo from '../L_img/ysu_logo.jpg';
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { FaUser } from "react-icons/fa"
 import { PiNoteLight } from "react-icons/pi";
@@ -14,6 +15,7 @@ import { PiNoteLight } from "react-icons/pi";
 
 export const AdminMainPage = (): JSX.Element => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const userPage = () => {
     navigate("/user");
@@ -23,22 +25,30 @@ export const AdminMainPage = (): JSX.Element => {
     navigate("/adminmenu");
   }
 
-  const adminPage = () => {
-    navigate("/admin");
+  const reviewPage = () => {
+    navigate("/review");
   }
 
-  const mainPage = () => {
-    navigate("/main");
+  const MainListPage = () => {
+    navigate("/adminmain");
   }
+
+  const userId = localStorage.getItem("user_id");
+  const userName = localStorage.getItem("user_name");
+  const userDept = localStorage.getItem("user_dept");
 
   const handleLogout = () => {
     // 세션 초기화
-    sessionStorage.setItem("user_id", '');
-    sessionStorage.setItem("user_name", '');
-    sessionStorage.setItem("user_dept", '');
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("user_name");
+    localStorage.removeItem("user_dept");
+    localStorage.removeItem("isLoggedIn");
+
+    setIsLoggedIn(false);
 
     // 로그인 페이지로 이동
-    navigate('/');
+    navigate('/login');
+    window.alert("로그아웃 되었습니다.");
   };
   return (
 <body className={style.bodymain}>
@@ -49,11 +59,11 @@ export const AdminMainPage = (): JSX.Element => {
         <Link className={style.link} to="">
           <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
         </Link>
-        <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
+        <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} onClick={MainListPage} />
         <Link to="/" className={style.linkicon} onClick={handleLogout}>
           <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
         </Link>
-        <Link to="/" className={style.link} onClick={handleLogout}>
+        <Link to="/login" className={style.link} onClick={handleLogout}>
           <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
         </Link>
       </div>
@@ -80,7 +90,7 @@ export const AdminMainPage = (): JSX.Element => {
                 <h2><PiNoteLight /></h2>
             </div>
             <div className={style.content}>
-                <a onClick={mainPage}>리뷰 관리</a>
+                <a onClick={reviewPage}>리뷰 관리</a>
             </div>
         </div>
     </div> 

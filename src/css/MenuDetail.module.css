@@ -12,7 +12,7 @@
     text-align: center;
     margin: 20px;
     margin-bottom: 100px;
-    margin-top: 70px;
+    margin-top: 80px;
     flex-direction: column;
 }
 
@@ -132,7 +132,7 @@ footer {
 }
 
 .modal img {
-    width: 30px;
+    width: 200px;
 }
 
 .close {
@@ -151,6 +151,7 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    color: black;
 }
 
 .formGroup label {
@@ -226,10 +227,14 @@ footer {
 
 
     .menuDetailInfo {
-        padding-left: 18px;
         text-align: left;
         display: flex;
         flex-direction: column;
+    }
+
+    .menuDetailHr {
+        display: block;
+        margin-top: 10px;
     }
 
     .menuDetailName {
@@ -241,6 +246,43 @@ footer {
 
     .menuDetailPrice {
         font-size: 20px;
+    }
+
+    .modal {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .modalContent {
+        background-color: #fefefe;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 300px;
+        font-size: 20px;
+        text-align: center;
+    }
+    
+    .modal img {
+        width: 200px;
+    }
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .close:hover {
+        color: black;
     }
 }
 
@@ -271,7 +313,7 @@ footer {
         height: 100%;
         padding: 20px;
         border-radius: 6px;
-        grid-gap: 20px;
+        grid-gap: 10px;
         letter-spacing: 2px;
         display: flex;
         flex-direction: column;
@@ -281,7 +323,7 @@ footer {
         text-align: center;
         margin: 20px;
         margin-bottom: 100px;
-        margin-top: 70px;
+        margin-top: 80px;
     }
 
     .menuDetailHr {
@@ -290,7 +332,7 @@ footer {
     }
 
     .menuDetailInfo {
-        padding-left: 18px;
+        margin-top:10px;
         text-align: left;
         display: flex;
         flex-direction: column;
