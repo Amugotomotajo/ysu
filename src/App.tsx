@@ -4,6 +4,8 @@ import Menu from './pages/Menu';
 import Main from './pages/Main';
 import MenuDetail from './pages/MenuDetail';
 import Login from './pages/Login';
+import MyPage from './pages/MyPage';
+import MyOrderList from './pages/MyOrderList';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 export const App =  ():JSX.Element => {
@@ -32,6 +34,8 @@ export const App =  ():JSX.Element => {
         <Route path="/Login" element={<Login />} />
         <Route path="/Menu" element={<Menu />} />
         <Route path="/MenuDetail" element={<MenuDetail />} />
+        <Route path="/MyPage" element={<MyPage />} />
+        <Route path="/MyOrderList" element={<MyOrderList />} />
       </Routes>
     </Router>
     </>

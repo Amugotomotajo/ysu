@@ -26,7 +26,6 @@
     width: 100%;
 }
 
-
 .reviewButton {
     margin: 0 auto;
     padding: 10px;
@@ -66,7 +65,6 @@ footer {
     padding-right: 2%;
 }
 
-
 .inputCart {
     margin: 0 auto;
     padding: 10px;
@@ -93,7 +91,6 @@ footer {
 }
 
 @media screen and (min-width: 1000px) {
-
 
     .menuDetailInfo {
         padding-left: 18px;
@@ -127,12 +124,14 @@ footer {
 }
 
 .modalContent {
+    position: relative;
     background-color: #fefefe;
     padding: 20px;
     border: 1px solid #888;
     width: 300px;
     font-size: 20px;
     text-align: center;
+    border-radius: 6px;
 }
 
 .modal img {
@@ -145,6 +144,9 @@ footer {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    position: absolute;
+    top: 5px; /* 원하는 상단 여백 조정 */
+    right: 10px; /* 원하는 오른쪽 여백 조정 */
 }
 
 .close:hover {

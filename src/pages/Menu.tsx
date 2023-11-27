@@ -9,6 +9,7 @@ import ysuLogo from './img/ysu_logo.jpg';
 import { BiArrowBack } from "react-icons/bi";
 import { MdLogout } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
+import { BsFillPersonFill } from "react-icons/bs";
 
 export const Menu = (): JSX.Element => {
     const corner = ['S', 'B', 'F', 'P']
@@ -45,7 +46,6 @@ export const Menu = (): JSX.Element => {
         window.scrollTo(0, 0);
     };
 
-
     const handleLogout = () => {
         // 세션 초기화
         localStorage.removeItem("user_id");
@@ -67,8 +67,8 @@ export const Menu = (): JSX.Element => {
             <body className={style.mnbody}>
                 <div>
                     <div id="head" className={style.head}>
-                        <Link className={style.link} to="" style={{cursor:'default'}}>
-                            <BiArrowBack className={style.faArrowLeft} style={{color: 'transparent'}} />
+                        <Link className={style.link} to="/MyPage">
+                            <BsFillPersonFill className={style.faArrowLeft}/>
                         </Link>
                         <Link className={style.link} to="" style={{cursor:'default'}}>
                             <BiArrowBack className={style.faArrowLeft} style={{color: 'transparent'}} />
@@ -82,8 +82,8 @@ export const Menu = (): JSX.Element => {
                             <IoCartSharp className={style.faCartShopping} />
                         </Link>
                     </div>
-                    <nav className={style.nav}>
-                        <ul className={style.ul}>
+                    <nav className={style.menuNav}>
+                        <ul className={style.menuUl}>
                             {corner.map((section) => (
                                 <li key={section} className={style.li}>
                                     <a

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import style from './Login.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { BsFillPersonFill } from "react-icons/bs";
 import { useCookies } from 'react-cookie';
 import ysuLogo from './img/ysu_logo2.png';
 
@@ -13,6 +14,8 @@ export const Login = (): JSX.Element => {
     const [isRemember, setIsRemember] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [showErrorText, setShowErrorText] = useState(false);
 
     useEffect(() => {
         console.log(localStorage.getItem('user_name'));
@@ -20,8 +23,30 @@ export const Login = (): JSX.Element => {
 
         if (storedInformation) {
             setIsLoggedIn(true);
+
+            const storedUserId = localStorage.getItem("user_id");
+            const storedUserName = localStorage.getItem("user_name");
+            const storedUserDept = localStorage.getItem("user_dept");
+            setShowModal(true);
+
+            if (storedUserDept === "admin") {
+                navigate('/AdminPage', {
+                    state: {
+                        u_id: storedUserId,
+                        u_name: storedUserName,
+                        u_dept: storedUserDept
+                    }
+                });
+            } else {
+                navigate('/Menu', {
+                    state: {
+                        u_id: storedUserId,
+                        u_name: storedUserName,
+                        u_dept: storedUserDept
+                    }
+                });
+            }
         }
-        console.log(cookies.rememberUserId);
 
         if (cookies.rememberUserId !== undefined) {
             setUid(cookies.rememberUserId);
@@ -31,9 +56,13 @@ export const Login = (): JSX.Element => {
     }, [cookies.rememberUserId])
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const userId = e.target.checked ? u_id : undefined;
+
         setIsRemember(e.target.checked);
         if (e.target.checked) {
-            setCookie('rememberUserId', u_id, { maxAge: 2000 });
+            setCookie('rememberUserId', userId, { maxAge: 2000 });
+            console.log(cookies.rememberUserId);
+            console.log(u_id);
         } else {
             removeCookie('rememberUserId');
         }
@@ -90,16 +119,11 @@ export const Login = (): JSX.Element => {
                         });
                     }
                 } else if (password != res.data.pwd) {
-                    // id는 있지만, pw 는 다른 경우 userId = null , msg = undefined
-                    console.log(
-                        "======================",
-                        "입력하신 아이디나 비밀번호가 일치하지 않습니다."
-                    );
-                    window.alert("입력하신 아이디나 비밀번호가 일치하지 않습니다.");
+                    setShowErrorText(true);
                 }
             })
             .catch(() => {
-                window.alert("입력하신 아이디나 비밀번호가 일치하지 않습니다.");
+                setShowErrorText(true);
             });
     };
 
@@ -117,7 +141,12 @@ export const Login = (): JSX.Element => {
                                 setUid(e.target.value);
                             }} />
                             <input type="password" name="userPassword" placeholder="비밀번호" value={u_pw} onChange={(e) => setUpw(e.target.value)} />
+                            {showErrorText && (
+                    <p className={style.errorText}>
+                        아이디 또는 비밀번호를 잘못 입력했습니다. <br></br>입력하신 내용을 다시 확인해주세요.
+                    </p>
 
+                )}
                             <label htmlFor="saveId">
                                 <input
                                     type="checkbox"
@@ -136,6 +165,7 @@ export const Login = (): JSX.Element => {
                     </div>
                 </div>
             </body>
+
         </>
     );
 }

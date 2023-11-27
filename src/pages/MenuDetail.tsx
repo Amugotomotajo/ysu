@@ -8,12 +8,14 @@ import { Link } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import { MdLogout } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
+import { Cookies, useCookies } from 'react-cookie';
 
 export const MenuDetail = (): JSX.Element => {
     const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
     const location = useLocation();
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [cookies, setCookie, removeCookie] = useCookies(['rememberUserId']);
     const [section, setSection] = useState<{
         menu_id: number,
         menu_name: string,
@@ -86,12 +88,12 @@ export const MenuDetail = (): JSX.Element => {
     };
 
     const handleLogout = () => {
-        // 세션 초기화
+        // removeCookie(userInfo.u_id as keyof typeof cookies);
         localStorage.removeItem("user_id");
         localStorage.removeItem("user_name");
         localStorage.removeItem("user_dept");
         localStorage.removeItem("isLoggedIn");
-
+        
         setIsLoggedIn(false);
         // 로그인 페이지로 이동
         navigate('/');
@@ -162,11 +164,10 @@ export const MenuDetail = (): JSX.Element => {
                 </div>
             </footer> */}
 
-            {/* 모달 창 */}
             {showModal && (
                 <div className={MdStyle.modal}>
                     <div className={MdStyle.modalContent}>
-                        <span className="close" onClick={closeModal}>&times;</span>
+                        <span className={MdStyle.close} onClick={closeModal}>&times;</span>
                         <img src={require(`./img/${decodeURIComponent('InCart.gif')}`)} />
                         <p>장바구니에 메뉴를 담았습니다.</p>
                     </div>

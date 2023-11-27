@@ -1,7 +1,4 @@
 
-body {
-    overflow: hidden;
-}
 
 .logoDiv {
     background-color: white;
@@ -96,6 +93,10 @@ body {
     background-size: contain;
   }
   
+  .errorText {
+    color: red;
+    font-size: 13px;
+  }
 
 
 @media screen and (max-width: 700px) {
