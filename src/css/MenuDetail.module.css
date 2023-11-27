@@ -125,7 +125,7 @@ footer {
 .modalContent {
     background-color: #fefefe;
     padding: 20px;
-    border: 1px solid #888;
+    border-radius: 6px;
     width: 300px;
     font-size: 20px;
     text-align: center;
@@ -222,6 +222,36 @@ footer {
     float: right;
 }
 
+.btncancel {
+    width: 100px;
+    display:inline-block;
+    padding:10px 20px;
+    background-color: #666;
+    font-size:17px;
+    border:none;
+    border-radius:5px;
+    color:white;
+    cursor:pointer;
+    margin-top: -5px;
+    margin-right: 5px;
+    cursor: pointer;
+ }
+
+ .btninsert {
+   width: 100px;
+   display:inline-block;
+   padding:10px 20px;
+   background-color: rgb(181, 220, 16);
+   font-size:17px;
+   border:none;
+   border-radius:5px;
+   color:white;
+   cursor:pointer;
+   margin-top: -5px;
+   margin-right: 5px;
+   cursor: pointer;
+}
+
 
 @media screen and (min-width: 1000px) {
 
@@ -263,7 +293,7 @@ footer {
     .modalContent {
         background-color: #fefefe;
         padding: 20px;
-        border: 1px solid #888;
+        border-radius: 6px;
         width: 300px;
         font-size: 20px;
         text-align: center;
@@ -348,4 +378,14 @@ footer {
     .menuDetailPrice {
         font-size: 20px;
     }
+
+    .btncancel{
+        width: 100%;
+  
+      }
+  
+      .btninsert {
+        width: 100%;
+        margin-top: 10px;
+      }
 }

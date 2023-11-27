@@ -88,7 +88,6 @@ export const MenuDetail = (): JSX.Element => {
     }
 
     const handleUpdateClick = async () => {
-        setAction('update');
         // 서버로 데이터를 전송하기 위한 FormData 객체를 생성
         const formData = new FormData();
         formData.append('menu_name', section!.menu_name);
@@ -125,7 +124,6 @@ export const MenuDetail = (): JSX.Element => {
     };
 
     const handleDeleteClick = () => {
-        setAction('back');
         const menuId = location.state && location.state.menu_id;
         axios.delete(`/adminmenu/menudetail/${menuId}`)
             .then((res) => {
@@ -139,11 +137,23 @@ export const MenuDetail = (): JSX.Element => {
     };
 
     const [showModal, setShowModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [updateModal, setUpdateModal] = useState(false);
+
+    const openDeleteModal = () => {
+        setDeleteModal(true);
+    }
+
+    const openUpdateModal = () => {
+        setUpdateModal(true);
+    }
 
     const openModal = () => {
+        setAction('back');
         setShowModal(true);
 
         const timeoutId = setTimeout(() => {
+            handleDeleteClick();
             setShowModal(false);
             navigate('/adminmenu');
         }, 3000);
@@ -151,6 +161,28 @@ export const MenuDetail = (): JSX.Element => {
         // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
         return () => clearTimeout(timeoutId);
     };
+
+    const openUpModal = () => {
+        setAction('update');
+        setShowModal(true);
+
+        const timeoutId = setTimeout(() => {
+            handleUpdateClick();
+            setShowModal(false);
+            navigate('/adminmenu');
+        }, 3000);
+
+        // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
+        return () => clearTimeout(timeoutId);
+    };
+
+    const closeUpdateModal = () => {
+        setUpdateModal(false);
+    }
+
+    const closeDeleteModal = () => {
+        setDeleteModal(false);
+    }
 
     const closeModal = () => {
         setShowModal(false);
@@ -268,19 +300,42 @@ export const MenuDetail = (): JSX.Element => {
                 {isEditing ? (
                     // 편집 모드일 때, 저장 버튼을 표시
                     <>
-                        <button id="optionButton" className={MdStyle.optionButton1} onClick={() => { handleUpdateClick(); openModal(); }}>저장</button>
+                        <button id="optionButton" className={MdStyle.optionButton1} onClick={openUpdateModal}>저장</button>
                         <button id="optionButton" className={MdStyle.optionButton2} onClick={handleBackClick}>취소</button>
                     </>
                 ) : (
                     // 편집 모드가 아닐 때, 메뉴 수정 및 삭제 버튼 표시
                     <>
                         <button id="optionButton" className={MdStyle.optionButton1} onClick={handleUpdateFormClick}>메뉴 수정</button>
-                        <button id="optionButton" className={MdStyle.optionButton2} onClick={() => { handleDeleteClick(); openModal(); }}>메뉴 삭제</button>
+                        <button id="optionButton" className={MdStyle.optionButton2} onClick={openDeleteModal}>메뉴 삭제</button>
                     </>
                 )}
             </div>
 
             {/* 모달 창 */}
+            {deleteModal && (
+                <div className={MdStyle.modal}>
+                    <div className={MdStyle.modalContent}>
+                        <span className={MdStyle.close} onClick={closeDeleteModal}>&times;</span>
+                        <p>메뉴를 삭제하시겠습니까?</p>
+                        <button type="submit" className={MdStyle.btncancel} onClick={closeDeleteModal}>취소</button>
+                        <button type="submit" className={MdStyle.btninsert} onClick={openModal}>삭제</button>
+                    </div>
+                </div>
+            )}
+
+            {updateModal && (
+                <div className={MdStyle.modal}>
+                    <div className={MdStyle.modalContent}>
+                        <span className={MdStyle.close} onClick={closeUpdateModal}>&times;</span>
+                        <p>메뉴를 수정하시겠습니까?</p>
+                        <button type="submit" className={MdStyle.btncancel} onClick={closeUpdateModal}>취소</button>
+                        <button type="submit" className={MdStyle.btninsert} onClick={openUpModal}>수정</button>
+                    </div>
+                </div>
+            )}
+
+
             {showModal && (
                 <div className={MdStyle.modal}>
                     <div className={MdStyle.modalContent}>

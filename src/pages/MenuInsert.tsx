@@ -65,22 +65,22 @@ export const MenuInsert = (): JSX.Element => {
       setMenuNameError('메뉴 이름을 입력하세요.');
       hasError = true;  // 에러 발생 시 플래그 설정
     }
-  
+
     if (!menu_corner) {
       setMenuCornerError('코너 종류를 선택하세요.');
       hasError = true;
     }
-  
+
     if (menu_price <= 0) {
       setMenuPriceError('메뉴 가격을 입력하세요.');
       hasError = true;
     }
-  
+
     if (menu_pack === 2) {
       setMenuPackError('포장가능여부를 선택하세요.');
       hasError = true;
     }
-  
+
     if (!menu_image) {
       setMenuImageError('이미지를 선택하세요.');
       hasError = true;
@@ -89,8 +89,24 @@ export const MenuInsert = (): JSX.Element => {
     if (hasError) {
       return;
     }
-      // FormData 객체 생성
-      const formData = new FormData();
+    openCheckModal();
+
+
+    // FormData 객체 생성
+
+  };
+
+  const [checkModal, setCheckModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const openCheckModal = () => {
+    setCheckModal(true);
+  }
+
+  const openModal = () => {
+    setShowModal(true);
+
+    const formData = new FormData();
 
       // 폼 데이터에 필드 추가
       formData.append('menu_name', menu_name);
@@ -104,7 +120,7 @@ export const MenuInsert = (): JSX.Element => {
 
       // Axios를 사용하여 서버로 폼 데이터를 보냄
       try {
-        await axios.post('/adminmenu/menuinsert', formData, {
+        axios.post('/adminmenu/menuinsert', formData, {
           headers: {
             'Content-Type': 'multipart/form-data', // 폼 데이터로 보냄
           },
@@ -118,25 +134,24 @@ export const MenuInsert = (): JSX.Element => {
       } catch (error) {
         console.error('메뉴 업데이트 오류:', error, formData);
       }
+
+    const timeoutId = setTimeout(() => {
+      
+      setShowModal(false);
+      navigate('/adminmenu');
+    }, 3000);
+
+    // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
+    return () => clearTimeout(timeoutId);
   };
 
-  const [showModal, setShowModal] = useState(false);
+  const closeChceckModal = () => {
+    setCheckModal(false);
+  }
 
-    const openModal = () => {
-        setShowModal(true);
-
-        const timeoutId = setTimeout(() => {
-            setShowModal(false);
-            navigate('/adminmenu');
-        }, 3000);
-
-        // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
-        return () => clearTimeout(timeoutId);
-    };
-
-    const closeModal = () => {
-        setShowModal(false);
-    };
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
 
   return (
@@ -173,11 +188,11 @@ export const MenuInsert = (): JSX.Element => {
             <div className={style.formgroup}>
               <label className={style.labeltitle}>메뉴이름</label><br />
               <input className={`${style.forminput} ${menuNameError ? style.error : ''}`} value={menu_name} placeholder="메뉴이름을 입력하세요."
-              onChange={(e) => {
+                onChange={(e) => {
                   setMenuName(e.target.value);
                   setMenuNameError(''); // 에러 메시지 초기화
-                }}/>
-                 {menuNameError && <p className={style.errorMsg}>{menuNameError}</p>}
+                }} />
+              {menuNameError && <p className={style.errorMsg}>{menuNameError}</p>}
             </div>
 
 
@@ -187,21 +202,21 @@ export const MenuInsert = (): JSX.Element => {
                 <label className={style.labeltitle}>코너종류</label>
                 <div className={style.inputgroup}>
                   <label><input type="radio" name="corner" value="S" onChange={(e) => {
-                        setMenuCorner(e.target.value);
-                        setMenuCornerError(''); // 에러 메시지 초기화
-                      }} /> S</label>
+                    setMenuCorner(e.target.value);
+                    setMenuCornerError(''); // 에러 메시지 초기화
+                  }} /> S</label>
                   <label><input type="radio" name="corner" value="B" onChange={(e) => {
-                        setMenuCorner(e.target.value);
-                        setMenuCornerError(''); // 에러 메시지 초기화
-                      }} /> B</label>
+                    setMenuCorner(e.target.value);
+                    setMenuCornerError(''); // 에러 메시지 초기화
+                  }} /> B</label>
                   <label><input type="radio" name="corner" value="F" onChange={(e) => {
-                        setMenuCorner(e.target.value);
-                        setMenuCornerError(''); // 에러 메시지 초기화
-                      }} /> F</label>
+                    setMenuCorner(e.target.value);
+                    setMenuCornerError(''); // 에러 메시지 초기화
+                  }} /> F</label>
                 </div>
                 {menuCornerError && <p className={style.errorMsg}>{menuCornerError}</p>}
               </div>
-              
+
             </div>
 
             {/* 메뉴가격 */}
@@ -216,9 +231,9 @@ export const MenuInsert = (): JSX.Element => {
                   setMenuPriceError(''); // 에러 메시지 초기화
                 }
               }}
-            />
-            {menuPriceError && <p className={style.errorMsg}>{menuPriceError}</p>}
-          </div>
+              />
+              {menuPriceError && <p className={style.errorMsg}>{menuPriceError}</p>}
+            </div>
 
             {/* 포장가능유무 */}
             <div className={style.horizontalgroup}>
@@ -257,9 +272,9 @@ export const MenuInsert = (): JSX.Element => {
                   if (file) {
                     setMenuImage(file);
                     setMenuImageError('');
-                    }
+                  }
                 }} />
-                 {menuImageError && <p className={style.errorMsg}>{menuImageError}</p>}
+                {menuImageError && <p className={style.errorMsg}>{menuImageError}</p>}
               </div>
             </div>
 
@@ -267,21 +282,35 @@ export const MenuInsert = (): JSX.Element => {
             <hr className={style.hrline2}></hr>
           </div>
           <div className={style.formfooter}>
-            <button type="submit" className={style.btncancel} onClick={() => { handleBackClick();}}>취소</button>
-            <button type="submit" className={style.btninsert} onClick={() => { handleAddToMenu();}}>등록</button>
+            <button type="submit" className={style.btncancel} onClick={() => { handleBackClick(); }}>취소</button>
+            <button type="submit" className={style.btninsert} onClick={() => { handleAddToMenu(); }}>등록</button>
           </div>
         </div>
 
+
         {/* 모달 창 */}
+        {checkModal && (
+          <div className={style.modal}>
+            <div className={style.modalContent}>
+              <span className={style.close} onClick={closeChceckModal}>&times;</span>
+              <img src={require(`../img/${decodeURIComponent('InMenu.gif')}`)} />
+              <p>메뉴를 등록하시겠습니까?</p>
+              <button type="submit" className={style.btncancel} onClick={closeChceckModal}>취소</button>
+              <button type="submit" className={style.btninsert} onClick={openModal}>등록</button>
+            </div>
+          </div>
+        )}
+
+
         {showModal && (
-                <div className={style.modal}>
-                    <div className={style.modalContent}>
-                        <span className={style.close} onClick={closeModal}>&times;</span>
-                        <img src={require(`../img/${decodeURIComponent('InMenu.gif')}`)} />
-                        <p>메뉴를 추가하였습니다.</p>
-                    </div>
-                </div>
-            )}
+          <div className={style.modal}>
+            <div className={style.modalContent}>
+              <span className={style.close} onClick={closeModal}>&times;</span>
+              <img src={require(`../img/${decodeURIComponent('InMenu.gif')}`)} />
+              <p>메뉴를 추가하였습니다.</p>
+            </div>
+          </div>
+        )}
 
       </body>
     </>

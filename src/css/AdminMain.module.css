@@ -50,6 +50,10 @@
     color: #000;
 }
 
+.faArrowLeft{
+    opacity: 0;
+}
+
 .container {
     position: relative;
     width: 1150px;
