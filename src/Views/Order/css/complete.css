@@ -1,0 +1,191 @@
+.body {
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(243, 243, 243);
+    font-size: 15px;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    /* 세로축 스크롤바 폭 너비 */
+}
+
+/* 상단 고정 바 */
+.orderTop {
+    background-color: rgb(80, 176, 209);
+    color: white;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+
+    height: 8 vh;
+    display: flex;
+    position: fixed;
+    top: 0;
+}
+
+.odTopHome {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.topTxt {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cplBox {
+    width: 100%;
+    height: 35vh;
+
+    background-color: rgb(255, 255, 255);
+    margin-top: 8vh;
+    display: table;
+}
+
+.txt {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+
+.ocTxt,
+.oTxt,
+.oIcon {
+    width: 100%;
+    text-align: center;
+}
+
+.oIcon {
+    margin-bottom: 10px;
+}
+
+.ocTxt {
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.oTxt {
+    color:  rgb(87, 87, 87);
+}
+
+.infoBox {
+    margin-top: 30px;
+
+    height: 50vh;
+
+}
+
+
+.infoBoxTop {
+    width: 100%;
+    height: 50px;
+    /* 수직 중앙 정렬 */
+    display: flex;
+    align-items: center;
+    padding: 10px;
+
+    background-color: rgb(255, 255, 255);
+}
+
+.orderInfoTxt {
+    font-weight: bold;
+}
+
+.odMenuBox {
+    width: 100%;
+
+    background-color: rgb(255, 255, 255);
+}
+
+.odInfoDiv {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid rgb(150, 150, 150);
+    padding: 10px;
+    height: 18vh;
+}
+
+.odMenuInfo {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.odMenuImgDiv {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.odMenuImg {
+    width: 70px;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.odMenuName {
+    float: left;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.odMenuQuantity {
+    margin-left: 6px;
+}
+
+.odMenuPrice {
+    float: left;
+    margin-right: 10px;
+
+    padding: 10px;
+}
+
+.orderMenuInfoBox {
+
+    margin-left: 15px;
+    color: rgb(150, 150, 150);
+    width: 100%;
+}
+
+.odPriceBox {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px;
+}
+
+.odTotalPriceTxt {
+    float: left;
+
+    font-weight: bold;
+    padding: 10px;
+}
+
+.odTotalPrice {
+
+    margin-right: 10px;
+    color: rgb(80, 176, 209);
+    font-weight: bold;
+    font-size: 19px;
+
+    padding: 10px;
+}
