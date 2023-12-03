@@ -1,0 +1,19 @@
+#reviewWriting{
+    padding-top: 60px;
+}
+
+.reviewCard{
+    margin-top: 80px;
+    justify-content: center;
+    width: auto;
+    text-align: center;
+}
+.reviewWriteBtn {
+    margin-top:10px;
+    justify-content: center;
+    text-align: center;
+    display: inline-block;
+}
+@media screen and (max-width: 700px) {
+    
+}
