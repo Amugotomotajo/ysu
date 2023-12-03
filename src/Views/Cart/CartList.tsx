@@ -6,7 +6,6 @@ import Input from "antd/es/input/Input";
 import { Cart, Orders } from './state/cart.state'
 import { useNavigate } from "react-router-dom";
 import { RequestPayResponseCallback } from "../Order/Payment";
-import { constSelector } from "recoil";
 
 export const CartList = (): JSX.Element => {
   const [cartList, setCartList] = useState<Cart[]>([]);

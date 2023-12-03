@@ -9,7 +9,6 @@ import { IoHomeSharp } from "react-icons/io5";
 
 export const CartMain = ():JSX.Element => {
 
-
 return (
     <>
         <div className="body">
@@ -27,5 +26,5 @@ return (
         </>
     )
 }
-export default CartMain;
 
+export default CartMain;
