@@ -11,85 +11,82 @@ export const CartList = (): JSX.Element => {
   const [cartList, setCartList] = useState<Cart[]>([]);
   const [orderList, setOrderList] = useState<Orders[]>([]);
   const navigate = useNavigate();
-
-  //장바구니 목록 불러오기  
-  useEffect(() => {
-    axios.get("/cart/list").then((res) => {
-      setCartList(res.data);
-    })
-  }, []);
-
-  // 장바구니에서 메뉴 삭제
-  const handleDelete = (menu_id: number) => {
-    axios.delete(`cart/delete/${menu_id}`).then((res) => {
-      setCartList((prevCartList) => prevCartList.filter((cart) => cart.menu_id !== menu_id));
-    });
+    //장바구니 목록 불러오기  
+    useEffect(() => {
+      axios.get("/cart/list").then((res) => {
+        setCartList(res.data);
+      })
+    }, []);
+  
+    // 장바구니에서 메뉴 삭제
+    const handleDelete = (menu_id: number) => {
+      axios.delete(`cart/delete/${menu_id}`).then((res) => {
+        setCartList((prevCartList) => prevCartList.filter((cart) => cart.menu_id !== menu_id));
+      });
+    };
+  
+    // 수량 감소
+    const handleDecrement = (menu_id: number) => {
+      setCartList((prevCartList) =>
+        prevCartList.map((cart) =>
+          cart.menu_id === menu_id && cart.quantity > 1
+            ? { ...cart, quantity: cart.quantity - 1 }
+            : cart
+        )
+      );
+    };
+    //수량 증가
+    const handleIncrement = (menu_id: number) => {
+      setCartList((prevCartList) =>
+        prevCartList.map((cart) =>
+          cart.menu_id === menu_id
+            ? { ...cart, quantity: cart.quantity + 1 } : cart
+        )
+      );
+    };
+  
+    const totalQuantity = cartList.reduce((totalQ, cart) => totalQ + cart.quantity, 0);
+    const totalPrice = cartList.reduce((totalQ, cart) => totalQ + cart.menu_price * cart.quantity, 0);
+    const totalPriceStr = totalPrice?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); //1000단위 콤마
+  
+    const quantity = cartList.map((cart) => cart.quantity);
+    const menu_id = cartList.map((cart) => cart.menu_id)
+  
+    const orderInfo = {
+      ...orderList,
+      order_id: undefined,
+      u_id: undefined,
+      total_quantity: totalQuantity,
+      total_price: totalPrice,
+      order_date: undefined
+    };
+  
+    const cartInfo = {
+      menu_id: menu_id,
+      quantity: quantity
+    }
+    const cartItems = cartInfo.menu_id.map((menu_id, index) => ({
+      menu_id: menu_id,
+      quantity: cartInfo.quantity[index]
+  }));
+  
+  const handleOrder = () => {
+    axios.put("cart/update", cartItems)
+      .then((updateRes) => {
+        axios.post("/order/insert", orderInfo)
+          .then((orderRes) => {
+            setOrderList(orderInfo);
+            navigate("/order");
+          })
+          .catch((orderError) => {
+            console.error("주문 요청 실패:", orderError);
+          });
+      })
+      .catch((updateError) => {
+        console.error("수량 업데이트 실패:", updateError);
+      });
   };
-
-  // 수량 감소
-  const handleDecrement = (menu_id: number) => {
-    setCartList((prevCartList) =>
-      prevCartList.map((cart) =>
-        cart.menu_id === menu_id && cart.quantity > 1
-          ? { ...cart, quantity: cart.quantity - 1 }
-          : cart
-      )
-    );
-  };
-  //수량 증가
-  const handleIncrement = (menu_id: number) => {
-    setCartList((prevCartList) =>
-      prevCartList.map((cart) =>
-        cart.menu_id === menu_id
-          ? { ...cart, quantity: cart.quantity + 1 } : cart
-      )
-    );
-  };
-
-  const totalQuantity = cartList.reduce((totalQ, cart) => totalQ + cart.quantity, 0);
-  const totalPrice = cartList.reduce((totalQ, cart) => totalQ + cart.menu_price * cart.quantity, 0);
-  const totalPriceStr = totalPrice?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); //1000단위 콤마
-
-  const quantity = cartList.map((cart) => cart.quantity);
-  const menu_id = cartList.map((cart) => cart.menu_id)
-
-  const orderInfo = {
-    ...orderList,
-    order_id: undefined,
-    u_id: undefined,
-    total_quantity: totalQuantity,
-    total_price: totalPrice,
-    order_date: undefined
-  };
-
-  const cartInfo = {
-    menu_id: menu_id,
-    quantity: quantity
-  }
-  const cartItems = cartInfo.menu_id.map((menu_id, index) => ({
-    menu_id: menu_id,
-    quantity: cartInfo.quantity[index]
-}));
-
-console.log(cartItems)
-
-const handleOrder = () => {
-  axios.put("cart/update", cartItems)
-    .then((updateRes) => {
-      axios.post("/order/insert", orderInfo)
-        .then((orderRes) => {
-          setOrderList(orderInfo);
-          navigate("/order");
-        })
-        .catch((orderError) => {
-          console.error("주문 요청 실패:", orderError);
-        });
-    })
-    .catch((updateError) => {
-      console.error("수량 업데이트 실패:", updateError);
-    });
-};
-
+  
 
 
   // 결제 아임포트
@@ -115,7 +112,6 @@ const handleOrder = () => {
         .then((res) => {
           setOrderList(orderInfo);
           setCartList([]); // 주문 후 장바구니 비우기
-          console.log(orderList);
           navigate("/order");
         })
         .catch((error) => {
@@ -156,11 +152,9 @@ const handleOrder = () => {
       .then((res) => {
         setOrderList(orderInfo);
         setCartList([]); // 주문 후 장바구니 비우기
-        console.log(orderList);
         navigate("/order");
       })
   }
-
 
   return (
     <>
@@ -190,6 +184,7 @@ const handleOrder = () => {
           <Button className="cartDelBtn" onClick={() => handleDelete(cart.menu_id)}>X</Button>
         </div>
       ))}
+      
       <div className="priceBox">
         <div className="priceTxt">
           총 수량 {totalQuantity}개
@@ -198,8 +193,9 @@ const handleOrder = () => {
           총 주문금액 {totalPriceStr}원
         </div>
       </div>
+      
       <div className="bottom">
-        <button className="orderBtn" onClick={handleOrder}>
+        <button className="orderBtn" onClick={handleOrder} disabled={totalQuantity === 0}>
           주문하기
         </button>
       </div>
