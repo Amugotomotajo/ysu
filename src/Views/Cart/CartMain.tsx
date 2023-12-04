@@ -6,8 +6,12 @@ import { BiArrowBack } from "react-icons/bi"
 import CartList from "./CartList";
 import { Cart, Orders } from "./state/cart.state";
 import { IoHomeSharp } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 export const CartMain = ():JSX.Element => {
+    const [cartList, setCartList] = useState<Cart[]>([]);
+    const [orderList, setOrderList] = useState<Orders[]>([]);
+    const navigate = useNavigate();
 
 return (
     <>
