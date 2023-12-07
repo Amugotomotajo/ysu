@@ -208,7 +208,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                 {(activeSection === 'S' || activeSection === 'B' || activeSection === 'F') && (
                     <div className={style.selectMenu}>
                         <div className={style.MainpriceIcons}>
-                            <span className={style.MainredCircle} /><a className={style.CircleText}>포장가능메뉴</a>
+                            <span className={style.MainredCircle} /><a className={style.CircleText}>포장메뉴</a>
                             <span className={style.MainblueCircle} /><a className={style.CircleText}>등록메뉴</a>
                         </div>
                         <Select options={options} className={style.selectoption} onChange={handleOptionChange} isClearable
@@ -221,7 +221,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                 {activeSection === 'P' && (
                     <div className={style.selectMenu}>
                         <div className={style.MainpriceIcons}>
-                            <span className={style.MainredCircle} /><a className={style.CircleText}>포장가능메뉴</a>
+                            <span className={style.MainredCircle} /><a className={style.CircleText}>포장메뉴</a>
                             <span className={style.MainblueCircle} /><a className={style.CircleText}>등록메뉴</a>
                         </div>
                         <Select options={options}
@@ -266,6 +266,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                                 <div className={style.menuInfo}>
                                     <div className={style.menuName}>{section['menu_name']}</div>
                                     <div className={style.menuPrice}>가격 : {(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
+                                    
                                 </div>
                                 <div className={style.priceIcons}>
                                         {section['menu_pack'] === 1 && (
@@ -275,6 +276,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                                             <span className={style.blueCircle}></span>
                                         )}
                                     </div>
+                                
                             </button>
                         </div>
                     ))}

@@ -299,6 +299,10 @@ li a:hover {
         margin-bottom: 15px;
     }
 
+    .menuCircle {
+        font-size: 17px;
+    }
+
     .menuList {
         height: 100%;
         padding:20px;
@@ -472,13 +476,20 @@ li a:hover {
     .CircleText{
         font-size: 12px;
         margin-right: 20px;
-        white-space: pre-wrap;
+        white-space: nowrap;
     }
 
     .selectoption{
         width: 200px;
         font-size: 11px;
         margin-right: -20px;
+    }
+
+    .selectoptionP{
+        width: 200px;
+        font-size: 11px;
+        margin-right: -20px;
+        opacity: 0;
     }
 
 
