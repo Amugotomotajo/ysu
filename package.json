@@ -17,6 +17,7 @@
     "apis": "^0.1.2",
     "axios": "^1.5.1",
     "http-proxy-middleware": "^2.0.6",
+    "image-size": "^1.0.2",
     "mysql": "^2.18.1",
     "react": "^18.2.0",
     "react-cookie": "^6.1.1",
@@ -55,6 +56,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-modal": "^3.16.3"
+    "@types/react-modal": "^3.16.3",
+    "image-compressor": "^2.0.3"
   }
 }

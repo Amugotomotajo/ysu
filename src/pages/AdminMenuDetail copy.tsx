@@ -3,7 +3,7 @@ import MenuStyle from '../css/AdminMenuList.module.css';
 import MdStyle from '../css/AdminMenuDetail.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
@@ -90,7 +90,6 @@ export const AdminMenuDetail = (): JSX.Element => {
         setIsEditing(true);
     }
 
-    // 메뉴 update
     const handleUpdateClick = async () => {
         // 서버로 데이터를 전송하기 위한 FormData 객체를 생성
         const formData = new FormData();
@@ -127,29 +126,6 @@ export const AdminMenuDetail = (): JSX.Element => {
 
     };
 
-    const [updateModal, setUpdateModal] = useState(false);
-
-    const openUpdateModal = () => {
-        setUpdateModal(true);
-    }
-
-    const openUpModal = () => {
-        setAction('update');
-        setShowModal(true);
-
-        const timeoutId = setTimeout(() => {
-            handleUpdateClick();
-            setShowModal(false);
-            navigate('/adminmenu');
-        }, 3000);
-        
-        // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
-        return () => clearTimeout(timeoutId);
-        
-    };
-
-
-    // 메뉴 delete
     const handleDeleteClick = () => {
         const menuId = location.state && location.state.menu_id;
         axios.delete(`/adminmenu/menudetail/${menuId}`)
@@ -165,29 +141,44 @@ export const AdminMenuDetail = (): JSX.Element => {
 
     const [showModal, setShowModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
-    
+    const [updateModal, setUpdateModal] = useState(false);
 
     const openDeleteModal = () => {
         setDeleteModal(true);
     }
 
-    
-    const openDeModal = () => {
+    const openUpdateModal = () => {
+        setUpdateModal(true);
+    }
+
+    const openModal = () => {
         setAction('back');
         setShowModal(true);
 
         const timeoutId = setTimeout(() => {
             handleDeleteClick();
             setShowModal(false);
-
-            navigate('/adminmenu');
+            window.location.replace('/adminmenu');
         }, 3000);
 
         // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
         return () => clearTimeout(timeoutId);
     };
 
-    
+    const openUpModal = () => {
+        setAction('update');
+        setShowModal(true);
+
+        const timeoutId = setTimeout(() => {
+            handleUpdateClick();
+            setShowModal(false);
+            window.location.replace('/adminmenu');
+        }, 3000);
+        
+        // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
+        return () => clearTimeout(timeoutId);
+        
+    };
 
     const closeUpdateModal = () => {
         setUpdateModal(false);
@@ -200,41 +191,6 @@ export const AdminMenuDetail = (): JSX.Element => {
     const closeModal = () => {
         setShowModal(false);
     };
-
-    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-    
-        if (file) {
-          // 이미지를 Blob으로 변환
-          const blobImage = await convertFileToBlob(file);
-          // Blob을 File 객체로 생성 (파일명을 생성하여)
-          const fileName = generateFileName();
-          const blobFile = new File([blobImage], fileName);
-    
-          setSelectedImage(blobFile);
-        }
-      };
-    
-      // 이미지 파일 이름 생성 함수
-      let imageCounter: number = parseInt(localStorage.getItem('imageCounter') || '1', 10);
-      const generateFileName = () => {
-        const fileName = `image${imageCounter}.jpg`;
-        imageCounter += 1;
-        localStorage.setItem('imageCounter', imageCounter.toString());
-        return fileName;
-      };
-    
-      const convertFileToBlob = (file: File): Promise<Blob> => {
-        return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const arrayBuffer = reader.result as ArrayBuffer;
-            const blob = new Blob([arrayBuffer], { type: file.type });
-            resolve(blob);
-          };
-          reader.readAsArrayBuffer(file);
-        });
-      };
 
 
     return (
@@ -274,7 +230,6 @@ export const AdminMenuDetail = (): JSX.Element => {
                                         const files = e.target.files;
                                         if (files && files.length > 0) {
                                             setSelectedImage(files[0]);
-                                            handleImageChange(e);
                                         }
                                     }}
                                 />
@@ -369,7 +324,7 @@ export const AdminMenuDetail = (): JSX.Element => {
                         <span className={MdStyle.close} onClick={closeDeleteModal}>&times;</span>
                         <p>메뉴를 삭제하시겠습니까?</p>
                         <button type="submit" className={MdStyle.btncancel} onClick={closeDeleteModal}>취소</button>
-                        <button type="submit" className={MdStyle.btninsert} onClick={openDeModal}>삭제</button>
+                        <button type="submit" className={MdStyle.btninsert} onClick={openModal}>삭제</button>
                     </div>
                 </div>
             )}

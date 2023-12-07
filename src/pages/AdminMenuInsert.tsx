@@ -110,35 +110,35 @@ export const AdminMenuInsert = (): JSX.Element => {
 
     const formData = new FormData();
 
-      // 폼 데이터에 필드 추가
-      formData.append('menu_name', menu_name);
-      formData.append('menu_corner', menu_corner);
-      formData.append('menu_price', menu_price.toString());
-      formData.append('menu_pack', menu_pack.toString());
-      if (menu_image) {
-        // 이미지 파일 추가 (menu_image)
-        formData.append('menu_image', menu_image);
-      }
+    // 폼 데이터에 필드 추가
+    formData.append('menu_name', menu_name);
+    formData.append('menu_corner', menu_corner);
+    formData.append('menu_price', menu_price.toString());
+    formData.append('menu_pack', menu_pack.toString());
+    if (menu_image) {
+      // 이미지 파일 추가 (menu_image)
+      formData.append('menu_image', menu_image);
+    }
 
-      // Axios를 사용하여 서버로 폼 데이터를 보냄
-      try {
-        axios.post('/adminmenu/menuinsert', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data', // 폼 데이터로 보냄
-          },
+    // Axios를 사용하여 서버로 폼 데이터를 보냄
+    try {
+      axios.post('/adminmenu/menuinsert', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // 폼 데이터로 보냄
+        },
+      })
+        .then(response => {
+          console.log('Data inserted successfully', response.data, formData);
         })
-          .then(response => {
-            console.log('Data inserted successfully', response.data, formData);
-          })
-          .catch(error => {
-            console.error('Failed to insert data', error, formData);
-          });
-      } catch (error) {
-        console.error('메뉴 업데이트 오류:', error, formData);
-      }
+        .catch(error => {
+          console.error('Failed to insert data', error, formData);
+        });
+    } catch (error) {
+      console.error('메뉴 업데이트 오류:', error, formData);
+    }
 
     const timeoutId = setTimeout(() => {
-      
+
       setShowModal(false);
       navigate('/adminmenu');
     }, 3000);
@@ -154,6 +154,43 @@ export const AdminMenuInsert = (): JSX.Element => {
   const closeModal = () => {
     setShowModal(false);
   };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      // 이미지를 Blob으로 변환
+      const blobImage = await convertFileToBlob(file);
+      // Blob을 File 객체로 생성 (파일명을 생성하여)
+      const fileName = generateFileName();
+      const blobFile = new File([blobImage], fileName);
+
+      setMenuImage(blobFile);
+      setMenuImageError('');
+    }
+  };
+
+  // 이미지 파일 이름 생성 함수
+  let imageCounter: number = parseInt(localStorage.getItem('imageCounter') || '1', 10);
+  const generateFileName = () => {
+    const fileName = `image${imageCounter}.jpg`;
+    imageCounter += 1;
+    localStorage.setItem('imageCounter', imageCounter.toString());
+    return fileName;
+  };
+
+  const convertFileToBlob = (file: File): Promise<Blob> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const arrayBuffer = reader.result as ArrayBuffer;
+        const blob = new Blob([arrayBuffer], { type: file.type });
+        resolve(blob);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  };
+
 
 
   return (
@@ -175,7 +212,7 @@ export const AdminMenuInsert = (): JSX.Element => {
             <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracketopacity} />
           </Link>
           <Link to="/login" className={style.link}>
-          <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} /> 
+            <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} />
           </Link>
         </div>
         <div className={style.signupform}>
@@ -269,13 +306,7 @@ export const AdminMenuInsert = (): JSX.Element => {
             <div className={style.horizontalgroup}>
               <div className={style.formgroup}>
                 <label className={style.labeltitle}>메뉴이미지</label><br />
-                <input type="file" accept="image/*" onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    setMenuImage(file);
-                    setMenuImageError('');
-                  }
-                }} />
+                <input type="file" accept="image/*" onChange={(e) => handleImageChange(e)} />
                 {menuImageError && <p className={style.errorMsg}>{menuImageError}</p>}
               </div>
             </div>
