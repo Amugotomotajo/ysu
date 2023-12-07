@@ -6,12 +6,14 @@ import { useEffect, useState } from 'react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import ysuLogo from '../L_img/ysu_logo.jpg';
+import ysuLogo from '../img/ysu_logo.jpg';
+import { BiArrowBack } from "react-icons/bi";
+import { MdLogout } from "react-icons/md";
 import { faPlus, faArrowLeft, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import style from '../css/MenuInsert.module.css'
+import style from '../css/AdminMenuInsert.module.css'
 
-export const MenuInsert = (): JSX.Element => {
+export const AdminMenuInsert = (): JSX.Element => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
@@ -162,7 +164,7 @@ export const MenuInsert = (): JSX.Element => {
       <body className={style.body}>
         <div id="head" className={style.head}>
           <Link className={style.link} to="/adminmenu">
-            <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={style.faArrowLeft} />
+            <BiArrowBack className={style.faArrowLeft} />
           </Link>
           <Link className={style.link} to="">
             <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
@@ -173,7 +175,7 @@ export const MenuInsert = (): JSX.Element => {
             <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracketopacity} />
           </Link>
           <Link to="/login" className={style.link}>
-            <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} onClick={handleLogout} />
+          <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} /> 
           </Link>
         </div>
         <div className={style.signupform}>
@@ -293,7 +295,6 @@ export const MenuInsert = (): JSX.Element => {
           <div className={style.modal}>
             <div className={style.modalContent}>
               <span className={style.close} onClick={closeChceckModal}>&times;</span>
-              <img src={require(`../img/${decodeURIComponent('InMenu.gif')}`)} />
               <p>메뉴를 등록하시겠습니까?</p>
               <button type="submit" className={style.btncancel} onClick={closeChceckModal}>취소</button>
               <button type="submit" className={style.btninsert} onClick={openModal}>등록</button>
@@ -305,7 +306,6 @@ export const MenuInsert = (): JSX.Element => {
         {showModal && (
           <div className={style.modal}>
             <div className={style.modalContent}>
-              <span className={style.close} onClick={closeModal}>&times;</span>
               <img src={require(`../img/${decodeURIComponent('InMenu.gif')}`)} />
               <p>메뉴를 추가하였습니다.</p>
             </div>
@@ -316,4 +316,4 @@ export const MenuInsert = (): JSX.Element => {
     </>
   );
 }
-export default MenuInsert;
+export default AdminMenuInsert;

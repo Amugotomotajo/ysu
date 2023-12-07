@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import style from '../css/MenuList.module.css';
+import style from '../css/AdminMenuList.module.css';
 import axios from 'axios';
 import { faArrowLeft, faPlus, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
-import ysuLogo from '../L_img/ysu_logo.jpg';
+import { BiArrowBack } from "react-icons/bi";
+import { FiPlus } from "react-icons/fi";
+import { MdLogout, MdOutlineRateReview } from "react-icons/md";
+import ysuLogo from '../img/ysu_logo.jpg';
 import Select from "react-select"
 
-export const MenuListPage = (): JSX.Element => {
+export const AdminMenuListPage = (): JSX.Element => {
     const corner = ['S', 'B', 'F', 'P']
     const navigate = useNavigate();
     const location = useLocation();
@@ -164,18 +167,18 @@ export const MenuListPage = (): JSX.Element => {
                 <div>
                     <div id="head" className={style.head}>
                         <Link className={style.link} to="/adminmain">
-                            <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={style.faArrowLeft} />
+                        <BiArrowBack className={style.faArrowLeft} />
                         </Link>
                         <Link className={style.link} to="">
                             <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
                         </Link>
 
                         <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
-                        <Link to="/login" className={style.link} onClick={handleLogout}>
-                            <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
+                        <Link to="/login" className={style.link} >
+                        <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} /> 
                         </Link>
                         <Link className={style.link} to="./menuinsert">
-                            <FontAwesomeIcon id="faPlus" icon={faPlus} className={style.faPlus} />
+                            <FiPlus className={style.faPlus} /> 
                         </Link>
 
                     </div>
@@ -263,7 +266,8 @@ export const MenuListPage = (): JSX.Element => {
                                 <div className={style.menuInfo}>
                                     <div className={style.menuName}>{section['menu_name']}</div>
                                     <div className={style.menuPrice}>가격 : {(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
-                                    <div className={style.priceIcons}>
+                                </div>
+                                <div className={style.priceIcons}>
                                         {section['menu_pack'] === 1 && (
                                             <span className={style.redCircle}></span>
                                         )}
@@ -271,7 +275,6 @@ export const MenuListPage = (): JSX.Element => {
                                             <span className={style.blueCircle}></span>
                                         )}
                                     </div>
-                                </div>
                             </button>
                         </div>
                     ))}
@@ -283,4 +286,4 @@ export const MenuListPage = (): JSX.Element => {
     );
 }
 
-export default MenuListPage;
+export default AdminMenuListPage;

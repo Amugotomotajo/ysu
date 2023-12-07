@@ -6,7 +6,7 @@ import style from '../css/UserList.module.css';
 import { faArrowLeft, faPlus, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
-import ysuLogo from '../L_img/ysu_logo.jpg';
+import ysuLogo from '../img/ysu_logo.jpg';
 import Select from "react-select"
 
 export const UsertListPage = (): JSX.Element => {

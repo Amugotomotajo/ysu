@@ -38,11 +38,11 @@
 
 .logo {
     width: 100%;
-    max-width: 160px;
-    height: 100%;
+    max-width: 140px;
     margin: 0 auto; /* 로고를 가운데에 고정 */
     cursor: pointer;
 }
+
 
 .faArrowLeft, .faCartShopping, .faArrowRightFromBracket {
     width: 50px;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import style from '../css/Main.module.css';
-import loginStyle from '../Login.module.css';
-import ysuLogo from '../L_img/ysu_logo2.png';
+import loginStyle from '../css/Login.module.css';
+import ysuLogo from '../img/ysu_logo2.png';
 
 
 export const Main = (): JSX.Element => (

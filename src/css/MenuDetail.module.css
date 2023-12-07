@@ -12,7 +12,7 @@
     text-align: center;
     margin: 20px;
     margin-bottom: 100px;
-    margin-top: 80px;
+    margin-top: 70px;
     flex-direction: column;
 }
 
@@ -26,13 +26,12 @@
     width: 100%;
 }
 
-
-.optionButton1 {
+.reviewButton {
     margin: 0 auto;
     padding: 10px;
     border: none;
     border-radius: 10px;
-    background-color: rgb(181, 220, 16);
+    background-color: rgb(80, 176, 209);
     text-align: center;
     display: flex;
     flex-direction: row;
@@ -41,24 +40,6 @@
     font-size: 1.2rem;
     width: 100%;
     color: white;
-    cursor: pointer;
-}
-
-.optionButton2 {
-    margin: 0 auto;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    background-color: #666;
-    text-align: center;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    width: 100%;
-    color: white;
-    cursor: pointer;
 }
 
 .menuDetailImg {
@@ -83,7 +64,6 @@ footer {
     flex-direction: row;
     padding-right: 2%;
 }
-
 
 .inputCart {
     margin: 0 auto;
@@ -110,6 +90,27 @@ footer {
     opacity: 0.2
 }
 
+@media screen and (min-width: 1000px) {
+
+    .menuDetailInfo {
+        padding-left: 18px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menuDetailName {
+        font-size: 25px;
+        margin-top: 7px;
+        margin-bottom: 9px;
+        font-weight: 600;
+    }
+
+    .menuDetailPrice {
+        font-size: 20px;
+    }
+}
+
 .modal {
     display: flex;
     position: fixed;
@@ -123,12 +124,14 @@ footer {
 }
 
 .modalContent {
+    position: relative;
     background-color: #fefefe;
     padding: 20px;
-    border-radius: 6px;
+    border: 1px solid #888;
     width: 300px;
     font-size: 20px;
     text-align: center;
+    border-radius: 6px;
 }
 
 .modal img {
@@ -141,179 +144,13 @@ footer {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    position: absolute;
+    top: 5px; /* 원하는 상단 여백 조정 */
+    right: 10px; /* 원하는 오른쪽 여백 조정 */
 }
 
 .close:hover {
     color: black;
-}
-
-.menuDetailInfo form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    color: black;
-}
-
-.formGroup label {
-    text-align: left;
-}
-
-.formGroup input[type="text"] {
-    margin-right: 5px;
-    margin-bottom: 5px;
-    font-size: 20px;
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    background-color: #f7f7f7;
-    color: #333;
-    border: 1px solid #ddd;
-
-}
-
-.formGroup input[type="radio"] {
-    margin-right: 5px;
-    margin-bottom: 5px;
-    font-size: 20px;
-    background-color: #f7f7f7;
-    color: #333;
-    border: 1px solid #ddd;
-}
-
-.formGroup input[type="radio"]:hover {
-    background-color: #ddd;
-}
-
-.fileForm {
-    width: 18%;
-    background-color: #f7f7f7;
-    color: #333;
-    margin: 5px 0;
-    margin-left:0px;
-    
-}
-
-.radioGroup label {
-    margin-right: 10px;
-    text-align: left;
-}
-
-.horizontalgroup .formgroup {
-    width: 100%;
-}
-
-.menuDetailInfo button {
-    width: 100%;
-    margin: 10px 0;
-}
-
-.menuDetailInfo.isEditing button {
-    width: 45%;
-    margin: 10px 2.5%;
-}
-
-.menuDetailInfo.isEditing button:first-child {
-    float: left;
-}
-
-.menuDetailInfo.isEditing button:last-child {
-    float: right;
-}
-
-.btncancel {
-    width: 100px;
-    display:inline-block;
-    padding:10px 20px;
-    background-color: #666;
-    font-size:17px;
-    border:none;
-    border-radius:5px;
-    color:white;
-    cursor:pointer;
-    margin-top: -5px;
-    margin-right: 5px;
-    cursor: pointer;
- }
-
- .btninsert {
-   width: 100px;
-   display:inline-block;
-   padding:10px 20px;
-   background-color: rgb(181, 220, 16);
-   font-size:17px;
-   border:none;
-   border-radius:5px;
-   color:white;
-   cursor:pointer;
-   margin-top: -5px;
-   margin-right: 5px;
-   cursor: pointer;
-}
-
-
-@media screen and (min-width: 1000px) {
-
-
-    .menuDetailInfo {
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .menuDetailHr {
-        display: block;
-        margin-top: 10px;
-    }
-
-    .menuDetailName {
-        font-size: 25px;
-        margin-top: 7px;
-        margin-bottom: 9px;
-        font-weight: 600;
-    }
-
-    .menuDetailPrice {
-        font-size: 20px;
-    }
-
-    .modal {
-        display: flex;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .modalContent {
-        background-color: #fefefe;
-        padding: 20px;
-        border-radius: 6px;
-        width: 300px;
-        font-size: 20px;
-        text-align: center;
-    }
-    
-    .modal img {
-        width: 200px;
-    }
-    
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-    
-    .close:hover {
-        color: black;
-    }
 }
 
 
@@ -326,7 +163,7 @@ footer {
         width: 100%;
         background-color: #f1f1f1;
         position: fixed;
-        height: 100px;
+        height: 80px;
         overflow: auto;
         align-items: center;
     }
@@ -343,7 +180,7 @@ footer {
         height: 100%;
         padding: 20px;
         border-radius: 6px;
-        grid-gap: 10px;
+        grid-gap: 20px;
         letter-spacing: 2px;
         display: flex;
         flex-direction: column;
@@ -353,16 +190,15 @@ footer {
         text-align: center;
         margin: 20px;
         margin-bottom: 100px;
-        margin-top: 80px;
+        margin-top: 70px;
     }
 
     .menuDetailHr {
         display: block;
-        margin-top: 10px;
     }
 
     .menuDetailInfo {
-        margin-top:10px;
+        padding-left: 18px;
         text-align: left;
         display: flex;
         flex-direction: column;
@@ -378,14 +214,4 @@ footer {
     .menuDetailPrice {
         font-size: 20px;
     }
-
-    .btncancel{
-        width: 100%;
-  
-      }
-  
-      .btninsert {
-        width: 100%;
-        margin-top: 10px;
-      }
 }

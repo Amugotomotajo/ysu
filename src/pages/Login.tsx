@@ -3,7 +3,7 @@ import style from '../css/Login.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import ysuLogo from '../L_img/ysu_logo2.png';
+import ysuLogo from '../img/ysu_logo2.png';
 
 export const Login = (): JSX.Element => {
     const [u_id, setUid] = useState(""); // 사용자 ID 상태
@@ -86,7 +86,7 @@ export const Login = (): JSX.Element => {
                         });
                         window.alert("관리자님 반갑습니다.");
                     } else {
-                        navigate('/adminmenu', {
+                        navigate('/Menu', {
                             state: {
                                 u_id: userId,
                                 u_name: res.data.u_name,

@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom';
 import { faArrowLeft, faPlus, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import style from '../css/AdminMain.module.css'
-import ysuLogo from '../L_img/ysu_logo.jpg';
+import ysuLogo from '../img/ysu_logo.jpg';
+import { MdLogout } from "react-icons/md";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { FaUser } from "react-icons/fa"
 import { PiNoteLight } from "react-icons/pi";
@@ -64,7 +65,7 @@ export const AdminMainPage = (): JSX.Element => {
           <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
         </Link>
         <Link to="/login" className={style.link} onClick={handleLogout}>
-          <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
+        <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} /> 
         </Link>
       </div>
     <div className={style.container}>
