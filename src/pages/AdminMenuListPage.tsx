@@ -276,9 +276,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                                             <span className={style.blueCircle}></span>
                                         )}
                                     </div>
-                                </div>
-                                
-                                
+                                </div>   
                             </button>
                         </div>
                     ))}

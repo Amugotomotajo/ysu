@@ -340,9 +340,11 @@ footer {
 
     .menuDetailImg {
         width: 100%;
+        height: 100%;
         border-radius: 10%;
         margin-bottom: 10px;
         max-width: 250px;
+        max-height: 250px;
         border-radius: 5%;
     }
 
