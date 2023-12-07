@@ -267,8 +267,8 @@ export const AdminMenuListPage = (): JSX.Element => {
                                     <div className={style.menuName}>{section['menu_name']}</div>
                                     <div className={style.menuPrice}>가격 : {(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
                                     
-                                </div>
-                                <div className={style.priceIcons}>
+                                    {/* 이 부분이 초록 원, 파란 원 부분 */}
+                                    <div className={style.priceIcons}>
                                         {section['menu_pack'] === 1 && (
                                             <span className={style.redCircle}></span>
                                         )}
@@ -276,6 +276,8 @@ export const AdminMenuListPage = (): JSX.Element => {
                                             <span className={style.blueCircle}></span>
                                         )}
                                     </div>
+                                </div>
+                                
                                 
                             </button>
                         </div>
