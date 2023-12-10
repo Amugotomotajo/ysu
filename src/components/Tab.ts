@@ -5,7 +5,7 @@ export const TabMenu = styled.li`
   color: rgb(232, 234, 237);
   font-weight: bold;
    display: flex;
-  //flex-direction: row;
+  flex-direction: row;
   align-items: center;
   list-style: none;
   margin-bottom: -50px;
@@ -36,12 +36,13 @@ export const TabMenu = styled.li`
     color: rgb(21,20,20);
   }
 
-  & div.desc {
+  & div.TabContent {
     text-align: center;
   }
 `;
 
-export const Desc = styled.div`
+export const TabContent = styled.div`
   text-align: center;
+  justify-content: center;
 `;
 

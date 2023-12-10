@@ -36,7 +36,9 @@
 @media screen and (min-width: 700px) {
     .reviewItem {
         align-items: center;
-        padding-left: 15%;
+        /* padding-left: 15%; */
+        width:100%;
+
     }
 }
 
@@ -50,7 +52,6 @@
 
     .reviewItem {
         align-items: center;
-        width: 430px;
-        margin-left: 14px;
+        margin-left: 9px;
     }
 }

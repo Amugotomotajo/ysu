@@ -1,12 +1,13 @@
 #reviewWriting{
-    padding-top: 60px;
+    padding-top: 0px;
 }
 
 .reviewCard{
-    margin-top: 80px;
+    margin-top: -50px;
     justify-content: center;
     width: auto;
     text-align: center;
+    width: 100%;
 }
 .reviewWriteBtn {
     margin-top:10px;
@@ -14,6 +15,82 @@
     text-align: center;
     display: inline-block;
 }
+
+.menuDetail {
+    height: 100%;
+    padding: 20px;
+    border-radius: 6px;
+    grid-gap: 20px;
+    letter-spacing: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 1.2rem;
+    background-color: white;
+    text-align: center;
+    margin: 20px;
+    margin-bottom: 80px;
+    margin-top: 70px;
+    flex-direction: column;
+}
+
+.menuDetailImg {
+    width: 100%;
+    border-radius: 10%;
+    margin-bottom: 10px;
+    max-width: 300px;
+    border-radius: 5%;
+}
+
+
+@media screen and (min-width: 1000px) {
+
+    .menuDetailName {
+        font-size: 25px;
+        margin-top: 7px;
+        margin-bottom: 9px;
+        font-weight: 600;
+    }
+    .reviewCard {
+        width: 100%;
+    }
+}
+
 @media screen and (max-width: 700px) {
-    
+    .menuDetailImg {
+        width: 100%;
+        border-radius: 10%;
+        margin-bottom: 15px;
+        max-width: 250px;
+        border-radius: 5%;
+    }
+
+    .menuDetail {
+        height: 100%;
+        padding: 20px;
+        border-radius: 6px;
+        grid-gap: 20px;
+        letter-spacing: 2px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 1.2rem;
+        background-color: white;
+        text-align: center;
+        margin: 20px;
+        margin-bottom: 80px;
+        margin-top: 70px;
+    }
+
+    .menuDetailName {
+        font-size: 18px;
+        margin-top: 3px;
+        /* margin-bottom: 6px; */
+        font-weight: 600;
+        text-align: center;
+    }
+    .reviewCard{
+        width: 100%;
+        margin-top: -15px;
+    }
 }
