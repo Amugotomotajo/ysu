@@ -16,7 +16,6 @@ export const AdminMenuListPage = (): JSX.Element => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [activeSection, setActiveSection] = useState('S');
     const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
     const [sections, setSections] = useState<{
         menu_id: number,
@@ -44,14 +43,33 @@ export const AdminMenuListPage = (): JSX.Element => {
         menu_regist: number
     }[]>([]); // 초기 데이터를 저장할 상태
 
+    const [activeSection, setActiveSection] = useState(() => {
+        // localStorage에서 값을 가져오거나 기본값 'S'를 사용합니다.
+        const savedSection = localStorage.getItem('activeSection');
+        return savedSection || 'S';
+      });
+
     useEffect(() => {
         window.scrollTo(0, 0);
-        axios.get("/adminmenu").then((res) => {
+        if (location.state && location.state.activeSection) {
+            // 로그아웃 상태에서 새로운 사용자가 접속할 때, localStorage에 값이 없으면 'S'로 초기화합니다.
+            setActiveSection(location.state.activeSection);
+            localStorage.setItem('activeSection', 'S'); // 값이 있어도 무조건 'S'로 초기화
+        } else if (!localStorage.getItem('activeSection')) {
+            // 값이 없으면 무조건 'S'로 초기화
+            setActiveSection('S');
+            localStorage.setItem('activeSection', 'S');
+        } else {
+            // 페이지가 로드될 때마다 localStorage에 activeSection을 저장합니다.
+            localStorage.setItem('activeSection', activeSection);
+        }
+      
+          axios.get("/adminmenu").then((res) => {
             setSections(res.data);
             setOriginalSections(res.data);
             console.log(res);
-        })
-    }, [])
+          });
+        }, [location.state, activeSection]);
 
     const MenuListPage = () => {
         navigate("/adminmain");
@@ -68,21 +86,26 @@ export const AdminMenuListPage = (): JSX.Element => {
             setSections(originalSections);
             setResetSelect(null);
         }
+
+        if (section !== 'S') {
+            setActiveSection(section);
+        }
     };
 
 
     const handleLogout = () => {
-    // 세션 초기화
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("user_name");
-    localStorage.removeItem("user_dept");
-    localStorage.removeItem("isLoggedIn");
+        // 세션 초기화
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("user_name");
+        localStorage.removeItem("user_dept");
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem('activeSection');
 
-    setIsLoggedIn(false);
+        setIsLoggedIn(false);
 
-    // 로그인 페이지로 이동
-    navigate('/login');
-    window.alert("로그아웃 되었습니다.");
+        // 로그인 페이지로 이동
+        navigate('/login');
+        window.alert("로그아웃 되었습니다.");
     };
 
 
@@ -167,7 +190,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                 <div>
                     <div id="head" className={style.head}>
                         <Link className={style.link} to="/adminmain">
-                        <BiArrowBack className={style.faArrowLeft} />
+                            <BiArrowBack className={style.faArrowLeft} />
                         </Link>
                         <Link className={style.link} to="">
                             <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
@@ -175,10 +198,10 @@ export const AdminMenuListPage = (): JSX.Element => {
 
                         <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
                         <Link to="/login" className={style.link} >
-                        <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} /> 
+                            <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} />
                         </Link>
-                        <Link className={style.link} to="./menuinsert">
-                            <FiPlus className={style.faPlus} /> 
+                        <Link className={style.link} to="./menuinsert" state={{activeSection}}>
+                            <FiPlus className={style.faPlus} />
                         </Link>
 
                     </div>
@@ -213,8 +236,8 @@ export const AdminMenuListPage = (): JSX.Element => {
                         </div>
                         <Select options={options} className={style.selectoption} onChange={handleOptionChange} isClearable
                             isSearchable
-                            value={resetSelect} 
-                            placeholder="메뉴를 선택하세요"/>
+                            value={resetSelect}
+                            placeholder="메뉴를 선택하세요" />
                     </div>
                 )}
 
@@ -266,7 +289,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                                 <div className={style.menuInfo}>
                                     <div className={style.menuName}>{section['menu_name']}</div>
                                     <div className={style.menuPrice}>가격 : {(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
-                                    
+
                                     {/* 이 부분이 초록 원, 파란 원 부분 */}
                                     <div className={style.priceIcons}>
                                         {section['menu_pack'] === 1 && (
@@ -276,13 +299,11 @@ export const AdminMenuListPage = (): JSX.Element => {
                                             <span className={style.blueCircle}></span>
                                         )}
                                     </div>
-                                </div>   
+                                </div>
                             </button>
                         </div>
                     ))}
                 </div>
-
-
             </body>
         </>
     );

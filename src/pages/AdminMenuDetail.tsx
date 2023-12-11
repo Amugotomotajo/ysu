@@ -142,10 +142,10 @@ export const AdminMenuDetail = (): JSX.Element => {
             setShowModal(false);
             navigate('/adminmenu');
         }, 3000);
-        
+
         // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
         return () => clearTimeout(timeoutId);
-        
+
     };
 
 
@@ -165,13 +165,13 @@ export const AdminMenuDetail = (): JSX.Element => {
 
     const [showModal, setShowModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
-    
+
 
     const openDeleteModal = () => {
         setDeleteModal(true);
     }
 
-    
+
     const openDeModal = () => {
         setAction('back');
         setShowModal(true);
@@ -187,7 +187,7 @@ export const AdminMenuDetail = (): JSX.Element => {
         return () => clearTimeout(timeoutId);
     };
 
-    
+
 
     const closeUpdateModal = () => {
         setUpdateModal(false);
@@ -203,207 +203,207 @@ export const AdminMenuDetail = (): JSX.Element => {
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-    
+
         if (file) {
-          // 이미지를 Blob으로 변환
-          const blobImage = await convertFileToBlob(file);
-          // Blob을 File 객체로 생성 (파일명을 생성하여)
-          const fileName = generateFileName();
-          const blobFile = new File([blobImage], fileName);
-    
-          setSelectedImage(blobFile);
+            // 이미지를 Blob으로 변환
+            const blobImage = await convertFileToBlob(file);
+            // Blob을 File 객체로 생성 (파일명을 생성하여)
+            const fileName = generateFileName();
+            const blobFile = new File([blobImage], fileName);
+
+            setSelectedImage(blobFile);
         }
-      };
-    
-      // 이미지 파일 이름 생성 함수
-      let imageCounter: number = parseInt(localStorage.getItem('imageCounter') || '1', 10);
-      const generateFileName = () => {
+    };
+
+    // 이미지 파일 이름 생성 함수
+    let imageCounter: number = parseInt(localStorage.getItem('imageCounter') || '1', 10);
+    const generateFileName = () => {
         const fileName = `image${imageCounter}.jpg`;
         imageCounter += 1;
         localStorage.setItem('imageCounter', imageCounter.toString());
         return fileName;
-      };
-    
-      const convertFileToBlob = (file: File): Promise<Blob> => {
+    };
+
+    const convertFileToBlob = (file: File): Promise<Blob> => {
         return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const arrayBuffer = reader.result as ArrayBuffer;
-            const blob = new Blob([arrayBuffer], { type: file.type });
-            resolve(blob);
-          };
-          reader.readAsArrayBuffer(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const arrayBuffer = reader.result as ArrayBuffer;
+                const blob = new Blob([arrayBuffer], { type: file.type });
+                resolve(blob);
+            };
+            reader.readAsArrayBuffer(file);
         });
-      };
+    };
 
 
     return (
         <html className={MdStyle.html}>
-        <>
-            <div id="head" className={MenuStyle.head}>
-                <Link className={MenuStyle.link} to="/adminmenu">
-                    <BiArrowBack className={MenuStyle.faArrowLeft} />
-                </Link>
-                <Link className={MenuStyle.link} to="adminmain">
-                    <FontAwesomeIcon id="faArrowRightFromBracket" className={MenuStyle.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
-                </Link>
+            <>
+                <div id="head" className={MenuStyle.head}>
+                    <Link className={MenuStyle.link} to="/adminmenu">
+                        <BiArrowBack className={MenuStyle.faArrowLeft} />
+                    </Link>
+                    <Link className={MenuStyle.link} to="adminmain">
+                        <FontAwesomeIcon id="faArrowRightFromBracket" className={MenuStyle.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
+                    </Link>
 
-                <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
-                <Link to="/login" className={MenuStyle.link} onClick={handleLogout}>
-                <MdLogout className={MenuStyle.faArrowRightFromBracket} onClick={handleLogout} /> 
-                </Link>
-            </div>
-            <div className={MdStyle.menuDetail}>
-                {section && (
-                    <div id={section['menu_corner']}>
-                        {isEditing ? (
-                            // 이미지 업로드 입력
-                            <>
-                                <img
-                                    id="menuDetailImg"
-                                    className={MdStyle.menuDetailImg}
-                                    src={selectedImage ? URL.createObjectURL(selectedImage) : require(`../img/${decodeURIComponent(section['menu_image'])}`)}
-                                    alt={section['menu_name']}
-                                />
-                                <br />
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    className={MdStyle.fileForm}
-                                    onChange={(e) => {
-                                        const files = e.target.files;
-                                        if (files && files.length > 0) {
-                                            setSelectedImage(files[0]);
-                                            handleImageChange(e);
-                                        }
-                                    }}
-                                />
-                            </>
-                        ) : (
-                            <img id="menuDetailImg" className={MdStyle.menuDetailImg} src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
-                        )}
-                        <hr id="menuDetailHr" className={MdStyle.menuDetailHr}></hr>
-                        {isEditing ? (
-                            // 편집 모드일 때, input을 렌더링
-                            <div className={MdStyle.menuDetailInfo}>
-                                <div className={MdStyle.formGroup}>
-                                    <label>메뉴이름</label>
-                                    <input type="text" value={section['menu_name']} onChange={(e) => setSection({ ...section, menu_name: e.target.value })} />
-                                </div>
-                                <br />
-                                <div className={MdStyle.horizontalgroup}>
+                    <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
+                    <Link to="/login" className={MenuStyle.link} onClick={handleLogout}>
+                        <MdLogout className={MenuStyle.faArrowRightFromBracket} onClick={handleLogout} />
+                    </Link>
+                </div>
+                <div className={MdStyle.menuDetail}>
+                    {section && (
+                        <div id={section['menu_corner']}>
+                            {isEditing ? (
+                                // 이미지 업로드 입력
+                                <>
+                                    <img
+                                        id="menuDetailImg"
+                                        className={MdStyle.menuDetailImg}
+                                        src={selectedImage ? URL.createObjectURL(selectedImage) : require(`../img/${decodeURIComponent(section['menu_image'])}`)}
+                                        alt={section['menu_name']}
+                                    />
+                                    <br />
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className={MdStyle.fileForm}
+                                        onChange={(e) => {
+                                            const files = e.target.files;
+                                            if (files && files.length > 0) {
+                                                setSelectedImage(files[0]);
+                                                handleImageChange(e);
+                                            }
+                                        }}
+                                    />
+                                </>
+                            ) : (
+                                <img id="menuDetailImg" className={MdStyle.menuDetailImg} src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
+                            )}
+                            <hr id="menuDetailHr" className={MdStyle.menuDetailHr}></hr>
+                            {isEditing ? (
+                                // 편집 모드일 때, input을 렌더링
+                                <div className={MdStyle.menuDetailInfo}>
                                     <div className={MdStyle.formGroup}>
-                                        <label>코너종류</label>
-                                        <div className={MdStyle.radioGroup}>
-                                            <label><input type="radio" name="corner" value="S" checked={section['menu_corner'] === 'S'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> S</label>
-                                            <label><input type="radio" name="corner" value="B" checked={section['menu_corner'] === 'B'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> B</label>
-                                            <label><input type="radio" name="corner" value="F" checked={section['menu_corner'] === 'F'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> F</label>
+                                        <label>메뉴이름</label>
+                                        <input type="text" value={section['menu_name']} onChange={(e) => setSection({ ...section, menu_name: e.target.value })} />
+                                    </div>
+                                    <br />
+                                    <div className={MdStyle.horizontalgroup}>
+                                        <div className={MdStyle.formGroup}>
+                                            <label>코너종류</label>
+                                            <div className={MdStyle.radioGroup}>
+                                                <label><input type="radio" name="corner" value="S" checked={section['menu_corner'] === 'S'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> S</label>
+                                                <label><input type="radio" name="corner" value="B" checked={section['menu_corner'] === 'B'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> B</label>
+                                                <label><input type="radio" name="corner" value="F" checked={section['menu_corner'] === 'F'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> F</label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <br />
-                                <div className={MdStyle.formGroup}>
-                                    <label>메뉴가격</label>
-                                    <input type="text" value={section['menu_price']} onChange={(e) => setSection({ ...section, menu_price: parseInt(e.target.value, 10) || 0 })} />
-                                </div>
-                                <br />
-                                <div className={MdStyle.horizontalgroup}>
+                                    <br />
                                     <div className={MdStyle.formGroup}>
-                                        <label>포장가능여부</label>
-                                        <div className={MdStyle.radioGroup}>
-                                            <label><input type="radio" name="pack" value="1" checked={section['menu_pack'] === 1} onChange={(e) => setSection({ ...section, menu_pack: parseInt(e.target.value, 10) || 0 })} /> O</label>
-                                            <label><input type="radio" name="pack" value="0" checked={section['menu_pack'] === 0} onChange={(e) => setSection({ ...section, menu_pack: parseInt(e.target.value, 10) || 0 })} /> X</label>
+                                        <label>메뉴가격</label>
+                                        <input type="text" value={section['menu_price']} onChange={(e) => setSection({ ...section, menu_price: parseInt(e.target.value, 10) || 0 })} />
+                                    </div>
+                                    <br />
+                                    <div className={MdStyle.horizontalgroup}>
+                                        <div className={MdStyle.formGroup}>
+                                            <label>포장가능여부</label>
+                                            <div className={MdStyle.radioGroup}>
+                                                <label><input type="radio" name="pack" value="1" checked={section['menu_pack'] === 1} onChange={(e) => setSection({ ...section, menu_pack: parseInt(e.target.value, 10) || 0 })} /> O</label>
+                                                <label><input type="radio" name="pack" value="0" checked={section['menu_pack'] === 0} onChange={(e) => setSection({ ...section, menu_pack: parseInt(e.target.value, 10) || 0 })} /> X</label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <br />
+                                    <br />
 
-                                <div className={MdStyle.horizontalgroup}>
-                                    <div className={MdStyle.formGroup}>
-                                        <label>판매가능여부</label>
-                                        <div className={MdStyle.radioGroup}>
-                                            <label><input type="radio" name="sales" value="1" checked={section['menu_sales'] === 1} onChange={(e) => setSection({ ...section, menu_sales: parseInt(e.target.value, 10) || 0 })} /> O</label>
-                                            <label><input type="radio" name="sales" value="0" checked={section['menu_sales'] === 0} onChange={(e) => setSection({ ...section, menu_sales: parseInt(e.target.value, 10) || 0 })} /> X</label>
+                                    <div className={MdStyle.horizontalgroup}>
+                                        <div className={MdStyle.formGroup}>
+                                            <label>판매가능여부</label>
+                                            <div className={MdStyle.radioGroup}>
+                                                <label><input type="radio" name="sales" value="1" checked={section['menu_sales'] === 1} onChange={(e) => setSection({ ...section, menu_sales: parseInt(e.target.value, 10) || 0 })} /> O</label>
+                                                <label><input type="radio" name="sales" value="0" checked={section['menu_sales'] === 0} onChange={(e) => setSection({ ...section, menu_sales: parseInt(e.target.value, 10) || 0 })} /> X</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div className={MdStyle.horizontalgroup}>
+                                        <div className={MdStyle.formGroup}>
+                                            <label>메뉴등록여부</label>
+                                            <div className={MdStyle.radioGroup}>
+                                                <label><input type="radio" name="regist" value="1" checked={section['menu_regist'] === 1} onChange={(e) => setSection({ ...section, menu_regist: parseInt(e.target.value, 10) || 0 })} /> O</label>
+                                                <label><input type="radio" name="regist" value="0" checked={section['menu_regist'] === 0} onChange={(e) => setSection({ ...section, menu_regist: parseInt(e.target.value, 10) || 0 })} /> X</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <br />
-                                <div className={MdStyle.horizontalgroup}>
-                                    <div className={MdStyle.formGroup}>
-                                        <label>메뉴등록여부</label>
-                                        <div className={MdStyle.radioGroup}>
-                                            <label><input type="radio" name="regist" value="1" checked={section['menu_regist'] === 1} onChange={(e) => setSection({ ...section, menu_regist: parseInt(e.target.value, 10) || 0 })} /> O</label>
-                                            <label><input type="radio" name="regist" value="0" checked={section['menu_regist'] === 0} onChange={(e) => setSection({ ...section, menu_regist: parseInt(e.target.value, 10) || 0 })} /> X</label>
-                                        </div>
-                                    </div>
+                            ) : (
+                                // 편집 모드가 아닐 때, div를 렌더링
+                                <div className={MdStyle.menuDetailInfo}>
+                                    <div className={MdStyle.menuDetailName}>{section['menu_name']}</div>
+                                    <div className={MdStyle.menuDetailPrice}>가격 : {(menuPack === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
                                 </div>
-                            </div>
-                        ) : (
-                            // 편집 모드가 아닐 때, div를 렌더링
-                            <div className={MdStyle.menuDetailInfo}>
-                                <div className={MdStyle.menuDetailName}>{section['menu_name']}</div>
-                                <div className={MdStyle.menuDetailPrice}>가격 : {(menuPack === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
-                            </div>
-                        )}
+                            )}
+                        </div>
+                    )}
+                    {isEditing ? (
+                        // 편집 모드일 때, 저장 버튼을 표시
+                        <>
+                            <button id="optionButton" className={MdStyle.optionButton1} onClick={openUpdateModal}>저장</button>
+                            <button id="optionButton" className={MdStyle.optionButton2} onClick={handleBackClick}>취소</button>
+                        </>
+                    ) : (
+                        // 편집 모드가 아닐 때, 메뉴 수정 및 삭제 버튼 표시
+                        <>
+                            <button id="optionButton" className={MdStyle.optionButton1} onClick={handleUpdateFormClick}>메뉴 수정</button>
+                            <button id="optionButton" className={MdStyle.optionButton2} onClick={openDeleteModal}>메뉴 삭제</button>
+                        </>
+                    )}
+                </div>
+
+                {/* 모달 창 */}
+                {deleteModal && (
+                    <div className={MdStyle.modal}>
+                        <div className={MdStyle.modalContent}>
+                            <span className={MdStyle.close} onClick={closeDeleteModal}>&times;</span>
+                            <p>메뉴를 삭제하시겠습니까?</p>
+                            <button type="submit" className={MdStyle.btncancel} onClick={closeDeleteModal}>취소</button>
+                            <button type="submit" className={MdStyle.btninsert} onClick={openDeModal}>삭제</button>
+                        </div>
                     </div>
                 )}
-                {isEditing ? (
-                    // 편집 모드일 때, 저장 버튼을 표시
-                    <>
-                        <button id="optionButton" className={MdStyle.optionButton1} onClick={openUpdateModal}>저장</button>
-                        <button id="optionButton" className={MdStyle.optionButton2} onClick={handleBackClick}>취소</button>
-                    </>
-                ) : (
-                    // 편집 모드가 아닐 때, 메뉴 수정 및 삭제 버튼 표시
-                    <>
-                        <button id="optionButton" className={MdStyle.optionButton1} onClick={handleUpdateFormClick}>메뉴 수정</button>
-                        <button id="optionButton" className={MdStyle.optionButton2} onClick={openDeleteModal}>메뉴 삭제</button>
-                    </>
+
+                {updateModal && (
+                    <div className={MdStyle.modal}>
+                        <div className={MdStyle.modalContent}>
+                            <span className={MdStyle.close} onClick={closeUpdateModal}>&times;</span>
+                            <p>메뉴를 수정하시겠습니까?</p>
+                            <button type="submit" className={MdStyle.btncancel} onClick={closeUpdateModal}>취소</button>
+                            <button type="submit" className={MdStyle.btninsert} onClick={openUpModal}>수정</button>
+                        </div>
+                    </div>
                 )}
-            </div>
 
-            {/* 모달 창 */}
-            {deleteModal && (
-                <div className={MdStyle.modal}>
-                    <div className={MdStyle.modalContent}>
-                        <span className={MdStyle.close} onClick={closeDeleteModal}>&times;</span>
-                        <p>메뉴를 삭제하시겠습니까?</p>
-                        <button type="submit" className={MdStyle.btncancel} onClick={closeDeleteModal}>취소</button>
-                        <button type="submit" className={MdStyle.btninsert} onClick={openDeModal}>삭제</button>
+
+                {showModal && (
+                    <div className={MdStyle.modal}>
+                        <div className={MdStyle.modalContent}>
+                            {action === 'update' ? (
+                                <div>
+                                    <img src={require(`../img/${decodeURIComponent('InMenu.gif')}`)} alt="업데이트 이미지" />
+                                    <p>메뉴를 수정하였습니다.</p>
+                                </div>
+                            ) : (
+                                <div>
+                                    <img src={require(`../img/${decodeURIComponent('DeMenu.gif')}`)} alt="삭제 이미지" />
+                                    <p>메뉴를 삭제하였습니다.</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-            )}
-
-            {updateModal && (
-                <div className={MdStyle.modal}>
-                    <div className={MdStyle.modalContent}>
-                        <span className={MdStyle.close} onClick={closeUpdateModal}>&times;</span>
-                        <p>메뉴를 수정하시겠습니까?</p>
-                        <button type="submit" className={MdStyle.btncancel} onClick={closeUpdateModal}>취소</button>
-                        <button type="submit" className={MdStyle.btninsert} onClick={openUpModal}>수정</button>
-                    </div>
-                </div>
-            )}
-
-
-            {showModal && (
-                <div className={MdStyle.modal}>
-                    <div className={MdStyle.modalContent}>
-                        {action === 'update' ? (
-                            <div>
-                                <img src={require(`../img/${decodeURIComponent('InMenu.gif')}`)} alt="업데이트 이미지" />
-                                <p>메뉴를 수정하였습니다.</p>
-                            </div>
-                        ) : (
-                            <div>
-                                <img src={require(`../img/${decodeURIComponent('DeMenu.gif')}`)} alt="삭제 이미지" />
-                                <p>메뉴를 삭제하였습니다.</p>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
-        </>
+                )}
+            </>
         </html>
     );
 }

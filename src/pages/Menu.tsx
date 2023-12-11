@@ -13,7 +13,6 @@ export const Menu = (): JSX.Element => {
     const corner = ['S', 'B', 'F', 'P']
     const navigate = useNavigate();
     const location = useLocation();
-    const [activeSection, setActiveSection] = useState('S');
     const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [sections, setSections] = useState<{
@@ -31,13 +30,31 @@ export const Menu = (): JSX.Element => {
     const userName = localStorage.getItem("user_name");
     const userDept = localStorage.getItem("user_dept")
 
+    const [activeSection, setActiveSection] = useState(() => {
+        // localStorage에서 값을 가져오거나 기본값 'S'를 사용합니다.
+        const savedSection = localStorage.getItem('activeSection');
+        return savedSection || 'S';
+    });
+    
     useEffect(() => {
         window.scrollTo(0, 0);
+        if (location.state && location.state.activeSection) {
+            // 로그아웃 상태에서 새로운 사용자가 접속할 때, localStorage에 값이 없으면 'S'로 초기화합니다.
+            setActiveSection(location.state.activeSection);
+            localStorage.setItem('activeSection', 'S'); // 값이 있어도 무조건 'S'로 초기화
+        } else if (!localStorage.getItem('activeSection')) {
+            // 값이 없으면 무조건 'S'로 초기화
+            setActiveSection('S');
+            localStorage.setItem('activeSection', 'S');
+        } else {
+            // 페이지가 로드될 때마다 localStorage에 activeSection을 저장합니다.
+            localStorage.setItem('activeSection', activeSection);
+        }
         axios.get("/menu").then((res) => {
             setSections(res.data);
             console.log(res);
-        })
-    }, [])
+        });
+    }, [location.state, activeSection]);
 
     const handleSectionClick = (section: string) => {
         setActiveSection(section);
@@ -50,6 +67,7 @@ export const Menu = (): JSX.Element => {
         localStorage.removeItem("user_name");
         localStorage.removeItem("user_dept");
         localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem('activeSection');
 
         setIsLoggedIn(false);
         // 로그인 페이지로 이동

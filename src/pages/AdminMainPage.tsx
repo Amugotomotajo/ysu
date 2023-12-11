@@ -52,8 +52,8 @@ export const AdminMainPage = (): JSX.Element => {
     window.alert("로그아웃 되었습니다.");
   };
   return (
-<body className={style.bodymain}>
-<div id="head" className={style.head}>
+    <body className={style.bodymain}>
+      <div id="head" className={style.head}>
         <Link className={style.link} to="/">
           <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={style.faArrowLeft} />
         </Link>
@@ -65,38 +65,38 @@ export const AdminMainPage = (): JSX.Element => {
           <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracket} />
         </Link>
         <Link to="/login" className={style.link} onClick={handleLogout}>
-        <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} /> 
+          <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} />
         </Link>
       </div>
-    <div className={style.container}>
+      <div className={style.container}>
         <div className={style.card}>
-            <div className={style.circle}>
-                <h2><FaUser /></h2>
-            </div>
-            <div className={style.content}>
-                <a onClick={userPage}>사용자 관리</a>
-             </div>
+          <div className={style.circle}>
+            <h2><FaUser /></h2>
+          </div>
+          <div className={style.content}>
+            <a onClick={userPage}>사용자 관리</a>
+          </div>
         </div>
         <div className={style.card}>
-            <div className={style.circle}>
-                <h2><MdOutlineRestaurantMenu /></h2>
-            </div>
-            <div className={style.content}>
-                <a onClick={menuPage}>메뉴 관리</a>
-             </div>
- 
+          <div className={style.circle}>
+            <h2><MdOutlineRestaurantMenu /></h2>
+          </div>
+          <div className={style.content}>
+            <a onClick={menuPage}>메뉴 관리</a>
+          </div>
+
         </div>
         <div className={style.card}>
-            <div className={style.circle}>
-                <h2><PiNoteLight /></h2>
-            </div>
-            <div className={style.content}>
-                <a onClick={reviewPage}>리뷰 관리</a>
-            </div>
+          <div className={style.circle}>
+            <h2><PiNoteLight /></h2>
+          </div>
+          <div className={style.content}>
+            <a onClick={reviewPage}>리뷰 관리</a>
+          </div>
         </div>
-    </div> 
-    
-</body>
+      </div>
+
+    </body>
   )
 }
 

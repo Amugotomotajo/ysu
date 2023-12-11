@@ -12,7 +12,6 @@ body {
     margin: 0;
     background-color: #f1f1f1;
     width:100%;
-    font-family: "SUIT-Regular";
     
 }
 
@@ -334,7 +333,7 @@ li a:hover {
     }
 
 }
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap'); 
 @media screen and (max-width: 700px) {
 
     .menuList {
@@ -417,6 +416,7 @@ li a:hover {
         font-size: 17px;
         margin-bottom: 45px;
         color: black;
+        font-family: 'Noto Sans KR', sans-serif;
     }
 
     .soldOutOverlay::before {
