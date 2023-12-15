@@ -1,0 +1,57 @@
+.reviewList {
+    align-items: center;
+    padding-top: 50px;
+    justify-content: center;
+}
+
+.reviewMeta {
+    padding-top: 10px;
+    text-align: center;
+    /* padding-left: 10px; */
+}
+
+.result {
+    padding-top: 50px;
+}
+
+.unameTitle {
+    padding-left: 10px;
+    justify-content: center;
+}
+
+.review {
+    padding-left: 10px;
+    justify-content: center;
+}
+
+.reviewBtnAll {
+    display: flex;
+    justify-content: center;
+}
+
+.reviewRate {
+    font-size: medium;
+}
+
+@media screen and (min-width: 700px) {
+    .reviewItem {
+        align-items: center;
+        /* padding-left: 15%; */
+        width:100%;
+
+    }
+}
+
+@media screen and (max-width: 700px) {
+    #reviewList {
+        align-items: center;
+        padding-top: 50px;
+        display: fixed;
+        /* justify-content: center; */
+    }
+
+    .reviewItem {
+        align-items: center;
+        margin-left: 9px;
+    }
+}

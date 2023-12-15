@@ -1,0 +1,246 @@
+
+.body {
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(244, 244, 244);
+}
+
+/* 상단 고정 바 */
+.cartTop {
+    /* background-color: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    height: 40px;
+    font-size: 18px;
+    display: flex;
+    /* float: bottom;
+    padding: 10px 15px;
+    justify-content: space-between; */
+
+    box-sizing: border-box;
+    background-color: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    padding: 10px 15px;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.backBtn {
+    width: 100%;
+    min-width: 30px;
+    max-width: 35px;
+    font-size: 2em;
+    color: rgb(42, 52, 55);
+    display: flex;
+    align-items: center;
+}
+
+.topTxt {
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    padding: 10px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 100px;
+    margin-top: 50px;
+    overflow-x: hidden;
+}
+
+.menuBox { 
+    width: 100%;
+    height: 70%;
+}
+
+.menuInfo {
+    display: flex;
+    background-color: white;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    position: relative;
+    width: 700px;
+    border-radius: 6px;
+    justify-self: center;
+}
+
+.cartMInfo {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.menuImg {
+    width: 90px;
+    height: 90px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 12px 5px 5px;
+    border-radius: 5px;
+}
+
+.menuName{
+    font-weight: bold;
+    font-size: 17.5px;
+    margin-bottom: 5px;
+}
+
+.menuPrice {
+    font-size: 17.5px;
+    font-weight: 600;
+}
+
+.menuQuantity {
+    font-size: 15px;
+}
+
+.isPacked {
+    font-size: 15px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.menuQuantity {
+    width: 80px;
+    display: flex;
+    position: absolute;
+    top: 30%;
+    right: 0;
+    margin-right: 50px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.count {
+    display: flex;
+}
+
+.minus, .plus {
+    border-radius: 0px;
+    height: 40px;
+    width: 40px;
+}
+
+.quantityInput {
+    font-size: 13px;
+    border-radius: 0;
+    width: 45px;
+    text-align: center;
+}
+
+
+.cartDelBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+    background: none;
+}
+
+/* 가격 */
+.priceBox {
+    background-color: white;
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.priceTxt, .totalPrice{
+    margin: 15px ;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.totalPrice {
+    margin: 10px ;
+}
+
+
+/* 하단 고정 */
+.bottom {
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+}
+.orderBtn {
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color:  rgb(80, 176, 209);
+        /* 학교 전용 색 
+    MAGENTA rgb(239, 35, 142)
+    BLUE rgb(80, 176, 209)
+    GREEN rgb(181,220,16)
+    D.GRAY rgb(45,52,55) */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: 0;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 700px) {
+    .cartTop {
+        height: 50px;
+    }
+
+    .menuInfo {
+        width: 100%;
+    }
+    
+    .content {
+        margin-top: 50px;
+    }
+
+    .minus, .plus {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .quantityInput {
+        font-size: 13px;
+    }
+
+    .menuQuantity {
+        top: 37%;
+        margin-right: 40px;
+    }
+}

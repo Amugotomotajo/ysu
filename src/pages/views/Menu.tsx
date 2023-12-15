@@ -1,22 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import style from './Menu.module.css';
+import style from '../css/Menu.module.css';
 import axios from 'axios';
 import { faArrowLeft, faCartShopping, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
-import ysuLogo from './img/ysu_logo.jpg';
+import ysuLogo from '../img/ysu_logo.jpg';
 import { BiArrowBack } from "react-icons/bi";
 import { MdLogout } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
 import { BsFillPersonFill } from "react-icons/bs";
+import WrongApproach from './WrongApproach';
 
 export const Menu = (): JSX.Element => {
     const corner = ['S', 'B', 'F', 'P']
     const navigate = useNavigate();
     const location = useLocation();
     const [activeSection, setActiveSection] = useState('S');
-    const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
+    // const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
+    // const [user_id, serUserId] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [sections, setSections] = useState<{
         menu_id: number,
@@ -64,21 +66,17 @@ export const Menu = (): JSX.Element => {
             <head>
                 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
             </head>
+            { userId ? (
             <body className={style.mnbody}>
                 <div>
                     <div id="head" className={style.head}>
                         <Link className={style.link} to="/MyPage">
                             <BsFillPersonFill className={style.faArrowLeft}/>
                         </Link>
-                        <Link className={style.link} to="" style={{cursor:'default'}}>
-                            <BiArrowBack className={style.faArrowLeft} style={{color: 'transparent'}} />
-                        </Link>
 
                         <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
-                        <Link to="/" className={style.link} onClick={handleLogout}>
-                            <MdLogout className={style.faArrowRightFromBracket} />
-                        </Link>
-                        <Link className={style.link} to="/">
+                    
+                        <Link className={style.link} to="/cart">
                             <IoCartSharp className={style.faCartShopping} />
                         </Link>
                     </div>
@@ -127,39 +125,27 @@ export const Menu = (): JSX.Element => {
                                 {/* Sold Out 오버레이 */}
                                 {section['menu_sales'] === 0 && (
                                     <div className={style.soldOutOverlay}>
-                                        <img src={require(`./img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} loading="lazy"/>
+                                        <img src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} loading="lazy"/>
                                     </div>
                                 )}
 
                                 {section['menu_sales'] === 1 && (
-                                    <img src={require(`./img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} loading="lazy" />
+                                    <img src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} loading="lazy" />
                                 )}
 
                                 <hr id="menuHr" className={style.menuHr}></hr>
                                 <div className={style.menuInfo}>
                                     <div className={style.menuName}>{section['menu_name']}</div>
-                                    <div className={style.menuPrice}>가격 : {(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
+                                    <div className={style.menuPrice}>{(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
                                 </div>
                             </button>
                         </div>
                     ))}
                 </div>
-
-
             </body>
-
-            {/* <footer>
-                <div id="cart">
-                    <h3>장바구니</h3>
-                    <ul id="cart-items" style={{ maxHeight: '80%', overflowY: 'auto' }}>
-                        장바구니 아이템들을 여기에 렌더링합니다. 
-                    </ul>
-                    <p id="total">합계: 원</p> {cart.total}
-                </div>
-                <div id="footer-buttons">
-                    <button>이전 페이지로</button>
-                </div>
-            </footer> */}
+            ) : (
+                <WrongApproach />
+            )}
         </>
     );
 }

@@ -3,7 +3,6 @@
     padding: 20px;
     border-radius: 6px;
     grid-gap: 20px;
-    letter-spacing: 2px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,7 +20,6 @@
     padding: 20px;
     border-radius: 6px;
     grid-gap: 20px;
-    letter-spacing: 2px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -72,14 +70,12 @@
 
 .nameSpan {
     font-size: 35px;
+    margin: 5px;
 }
 
 .deptSpan, .idSpan {
-    font-size: 18px;
-}
-
-.myPage span {
     margin: 5px;
+    font-size: 18px;
 }
 
 .myPageButtons {
@@ -92,16 +88,32 @@
 
 .RiFileList3Line {
     color: rgb(45, 52, 55);
-    font-size: 70px;
+    font-size: 50px;
 }
 
 .myPageButtons a {
     display: flex;
-        flex-direction: column;
-        text-decoration: none;
-        padding: 20px;
+    flex-direction: column;
+    text-decoration: none;
+    padding: 20px;
+    background: none;
 }
 
+.myPageButtons button {
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    border-radius: 5px;
+    background: none;
+    width: 50px;
+    color: black;
+    padding: 0px;
+}
+
+.nameSpanUnderline {
+    margin: 0px;
+    background:linear-gradient(180deg,rgba(255,255,255,0) 70%, gold 50%);
+}
 @media screen and (max-width: 700px) {
     .profileDiv {
         display: flex;
@@ -138,8 +150,12 @@
 
     .myPageButtons a {
         display: flex;
-            flex-direction: column;
-            text-decoration: none;
-            padding: 0px 35px;
+        flex-direction: column;
+        text-decoration: none;
+        padding: 0px 35px;
+    }
+
+    .pageHead {
+        top: 50px;
     }
 }

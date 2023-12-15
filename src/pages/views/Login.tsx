@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import style from './Login.module.css';
+import style from '../css/Login.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BsFillPersonFill } from "react-icons/bs";
 import { useCookies } from 'react-cookie';
-import ysuLogo from './img/ysu_logo2.png';
+import ysuLogo from '../img/MainLogo.png';
 
 export const Login = (): JSX.Element => {
     const [u_id, setUid] = useState(""); // 사용자 ID 상태
@@ -30,7 +30,7 @@ export const Login = (): JSX.Element => {
             setShowModal(true);
 
             if (storedUserDept === "admin") {
-                navigate('/AdminPage', {
+                navigate('/adminmenu', {
                     state: {
                         u_id: storedUserId,
                         u_name: storedUserName,
@@ -102,7 +102,7 @@ export const Login = (): JSX.Element => {
                     localStorage.setItem("user_name", res.data.u_name);
                     localStorage.setItem("user_dept", res.data.u_dept);
                     if (res.data.u_dept === "admin") {
-                        navigate('/AdminPage', {
+                        navigate('/adminMenu', {
                             state: {
                                 u_id: userId,
                                 u_name: res.data.u_name,
@@ -110,7 +110,7 @@ export const Login = (): JSX.Element => {
                             }
                         });
                     } else {
-                        navigate('/Menu', {
+                        navigate('/menu', {
                             state: {
                                 u_id: userId,
                                 u_name: res.data.u_name,
@@ -133,6 +133,7 @@ export const Login = (): JSX.Element => {
                 <div className={style.logoDiv}>
                     <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
                 </div>
+                
                 <div id={style.loginDiv}>
                     <div className={style.loginWrapper}>
                         <div id={style.loginForm}>

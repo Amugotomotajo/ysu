@@ -7,8 +7,8 @@
 }
 
 .logo {
-    width: 12%;
-    min-width: 150px;
+    width: 15%;
+    min-width: 250px;
     padding-left: 10%;
     margin: 20px 0px;
 }
@@ -20,13 +20,14 @@
     flex-direction: column;
     align-items: center;
     height: 100vh; /* calc(100vh - 85px) */
-    background-image: url('./img/UI_pattern.jpg');
+    background-image: url('../img/UI_pattern.jpg');
     background-size: 1200px;
     background-repeat: no-repeat; 
     background-attachment: fixed; 
     background-position: right bottom; 
     background-color: #fff;
     width: 100%;
+    overflow: hidden;
 }
 
 .loginWrapper{
@@ -82,13 +83,13 @@
   .remember-check + label {
     cursor: pointer;
     padding-left: 26px;
-    background-image: url("./img/checkbox.png");
+    background-image: url("../img/checkbox.png");
     background-repeat: no-repeat;
     background-size: contain;
   }
   
   .remember-check:checked + label::after {
-    background-image: url("./img/checkbox-active.png");
+    background-image: url("../img/checkbox-active.png");
     background-repeat: no-repeat;
     background-size: contain;
   }
@@ -110,7 +111,7 @@
 
     #loginDiv {
         height: calc(100vh - 79px);
-        background-image: url('./img/UI_pattern.jpg');
+        background-image: url('../img/UI_pattern.jpg');
         background-size: 150%;
     }
     

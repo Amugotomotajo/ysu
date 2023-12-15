@@ -13,6 +13,7 @@ body {
     background-color: #f1f1f1;
     width:100%;
     font-family: "SUIT-Regular";
+    
 }
 
 .head {
@@ -22,7 +23,7 @@ body {
     top: 0;
     left: 0;
     background-color: #fff;
-    padding: 10px 15px;
+    padding: 10px;
     width: 100%;
     height: 60px;
     display: flex;
@@ -39,9 +40,10 @@ body {
     width: 100%;
     max-width: 140px;
     margin: 0 auto; /* 로고를 가운데에 고정 */
+    cursor: pointer;
 }
 
-.faArrowLeft, .faCartShopping, .faArrowRightFromBracket {
+.faArrowLeft, .faCartShopping, .faArrowRightFromBracket, .faPlus {
     width: 100%;
     min-width: 30px;
     max-width: 35px;
@@ -55,7 +57,7 @@ body {
     margin-right: 10px;
 }
 
-.menuNav .menuUl {
+nav ul {
     list-style-type: none;
     width: 100%;
     margin: 0;
@@ -92,6 +94,7 @@ body {
 
 .menuHr {
     width: 100%;
+    margin-top: 15px;
 }
 
 li {
@@ -149,6 +152,7 @@ li a:hover {
 .menuList button:hover {
     background-color: #dfdfdf;
     transition: 0.7s;
+    cursor: pointer;
 }
 
 .menuList .hidden {
@@ -189,10 +193,90 @@ li a:hover {
     font-weight: bold;
 }
 
+.selectMenu{
+    margin-top:150px;
+    margin-right: 50px;
+    display: flex;
+    align-items: right;
+    justify-content: space-between;
+}
+
+.selectoption{
+    width: 220px;
+}
+
+.selectoptionP{
+    width: 220px;
+    opacity: 0;
+}
+
+.selectoption:hover, .selectoption:focus {
+    background-color: #f1f1f1; /* 마우스를 올렸을 때와 포커스 시 배경색 변경 */
+    outline: none; /* 포커스 효과 제거 */
+  }
+
+  .selectoption option {
+    font-size: 14px;
+    padding: 8px;
+    background-color: #f1f1f1;
+  }
+  
+  .selectoption option:hover {
+    background-color: #f1f1f1;
+  }
+
+  .priceIcons {
+    display: flex;
+    align-items: center;
+}
+
+.redCircle,
+.blueCircle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.redCircle {
+    background-color: rgb(80, 176, 209);
+}
+
+.blueCircle {
+    background-color: rgb(181, 220, 16);
+}
+
+.MainpriceIcons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.MainredCircle,
+.MainblueCircle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.MainredCircle {
+    background-color: rgb(80, 176, 209);
+    margin-left: 30px;
+}
+
+.MainblueCircle {
+    background-color: rgb(181, 220, 16);
+}
+
+.CircleText{
+    margin-right: 20px;
+}
 
 @media screen and (min-width: 700px) {
 
     .menuList img {
+        width: 100%;
         height: 100%;
         min-width: 60px;
         border-radius: 10%;
@@ -200,6 +284,7 @@ li a:hover {
         max-width: 500px;
         margin: 0 auto;
         max-width: 200px;
+        max-height: 200px;
     }
 
     .menuInfo {
@@ -209,22 +294,19 @@ li a:hover {
         flex-direction: column;
     }
 
-    .menuName {
-        font-size: 20px;
-        margin-top:5px;
-        margin-bottom: 9px;
-        font-weight:600;
-    }
-    
     .menuPrice {
         font-size: 17px;
         margin-bottom: 15px;
     }
 
+    .menuCircle {
+        font-size: 17px;
+    }
+
     .menuList {
         height: 100%;
         padding:20px;
-        margin-top: 140px;
+        margin-top: -10px;
         border-radius: 6px;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -240,10 +322,12 @@ li a:hover {
     }
 
     .menuName {
-        font-size: 18px;
+        font-size: 16px;
         margin-top:10px;
         margin-bottom: 9px;
         font-weight:600;
+        display: flex;
+        flex-direction: row;
     }
 
     .menuPrice {
@@ -254,17 +338,6 @@ li a:hover {
 }
 
 @media screen and (max-width: 700px) {
-    .head {
-        height: 50px;
-    }
-
-    .logo {
-        width: 120px;
-    }
-
-    li a {
-        font-size: 15px;
-    }
 
     .menuList {
         display: grid;
@@ -273,15 +346,16 @@ li a:hover {
 
     .menuList img {
         width: 90px;
+        height: 90px;
         border-radius: 10%;
         max-width: 200px;
+        max-height: 200px;
     }
 
-    .menuNav .menuUl {
+    nav ul {
         list-style-type: none;
         margin: 0;
         padding: 0;
-        top: 50px;
         width: 100%;
         background-color: #f1f1f1;
         position: fixed;
@@ -322,7 +396,7 @@ li a:hover {
     .menuList {
         height: 100%;
         padding:20px;
-        margin-top: 130px;
+        margin-top: -10px;
         border-radius: 6px;
         display: grid;
         grid-gap:15px; 
@@ -334,19 +408,93 @@ li a:hover {
     }
 
     .menuName {
-        font-size: 18px;
+        font-size: 20px;
         margin-top:5px;
         margin-bottom: 9px;
         font-weight:600;
+        color: black;
+        display: flex;
+        flex-direction: row;
     }
 
     .menuPrice {
-        font-size: 15px;
+        font-size: 17px;
         margin-bottom: 45px;
+        color: black;
     }
 
     .soldOutOverlay::before {
         font-size: 1.2em;
     }
+
+    .MainpriceIcons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    
+    .MainredCircle,
+    .MainblueCircle {
+        width: 7px;
+        height: 7px;
+        border-radius: 100%;
+        margin-right: 10px;
+    }
+    
+    .MainredCircle {
+        background-color: rgb(80, 176, 209);
+        margin-left: 30px;
+    }
+    
+    .MainblueCircle {
+        background-color: rgb(181, 220, 16);
+    }
+    
+    .CircleText{
+        margin-right: 20px;
+        font-size: 15px;
+    }
+    /* .priceIcons {
+        display: flex;
+        align-items: center;
+        margin-top:-30px;
+        justify-content: flex-end;
+    } */
+    
+    .redCircle,
+    .blueCircle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+    
+    .redCircle {
+        background-color: rgb(80, 176, 209);
+    }
+    
+    .blueCircle {
+        background-color: rgb(181, 220, 16);
+    }
+
+    .CircleText{
+        font-size: 12px;
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+
+    .selectoption{
+        width: 200px;
+        font-size: 11px;
+        margin-right: -20px;
+    }
+
+    .selectoptionP{
+        width: 200px;
+        font-size: 11px;
+        margin-right: -20px;
+        opacity: 0;
+    }
+
 
 }

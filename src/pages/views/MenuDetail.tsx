@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import MenuStyle from './Menu.module.css';
-import MdStyle from './MenuDetail.module.css';
-import ysuLogo from './img/ysu_logo.jpg';
+import MenuStyle from '../css/Menu.module.css';
+import MdStyle from '../css/MenuDetail.module.css';
+import ysuLogo from '../img/ysu_logo.jpg';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
@@ -9,14 +9,14 @@ import { BiArrowBack } from "react-icons/bi";
 import { MdLogout } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
 import { Cookies, useCookies } from 'react-cookie';
+import WrongApproach from './WrongApproach';
 
 export const MenuDetail = (): JSX.Element => {
-    const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
     const location = useLocation();
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     // const [cookies, setCookie, removeCookie] = useCookies(['rememberUserId']);
-    const [section, setSection] = useState<{
+    const [section, setSection] = useState < {
         menu_id: number,
         menu_name: string,
         menu_corner: string,
@@ -25,31 +25,31 @@ export const MenuDetail = (): JSX.Element => {
         menu_image: string,
         menu_sales: number,
         menu_regist: number
-    }>();
+    } > ();
 
 
-    const [userInfo, setUserInfo] = useState<{
+    const [userInfo, setUserInfo] = useState < {
         u_id: string,
         u_name: string,
         u_dept: string
-    }>({
+    } > ({
         u_id: "",
         u_name: "",
         u_dept: ""
     });
 
-    const menuId = location.state.menu_id;
-    const menuPack = location.state.menu_pack;
+    const menuId = location.state ? location.state.menu_id : 1;
+    const menuPack = location.state ? location.state.menu_pack : 1;
+    // localStorage에서 유저 정보 가져오기
+    const userId = localStorage.getItem("user_id") || '';
+    const userName = localStorage.getItem("user_name") || '';
+    const userDept = localStorage.getItem("user_dept") || '';
+
     useEffect(() => {
 
-        // localStorage에서 유저 정보 가져오기
-        const userId = localStorage.getItem("user_id") || '';
-        const userName = localStorage.getItem("user_name") || '';
-        const userDept = localStorage.getItem("user_dept") || '';
-
-        setMenuId(menuId);
         setUserInfo({ u_id: userId, u_name: userName, u_dept: userDept });
 
+        console.log(menuId);
         if (menuId !== undefined) {
             // menu_id가 정의되어 있으면 해당 메뉴 데이터를 가져오기
             axios.get(`/menu/${menuId}`)
@@ -93,7 +93,7 @@ export const MenuDetail = (): JSX.Element => {
         localStorage.removeItem("user_name");
         localStorage.removeItem("user_dept");
         localStorage.removeItem("isLoggedIn");
-        
+
         setIsLoggedIn(false);
         // 로그인 페이지로 이동
         navigate('/');
@@ -118,63 +118,63 @@ export const MenuDetail = (): JSX.Element => {
 
     return (
         <>
-            <div id="head" className={MenuStyle.head}>
-                <Link className={MenuStyle.link} to="/Menu">
-                    <BiArrowBack className={MenuStyle.faArrowLeft} />
-                </Link>
-                <Link className={MenuStyle.link} to="">
-                    <BiArrowBack className={MenuStyle.faArrowLeft} style={{ color: 'transparent' }} />
-                </Link>
-
-                <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} />
-                <Link to="/" className={MenuStyle.link} onClick={handleLogout}>
-                    <MdLogout className={MenuStyle.faArrowRightFromBracket} />
-                </Link>
-                <Link className={MenuStyle.link} to="/">
-                    <IoCartSharp className={MenuStyle.faCartShopping} />
-                </Link>
-            </div>
-            <div className={MdStyle.menuDetail}>
-                {section && (
-                    <div id={section['menu_corner']}>
-                        <img id="menuDetailImg" className={MdStyle.menuDetailImg} src={require(`./img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
-                        <hr id="menuDetailHr" className={MdStyle.menuDetailHr}></hr>
-                        <div className={MdStyle.menuDetailInfo}>
-                            <div className={MdStyle.menuDetailName}>{section['menu_name']}</div>
-                            <div className={MdStyle.menuDetailPrice}>가격 : {(menuPack === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
-                        </div>
+            {userId ? (
+                <div>
+                    <div id="head" className={MenuStyle.head}>
+                        <Link className={MenuStyle.link} to="/Menu">
+                            <BiArrowBack className={MenuStyle.faArrowLeft} />
+                        </Link>
+                        <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} />
+                        <Link className={MenuStyle.link} to="/cart">
+                            <IoCartSharp className={MenuStyle.faCartShopping} />
+                        </Link>
                     </div>
-                )}
-                <button id="reviewButton" className={MdStyle.reviewButton} 
-                                onClick={() => {
+                    <div className={MdStyle.menuDetail}>
+                        {section && (
+                            <div id={section['menu_corner']}>
+                                <img id="menuDetailImg" className={MdStyle.menuDetailImg} src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
+                                <hr id="menuDetailHr" className={MdStyle.menuDetailHr}></hr>
+                                <div className={MdStyle.menuDetailInfo}>
+                                    <div className={MdStyle.menuDetailName}>{section['menu_name']}</div>
+                                    <div className={MdStyle.menuDetailPrice}>가격 : {(menuPack === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
+                                </div>
+                            </div>
+                        )}
+                        {/* <button id="reviewButton" className={MdStyle.reviewButton}
+                            onClick={() => {
+                                navigate('/Review', {
+                                    state: {
+                                        u_id: userInfo.u_id,
+                                        menu_id: menuId
+                                    },
+                                });
+                            }}>메뉴 리뷰</button> */}
+                        <button id="inputCart" className={MdStyle.reviewButton} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); openModal(); }}> 장바구니에 담기</button>
+                    </div>
 
-                                    navigate('/Review', {
-                                        state: {
-                                            u_id: userInfo.u_id,
-                                            menu_id: menuId
-                                        },
-                                    });
-                                }}>메뉴 리뷰</button>
-                <button id="inputCart" className={MdStyle.reviewButton} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); openModal(); }}> 장바구니에 담기</button>
-            </div>
-
-            {/* <footer className={MdStyle.footer}>
+                    {/* <footer className={MdStyle.footer}>
                 <div id="footer-buttons" >
                     <button id="inputCart" className={MdStyle.inputCart} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); openModal(); }}> 장바구니에 담기</button>
                 </div>
             </footer> */}
 
-            {showModal && (
-                <div className={MdStyle.modal}>
-                    <div className={MdStyle.modalContent}>
-                        <span className={MdStyle.close} onClick={closeModal}>&times;</span>
-                        <img src={require(`./img/${decodeURIComponent('InCart.gif')}`)} />
-                        <p>장바구니에 메뉴를 담았습니다.</p>
-                    </div>
+                    {showModal && (
+                        <div className={MdStyle.modal}>
+                            <div className={MdStyle.modalContent}>
+                                <span className={MdStyle.close} onClick={closeModal}>&times;</span>
+                                <img src={require(`../img/${decodeURIComponent('InCart.gif')}`)} />
+                                <p>장바구니에 메뉴를 담았습니다.</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
+
+            ) : (
+                <WrongApproach />
             )}
         </>
     );
 }
+
 
 export default MenuDetail;
