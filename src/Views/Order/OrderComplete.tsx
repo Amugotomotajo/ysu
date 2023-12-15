@@ -38,8 +38,8 @@ export const OrderComplete = (): JSX.Element => {
         <div className="body" key={order.order_id}>
 
           <div className="orderTop">
-          <div className="odTopHome" >
-              <IoHomeSharp fontSize="1.2em" style={{color:'transparent'}} />
+            <div className="odTopHome" >
+              <IoHomeSharp fontSize="1.2em" style={{ color: 'transparent' }} />
             </div>
             <p className="topTxt"> 주문완료</p>
             <div className="odTopHome">
@@ -75,26 +75,31 @@ export const OrderComplete = (): JSX.Element => {
                       </div>
 
 
-                      <div style={{width:"100%", marginTop:"10px"}}>
-                      <div className="odMenuInfo">
-                        <div style={{ display: "flex" }}>
-                          <div className="odMenuName"> {detail.menu_name} </div>
+                      <div style={{ width: "100%", marginTop: "10px" }}>
+                        <div className="odMenuInfo">
+                          <div style={{ display: "flex" }}>
+                            <div className="odMenuName"> {detail.menu_name} </div>
+                          </div>
+                          <div>
+                            <div className="odMenuPrice"> {detail.menu_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
+                          </div>
                         </div>
+
                         <div>
-                          <div className="odMenuPrice"> {detail.menu_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
+                          <div className="orderMenuInfoBox">
+                            <div> ┕ 수량 : {detail.quantity}개 </div>
+                            {
+                              detail.is_packed === 0 ? (
+                                <div> ┕ 방법 : 식당 </div>
+                              ) : (
+                                <div> ┕ 방법 : 포장 </div>
+                              )}
+                            <div> ┕ 코너 : {detail.menu_corner} </div>
+                          </div>
                         </div>
+
                       </div>
 
-                      <div>
-                        <div className="orderMenuInfoBox">
-                          <div> ┕ 수량 : {detail.quantity}개 </div>
-                          <div> ┕ 방법 : {detail.is_packed} </div>
-                          <div> ┕ 코너 : {detail.menu_corner} </div>
-                        </div>
-                      </div>
-                      
-                      </div>
-                      
                     </div>
                   ))
                 ) : (
