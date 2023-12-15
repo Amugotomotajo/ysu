@@ -8,11 +8,12 @@
     align-items: center;
     font-size: 1rem;
     text-align: center;
-    /* margin: 20px; */
+    margin: 20px;
     margin-bottom: 100px;
     margin-top: 120px;
     flex-direction: column;
     overflow-x: hidden;
+    font-family: 'NotoSans';
 }
 
 .pageHead {
@@ -29,11 +30,11 @@
     justify-content: space-between;
     align-items: center;
     z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
 }
 
 .orderContainer {
     margin-bottom: 20px;
-    padding: 10px;
     width: 650px;
     text-align: left;
     background-color: white;
@@ -43,7 +44,7 @@
 }
 
 .orderHeader {
-    font-weight: bold;
+    font-weight: 500;
     margin-top: 5px;
     text-align: left;
 }
@@ -86,11 +87,17 @@
 
 .menuName {
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .menuPrice {
     font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.totalPrice {
+    font-weight: 600;
+    margin-top: 15px;
     margin-bottom: 0px;
 }
 
@@ -102,7 +109,7 @@
 
 .Hr {
     /* width: 100%; */
-    color: #777;
+    color: #b0b0b0;
 }
 
 .noOrders {
@@ -118,28 +125,20 @@
     font-size: 1rem;
     text-align: center;
     flex-direction: column;
+    background-color: #f1f1f1;
 }
 
 .noOrders p {
     font-size: 23px;
 }
 
-.reviewWriting {
-    border: 1px solid #909090;
-    background-color: #F9F7F6;
-    border-radius: 20px;
-    align-items: center;
-    justify-content: center;
-    color:black;
-    padding: 3px 7px;
-    align-self: start;
-    font-size: 11px;
+.menuName {
+    margin-bottom: 4px;
 }
 
-.menuName ,
 .isPacked,
 .menuCorner {
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 @media screen and (max-width: 700px) {
@@ -150,15 +149,15 @@
     .MyOrderList {
         margin-top: 110px;
         padding-top: 10px;
-        margin-left: 0px;
-        margin-right: 0px;
     }
 
     .orderContainer {
-        margin-bottom: 20px;
+        /* margin-bottom: 20px;
         padding: 20px;
-        text-align: left;
+        text-align: left; */
         width:100%;
+        border-radius: 6px;
+        padding: 20px 10px;
     }
 
     .orderHeader {
@@ -167,12 +166,20 @@
     }
 
     .menuName, .menuPrice {
-        font-size: 17.5px;
+        font-size: 16px;
+    }
+
+    .menuPrice {
+        font-weight: 500;
+    }
+
+    .isPacked, .menuCorner {
+        font-size: 13.5px;
     }
 
     .menuImage img {
-        width: 75px; /* 이미지 너비 조정 */
-        height: 75px; /* 이미지 높이 조정 */
+        width: 70px; /* 이미지 너비 조정 */
+        height: 70px; /* 이미지 높이 조정 */
         margin-right: 15px; /* 이미지와 텍스트 사이 간격 조정 */
         border-radius: 10px;
     }

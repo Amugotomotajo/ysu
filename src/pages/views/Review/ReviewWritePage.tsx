@@ -3,16 +3,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import MenuStyle from '../../css/Menu.module.css';
-import { faArrowLeft, faArrowRightFromBracket, faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { BiArrowBack } from "react-icons/bi";
+import { IoCartSharp } from "react-icons/io5";
 import ysuLogo from '../../img/ysu_logo.jpg';
 import RwStyle from '../../css/ReviewWrite.module.css'
 
 export interface IProps {
-  detail: { review_writing: string; review_star: number };
+  detail: { u_id: string, order_id: number, menu_id: number, review_writing: string; review_star: number };
 }
 
 export const ReviewWritePage = (): JSX.Element => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [section, setSection] = useState < {
     menu_id: number,
     menu_name: string,
@@ -24,19 +26,17 @@ export const ReviewWritePage = (): JSX.Element => {
     menu_regist: number
   } > ();;
 
+  const menuId = location.state.menu_id;
+  const userId = location.state.user_id;
+  const orderId = location.state.order_id;
 
   const [inputs, setInputs] = useState < IProps['detail'] > ({
+    u_id: userId,
+    order_id: orderId,
+    menu_id: menuId,
     review_writing: '',
     review_star: 0,
   })
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const menuId = location.state.menu_id;
-  console.log(menuId);
-  const userId = location.state.user_id;
-  const orderId = location.state.order_id;
 
   const { review_writing, review_star } = inputs;
 
@@ -45,6 +45,7 @@ export const ReviewWritePage = (): JSX.Element => {
     setInputs({
       ...inputs,
       [name]: value
+
     });
   };
 
@@ -65,15 +66,15 @@ export const ReviewWritePage = (): JSX.Element => {
     //   return;
     // }
     if (!review_writing.trim()) {
-      message.error("리뷰를 작성해주세요.");
+        message.error("리뷰를 작성해주세요.");
       return;
     } else if (review_star === 0) {
-      message.error("별점을 입력해주세요.");
+        message.error("별점을 입력해주세요.");
       return;
     }
     // order_id랑 u_id 가져와서 주문했을 경우 주문하는 생성 (리뷰쓰는 버튼 생성)
     try {
-      axios.post(`/menu/${menuId}/review/write/${userId}/${orderId}`, JSON.stringify(inputs), {
+      axios.post(`/menu/review/write`, JSON.stringify(inputs), {
         headers: {
           "Content-Type": `application/json`,
         },
@@ -85,7 +86,7 @@ export const ReviewWritePage = (): JSX.Element => {
           message.success("리뷰를 등록했습니다.");
           console.log(res);
           if (res.status === 200) {
-            navigate(`/menu`)
+            navigate(`/myReview`)
           }
         })
     } catch (err) {
@@ -113,22 +114,16 @@ export const ReviewWritePage = (): JSX.Element => {
 
 
   return (
-    <><div id="head" className={MenuStyle.head}>
-      <Link className={MenuStyle.link} to="/Menu">
-        <FontAwesomeIcon id="faArrowLeft" icon={faArrowLeft} className={MenuStyle.faArrowLeft} />
-      </Link>
-      <Link className={MenuStyle.link} to="">
-        <FontAwesomeIcon id="faArrowRightFromBracket" className={MenuStyle.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
-      </Link>
-
-      <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} />
-      <Link to="/" className={MenuStyle.link}>
-        <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={MenuStyle.faArrowRightFromBracket} />
-      </Link>
-      <Link className={MenuStyle.link} to="/">
-        <FontAwesomeIcon id="faCartShopping" icon={faCartShopping} className={MenuStyle.faCartShopping} />
-      </Link>
-    </div>
+    <>
+      <div id="head" className={MenuStyle.head}>
+        <Link className={MenuStyle.link} to="/myOrderList">
+          <BiArrowBack className={MenuStyle.faArrowLeft} />
+        </Link>
+        <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} />
+        <Link className={MenuStyle.link} to="/cart">
+          <IoCartSharp className={MenuStyle.faCartShopping} />
+        </Link>
+      </div>
       <div className={RwStyle.menuDetail}>
         {section && (
           <div id={section['menu_corner']}>

@@ -10,6 +10,8 @@ import { MdLogout } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
 import { Cookies, useCookies } from 'react-cookie';
 import WrongApproach from './WrongApproach';
+import { Button, message } from "antd";
+import styled from 'styled-components';
 
 export const MenuDetail = (): JSX.Element => {
     const location = useLocation();
@@ -45,6 +47,23 @@ export const MenuDetail = (): JSX.Element => {
     const userName = localStorage.getItem("user_name") || '';
     const userDept = localStorage.getItem("user_dept") || '';
 
+    const Button = styled.button`
+
+        margin-top:10px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        display: inline-block;
+        border-radius: 10px;
+        border: 0px;
+        background-color: rgb(80, 176, 209);
+        font-size: 1rem;
+        padding: 10px;
+        height: 100%;
+        color: white;
+
+    `;
+
     useEffect(() => {
 
         setUserInfo({ u_id: userId, u_name: userName, u_dept: userDept });
@@ -79,8 +98,12 @@ export const MenuDetail = (): JSX.Element => {
         axios.post('/cart/insertCart', insertCartDTO)
             .then(response => {
                 console.log('Data inserted successfully');
-                // Do something after adding to cart if needed
-                // window.alert("장바구니에 메뉴를 담았습니다.");
+                message.success({
+                    content: '장바구니에 메뉴를 담았습니다.',
+                    style: {
+                        fontSize: '17px',
+                    },
+                });
             })
             .catch(error => {
                 console.error('Failed to insert data', error);
@@ -149,16 +172,13 @@ export const MenuDetail = (): JSX.Element => {
                                     },
                                 });
                             }}>메뉴 리뷰</button> */}
-                        <button id="inputCart" className={MdStyle.reviewButton} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); openModal(); }}> 장바구니에 담기</button>
+                        <Button className={MdStyle.reviewWriteBtn} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); }}>
+                            장바구니에 담기
+                        </Button>
+                        {/* <button id="inputCart" className={MdStyle.reviewButton} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); openModal(); }}> 장바구니에 담기</button> */}
                     </div>
 
-                    {/* <footer className={MdStyle.footer}>
-                <div id="footer-buttons" >
-                    <button id="inputCart" className={MdStyle.inputCart} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); openModal(); }}> 장바구니에 담기</button>
-                </div>
-            </footer> */}
-
-                    {showModal && (
+                    {/* {showModal && (
                         <div className={MdStyle.modal}>
                             <div className={MdStyle.modalContent}>
                                 <span className={MdStyle.close} onClick={closeModal}>&times;</span>
@@ -166,7 +186,7 @@ export const MenuDetail = (): JSX.Element => {
                                 <p>장바구니에 메뉴를 담았습니다.</p>
                             </div>
                         </div>
-                    )}
+                    )} */}
                 </div>
 
             ) : (

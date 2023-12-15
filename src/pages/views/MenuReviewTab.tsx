@@ -6,25 +6,23 @@ import { MenuDetail } from "./MenuDetail";
 import { ReviewListPage } from "./Review/ReviewListPage";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
+import styled from "styled-components";
 
 export const MenuReviewTab = (): JSX.Element => {
-    const [menu_id, setMenu_id] = useState<{
+    const [menu_id, setMenu_id] = useState < {
         menu_id: number,
-    }>();
+    } > ();
     const [user_id, setUser_id] = useState('')
 
     const navigate = useNavigate();
     const location = useLocation();
 
     const menuId = location.state.menu_id;
-    const userId = '2023200014';
-    
+    const userId = localStorage.getItem('userId');
+
     useEffect(() => {
         setMenu_id(menuId);
-        setUser_id(userId);
-        console.log(menuId, userId);
     });
-
 
     const items = [
         { key: 1, name: '메뉴', content: <MenuDetail />, id: 1 },
@@ -39,13 +37,13 @@ export const MenuReviewTab = (): JSX.Element => {
 
     const handleItemClick = (id: number) => {
         if (id === 1) {
-            navigate('/menuDetail',{
+            navigate('/menuDetail', {
                 state: {
                     menu_id: menuId,
                     user_id: userId
                 }
             });
-            
+
         } else if (id === 2) {
             navigate(`/reviewList`, {
                 state: {
@@ -56,8 +54,13 @@ export const MenuReviewTab = (): JSX.Element => {
         };
     };
 
+    const StyledTabsWrapper = styled.div`
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+`;
+
+
     return (
-        <li style={{height: '50px'}}>
+        <li style={{ height: '50px', boxShadow: '0 4px 12px rgba(0, 0, 0, .2)' }}>
             <Tabs>
                 <div>
                     <TabMenu>

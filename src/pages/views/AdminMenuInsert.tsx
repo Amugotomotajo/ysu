@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space } from 'antd';
+import { Space, message } from 'antd';
 import { JSX } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
 import axios from 'axios'
@@ -55,7 +55,7 @@ export const AdminMenuInsert = (): JSX.Element => {
     navigate(-1);
   }
 
-  
+
 
   const handleAddToMenu = async () => {
     setMenuNameError('');
@@ -132,6 +132,12 @@ export const AdminMenuInsert = (): JSX.Element => {
       })
         .then(response => {
           console.log('Data inserted successfully', response.data, formData);
+          message.success({
+            content: '메뉴를 추가하였습니다.',
+            style: {
+                fontSize: '17px',
+            },
+        });
         })
         .catch(error => {
           console.error('Failed to insert data', error, formData);
@@ -200,154 +206,153 @@ export const AdminMenuInsert = (): JSX.Element => {
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
       </head>
       {userDept == 'admin' ? (
-      <body className={MStyle.body}>
-        <div id="head" className={MStyle.head}>
-          <Link className={MStyle.link} to="/adminMenu">
-            <BiArrowBack className={MStyle.faArrowLeft} />
-          </Link>
+        <body className={MStyle.body}>
+          <div id="head" className={MStyle.head}>
+            <Link className={MStyle.link} to="/adminMenu">
+              <BiArrowBack className={MStyle.faArrowLeft} />
+            </Link>
 
-          <img id="logo" className={MStyle.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
+            <img id="logo" className={MStyle.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
 
-          <Link to="/login" className={MStyle.link}>
-            <MdLogout className={MStyle.faArrowRightFromBracket} onClick={handleLogout} style={{ color: 'transparent' }} />
-          </Link>
-        </div>
-        <div className={style.pageHead}>
-          메뉴 등록
-        </div>
+            <Link to="/login" className={MStyle.link}>
+              <MdLogout className={MStyle.faArrowRightFromBracket} onClick={handleLogout} style={{ color: 'transparent' }} />
+            </Link>
+          </div>
+          <div className={style.pageHead}>
+            메뉴 등록
+          </div>
 
-        <div className={style.signupform}>
-          {/* 제목 */}
-          {/* <div className={style.formheader}>
+          <div className={style.signupform}>
+            {/* 제목 */}
+            {/* <div className={style.formheader}>
             <h1>메뉴 등록</h1>
             <hr className={style.hrline1}></hr>
           </div> */}
 
-          <div className={style.formbody}>
-            {/* 메뉴이름 */}
-            <div className={style.formgroup}>
-              <label className={style.labeltitle}>메뉴 이름</label><br />
-              <input className={`${style.forminput} ${menuNameError ? style.error : ''}`} value={menu_name} placeholder="메뉴이름을 입력하세요."
-                onChange={(e) => {
-                  setMenuName(e.target.value);
-                  setMenuNameError(''); // 에러 메시지 초기화
-                }} />
-              {menuNameError && <p className={style.errorMsg}>{menuNameError}</p>}
-            </div>
-
-
-            {/* 코너종류 */}
-            <div className={style.horizontalgroup}>
+            <div className={style.formbody}>
+              {/* 메뉴이름 */}
               <div className={style.formgroup}>
-                <label className={style.labeltitle}>코너 종류</label>
-                <div className={style.inputgroup}>
-                  <label><input type="radio" name="corner" value="S" onChange={(e) => {
-                    setMenuCorner(e.target.value);
-                    setMenuCornerError(''); // 에러 메시지 초기화
-                  }} /> S</label>
-                  <label><input type="radio" name="corner" value="B" onChange={(e) => {
-                    setMenuCorner(e.target.value);
-                    setMenuCornerError(''); // 에러 메시지 초기화
-                  }} /> B</label>
-                  <label><input type="radio" name="corner" value="F" onChange={(e) => {
-                    setMenuCorner(e.target.value);
-                    setMenuCornerError(''); // 에러 메시지 초기화
-                  }} /> F</label>
+                <label className={style.labeltitle}>메뉴 이름</label><br />
+                <input className={`${style.forminput} ${menuNameError ? style.error : ''}`} value={menu_name} placeholder="메뉴이름을 입력하세요."
+                  onChange={(e) => {
+                    setMenuName(e.target.value);
+                    setMenuNameError(''); // 에러 메시지 초기화
+                  }} />
+                {menuNameError && <p className={style.errorMsg}>{menuNameError}</p>}
+              </div>
+
+
+              {/* 코너종류 */}
+              <div className={style.horizontalgroup}>
+                <div className={style.formgroup}>
+                  <label className={style.labeltitle}>코너 종류</label>
+                  <div className={style.inputgroup}>
+                    <label><input type="radio" name="corner" value="S" onChange={(e) => {
+                      setMenuCorner(e.target.value);
+                      setMenuCornerError(''); // 에러 메시지 초기화
+                    }} /> S</label>
+                    <label><input type="radio" name="corner" value="B" onChange={(e) => {
+                      setMenuCorner(e.target.value);
+                      setMenuCornerError(''); // 에러 메시지 초기화
+                    }} /> B</label>
+                    <label><input type="radio" name="corner" value="F" onChange={(e) => {
+                      setMenuCorner(e.target.value);
+                      setMenuCornerError(''); // 에러 메시지 초기화
+                    }} /> F</label>
+                  </div>
+                  {menuCornerError && <p className={style.errorMsg}>{menuCornerError}</p>}
                 </div>
-                {menuCornerError && <p className={style.errorMsg}>{menuCornerError}</p>}
+
               </div>
 
-            </div>
-
-            {/* 메뉴가격 */}
-            <div className={style.formgroup}>
-              <label className={style.labeltitle}>메뉴가격</label><br />
-              <input className={`${style.forminput} ${menuPriceError ? style.error : ''}`} value={menu_price === 0 ? '' : menu_price} placeholder="메뉴가격을 입력하세요." onChange={(e) => {
-                const inputValue = e.target.value;
-                const numericValue = Number(inputValue);
-
-                if (!isNaN(numericValue)) {
-                  setMenuPrice(numericValue);
-                  setMenuPriceError(''); // 에러 메시지 초기화
-                }
-              }}
-              />
-              {menuPriceError && <p className={style.errorMsg}>{menuPriceError}</p>}
-            </div>
-
-            {/* 포장가능유무 */}
-            <div className={style.horizontalgroup}>
+              {/* 메뉴가격 */}
               <div className={style.formgroup}>
-                <label className={style.labeltitle}>포장가능여부</label>
-                <div className={style.inputgroup}>
-                  <label id={style.male}><input type="radio" name="pack" value="1" onChange={(e) => {
-                    const inputValue = e.target.value;
-                    const numericValue = Number(inputValue);
+                <label className={style.labeltitle}>메뉴가격</label><br />
+                <input className={`${style.forminput} ${menuPriceError ? style.error : ''}`} value={menu_price === 0 ? '' : menu_price} placeholder="메뉴가격을 입력하세요." onChange={(e) => {
+                  const inputValue = e.target.value;
+                  const numericValue = Number(inputValue);
 
-                    if (!isNaN(numericValue)) {
-                      setMenuPack(numericValue);
-                      setMenuPackError('');
-                    }
-                  }} /> O</label>
-                  <label id={style.female}><input type="radio" name="pack" value="0" onChange={(e) => {
-                    const inputValue = e.target.value;
-                    const numericValue = Number(inputValue);
+                  if (!isNaN(numericValue)) {
+                    setMenuPrice(numericValue);
+                    setMenuPriceError(''); // 에러 메시지 초기화
+                  }
+                }}
+                />
+                {menuPriceError && <p className={style.errorMsg}>{menuPriceError}</p>}
+              </div>
 
-                    if (!isNaN(numericValue)) {
-                      setMenuPack(numericValue);
-                      setMenuPackError('');
-                    }
-                  }} /> X</label>
+              {/* 포장가능유무 */}
+              <div className={style.horizontalgroup}>
+                <div className={style.formgroup}>
+                  <label className={style.labeltitle}>포장가능여부</label>
+                  <div className={style.inputgroup}>
+                    <label id={style.male}><input type="radio" name="pack" value="1" onChange={(e) => {
+                      const inputValue = e.target.value;
+                      const numericValue = Number(inputValue);
+
+                      if (!isNaN(numericValue)) {
+                        setMenuPack(numericValue);
+                        setMenuPackError('');
+                      }
+                    }} /> O</label>
+                    <label id={style.female}><input type="radio" name="pack" value="0" onChange={(e) => {
+                      const inputValue = e.target.value;
+                      const numericValue = Number(inputValue);
+
+                      if (!isNaN(numericValue)) {
+                        setMenuPack(numericValue);
+                        setMenuPackError('');
+                      }
+                    }} /> X</label>
+                  </div>
+                  {menuPackError && <p className={style.errorMsg}>{menuPackError}</p>}
                 </div>
-                {menuPackError && <p className={style.errorMsg}>{menuPackError}</p>}
+              </div>
+
+              {/* 이미지 사진 */}
+              <div className={style.horizontalgroup}>
+                <div className={style.formgroup}>
+                  <label className={style.labeltitle}>메뉴이미지</label><br />
+                  <input type="file" accept="image/*" onChange={(e) => handleImageChange(e)} />
+                  {menuImageError && <p className={style.errorMsg}>{menuImageError}</p>}
+                </div>
               </div>
             </div>
+            <hr className={style.hrline2}></hr>
+            <div className={style.formfooter}>
+              <button type="submit" className={style.btncancel} onClick={() => { handleBackClick(); }}>취소</button>
+              <button type="submit" className={style.btninsert} onClick={() => { handleAddToMenu(); }}>등록</button>
+            </div>
+          </div>
 
-            {/* 이미지 사진 */}
-            <div className={style.horizontalgroup}>
-              <div className={style.formgroup}>
-                <label className={style.labeltitle}>메뉴이미지</label><br />
-                <input type="file" accept="image/*" onChange={(e) => handleImageChange(e)} />
-                {menuImageError && <p className={style.errorMsg}>{menuImageError}</p>}
+
+          {/* 모달 창 */}
+          {checkModal && (
+            <div className={style.modal}>
+              <div className={style.modalContent}>
+                <span className={style.close} onClick={closeChceckModal}>&times;</span>
+                <p>메뉴를 등록하시겠습니까?</p>
+                <button type="submit" className={style.btncancel} onClick={closeChceckModal}>취소</button>
+                <button type="submit" className={style.btninsert} onClick={openModal}>등록</button>
               </div>
             </div>
-          </div>
-          <hr className={style.hrline2}></hr>
-          <div className={style.formfooter}>
-            <button type="submit" className={style.btncancel} onClick={() => { handleBackClick(); }}>취소</button>
-            <button type="submit" className={style.btninsert} onClick={() => { handleAddToMenu(); }}>등록</button>
-          </div>
-        </div>
+          )}
 
-
-        {/* 모달 창 */}
-        {checkModal && (
-          <div className={style.modal}>
-            <div className={style.modalContent}>
-              <span className={style.close} onClick={closeChceckModal}>&times;</span>
-              <p>메뉴를 등록하시겠습니까?</p>
-              <button type="submit" className={style.btncancel} onClick={closeChceckModal}>취소</button>
-              <button type="submit" className={style.btninsert} onClick={openModal}>등록</button>
+          {/* {showModal && (
+            <div className={style.modal}>
+              <div className={style.modalContent}>
+                <img src={require(`../img/${decodeURIComponent('InMenu.gif')}`)} />
+                <p>메뉴를 추가하였습니다.</p>
+              </div>
             </div>
-          </div>
-        )}
+          )} */}
 
-
-        {showModal && (
-          <div className={style.modal}>
-            <div className={style.modalContent}>
-              <img src={require(`../img/${decodeURIComponent('InMenu.gif')}`)} />
-              <p>메뉴를 추가하였습니다.</p>
-            </div>
-          </div>
-        )}
-
-      </body>
+        </body>
 
       ) : (
-                   <WrongApproach />
+        <WrongApproach />
 
-                )}
+      )}
     </>
   );
 }

@@ -1,3 +1,7 @@
+body {
+    font-family: 'NotoSans';
+}
+
 .MyOrderList {
     height: 100%;
     padding: 10px;
@@ -12,6 +16,7 @@
     margin-bottom: 100px;
     margin-top: 120px;
     overflow-x: hidden;
+    font-family: 'NotoSans';
 }
 
 .pageHead {
@@ -27,7 +32,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
+    z-index: 1000;
+    /* 다른 요소 위에 보이도록 설정 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
 }
 
 .MyOrderList img {
@@ -37,19 +44,18 @@
 .orderContainer {
     margin-bottom: 20px;
     padding: 10px;
-    width: 650px;
+    width: 600px;
     text-align: left;
     background-color: white;
-    border: 0;
     border-radius: 6px;
     padding: 20px;
 }
 
 .orderHeader {
-    font-weight: bold;
+    font-weight: 500;
     margin-top: 5px;
     text-align: left;
-    
+
 }
 
 .orderDateHeader {
@@ -58,8 +64,8 @@
 
 .orderDate {
     font-weight: 500;
-    padding: 10px 0px; 
-    margin-top: 12px;
+    padding: 10px 0px;
+    margin-top: 15px;
     margin-bottom: 0px;
     background-color: #F9F7F6;
     border-left: 0.2em solid #4D5964;
@@ -68,13 +74,16 @@
 .menuItem {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .menuImage img {
-    width: 100px; /* 이미지 너비 조정 */
-    height: 100px; /* 이미지 높이 조정 */
-    margin-right: 15px; /* 이미지와 텍스트 사이 간격 조정 */
+    width: 80px;
+    /* 이미지 너비 조정 */
+    height: 80px;
+    /* 이미지 높이 조정 */
+    margin-right: 15px;
+    /* 이미지와 텍스트 사이 간격 조정 */
     border-radius: 10px;
 }
 
@@ -86,16 +95,17 @@
 
 .menuName {
     font-size: 17.5px;
-    font-weight: 700;
+    font-weight: 600;
     padding-bottom: 5px;
 }
 
 .menuPrice {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 17.5px;
 }
 
-.isPacked, .menuCorner {
+.isPacked,
+.menuCorner {
     font-size: 15px;
     font-weight: 400;
     padding-bottom: 5px;
@@ -123,15 +133,41 @@
     font-size: 1rem;
     text-align: center;
     flex-direction: column;
+    background-color: #f1f1f1;
 }
 
 .noOrders p {
     font-size: 23px;
 }
 
+.Review {
+    margin-top: 10px;
+    position: relative; /* 말풍선의 부모 요소에 대해 position 설정 */
+    background-color: #e0f3ff;
+    display: inline-block; /* 혹시 인라인 요소일 경우 block으로 변경 */
+    justify-self: end;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: right;
+    
+}
+
+.Review::after {
+    border-top:15px solid #e0f3ff;
+ border-left: 15px solid transparent;
+ border-right: 0px solid transparent;
+ border-bottom: 0px solid transparent;
+ content:"";
+ position:absolute;
+ top:10px;
+ left:-15px;
+}
+
+
 .reviewStar {
     display: flex;
     align-items: center;
+    justify-content: end;
 }
 
 .yellowStar {
@@ -144,13 +180,19 @@
 }
 
 .reviewWriting {
-    font-weight: 500;
+    font-weight: 400;
     font-size: 17px;
+    text-align: right;
 }
 
 .reviewCount {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
+}
+
+.ant-rate-star {
+    margin-right: 5px;
+    /* 별 간격 조절 */
 }
 
 @media screen and (max-width: 700px) {
@@ -158,6 +200,9 @@
         top: 50px;
     }
 
+    .countHead {
+        padding-left: 10px;
+    }
     .MyOrderList {
         margin-top: 110px;
         padding-top: 10px;
@@ -170,7 +215,7 @@
 
     .orderContainer {
         margin-bottom: 20px;
-        padding: 20px;
+        padding: 20px 10px;
         width: 100%;
         text-align: left;
     }

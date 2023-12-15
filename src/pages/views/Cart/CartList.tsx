@@ -191,7 +191,9 @@ export const CartList = (): JSX.Element => {
             <div className="menuName">{cart.menu_name}</div>
             <div className="isPacked">• 방법 : {cart.is_packed ? '포장' : '매장'}</div>
             <div className="isPacked">• 코너 : {cart.menu_corner}</div>
-            <div className="menuPrice">{cart.is_packed ? cart.menu_price + 500 : cart.menu_price}원</div>
+            <div className="menuPrice">
+              {cart.is_packed ? cart.menu_price + 500 : cart.menu_price}<span style={{fontWeight:'600'}}>원</span>
+            </div>
             <div className="menuQuantity">
               <div className="count" >
                 {cart.quantity === 1 ? (
@@ -213,10 +215,10 @@ export const CartList = (): JSX.Element => {
       ))}
       <div className="priceBox">
         <div className="priceTxt">
-          총 수량 {totalQuantity}개
+          총 수량 <span style={{fontWeight:'500'}}>{totalQuantity}</span>개
         </div>
         <div className="totalPrice">
-          총 주문금액 {totalPriceStr}원
+          총 주문금액 <span style={{fontWeight:'500'}}>{totalPriceStr}</span>원
         </div>
       </div>
       <div className="bottom">

@@ -35,15 +35,14 @@ export const ReviewListPage = (): JSX.Element => {
     menu_id: number,
   }>();
 
-  const [user_id, setUser_id] = useState('')
+  const [user_id, setUser_id] = useState(null)
 
   const location = useLocation();
-  const menuId = location.state.menu_id;
-  const userId = '2023200014';
+  const menuId = location.state ? location.state.menu_id : 1;
+  const userId = localStorage.getItem('user_id') || '';
 
   useEffect(() => {
     setMenu_id(menuId);
-    setUser_id(userId);
     console.log(menuId, userId);
   });
 
@@ -77,7 +76,7 @@ export const ReviewListPage = (): JSX.Element => {
 
   const handleReviewDelete = (reviewId: number) => {
     // 각 reviewId에 대해 순회하며 삭제 요청 보내기
-    axios.delete(`/review/delete/${reviewId}`)
+    axios.delete(`/review/delete/${reviewId}/${userId}`)
       .then((res) => {
         setTriggerEffect(prevState => !prevState);
         // 서버로부터 성공적인 응답을 받으면, 현재 리뷰를 목록에서 제거

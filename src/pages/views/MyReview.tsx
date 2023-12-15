@@ -11,6 +11,7 @@ import style from '../css/MyReview.module.css';
 import axios from 'axios';
 import noOrders from '../img/noOrders.png';
 import WrongApproach from './WrongApproach';
+import { Rate } from 'antd';
 
 export const MyReview = (): JSX.Element => {
     const [menu_id, setMenuId] = useState < number > (0); // 메뉴 ID 상태 (숫자)
@@ -166,7 +167,7 @@ export const MyReview = (): JSX.Element => {
                     <div className={style.MyOrderList}>
                         {myReviews.length !== 0 ? (
                             <div className={style.orderContainer}>
-                                <span className={style.reviewCount}>내가 쓴 리뷰 {reviewCount} 개</span>
+                                <span className={style.reviewCount}><span className={style.countHead}>내가 작성한 리뷰</span> <span style={{fontWeight:'500'}}>{reviewCount}</span> 개</span>
                             </div>
                         ) : (
                             <span></span>
@@ -186,14 +187,14 @@ export const MyReview = (): JSX.Element => {
                                         {/* 주문 번호를 클릭하여 상세 정보를 펼치거나 접는 부분 */}
                                         <div className={style.orderHeader}>
 
-                                            <span style={{ fontSize: '20px' }}> 주문 번호: {orderId}</span>
+                                            <span style={{ fontSize: '20px' }}>&nbsp;주문 번호 &nbsp;{orderId}</span>
 
                                             {/* 주문 날짜 */}
                                             {Array.from(new Set(myReviews.filter(review => review.order_id === orderId).map(order => order.review_time))).map(orderDate => (
                                                 <div key={`${orderId}-${orderDate}`} className={style.orderDateHeader}>
 
                                                     {/* 날짜 표시 */}
-                                                    <p className={style.orderDate}>&nbsp;&nbsp;{formatOrderDate(orderDate)} </p>
+                                                    <p className={style.orderDate}>&nbsp;&nbsp;&nbsp;{formatOrderDate(orderDate)} </p>
 
                                                     {myReviews
                                                         .filter(review => review.order_id === orderId && review.review_time === orderDate)
@@ -207,7 +208,10 @@ export const MyReview = (): JSX.Element => {
                                                                     <div className={style.menuName}>{myReview.menu_name}</div>
                                                                     <div className={style.menuCorner}>• 코너 : {myReview.menu_corner}</div>
 
-                                                                    <div className={style.menuPrice}>{myReview.menu_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
+                                                                    <div className={style.menuPrice}>
+                                                                        <span style={{fontWeight: '500'}}>{myReview.menu_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                                                                        원
+                                                                    </div>
                                                                 </div>
 
                                                             </div>
@@ -220,21 +224,24 @@ export const MyReview = (): JSX.Element => {
                                                             .filter(review => review.order_id === orderId && review.review_time === orderDate)
                                                             .map((myReview, idx) => (
                                                                 <>
+                                                                <div style={{display:'flex', justifyContent: 'flex-end', textAlign:'right'}}>
                                                                     <div className={style.Review}>
                                                                         <div className={style.reviewStar}>
                                                                             &nbsp;
-                                                                            {Array.from({ length: 5 }).map((_, index) => (
-                                                                                <FaStar
-                                                                                    key={index}
-                                                                                    size="14"
-                                                                                    style={{ width: '30px', height: '30px', margin: '10px 0' }}
-                                                                                    className={index < myReview.review_star ? style.yellowStar : style.grayStar}
-                                                                                ></FaStar>
-                                                                            ))}   &nbsp; {myReview.review_star}.0
+
+                                                                            <Rate
+                                                                                allowHalf={false} 
+                                                                                count={5} // 별 개수
+                                                                                value={myReview.review_star} // 현재 평점 값
+                                                                                style={{ fontSize: '20px', margin: '10px 0' }} 
+                                                                            />
+
+                                                                            &nbsp; {myReview.review_star}.0
                                                                         </div>
 
                                                                         <div className={style.reviewWriting}>&nbsp;{myReview.review_writing}</div>
                                                                     </div>
+                                                                </div>
                                                                 </>
                                                             ))
                                                         }

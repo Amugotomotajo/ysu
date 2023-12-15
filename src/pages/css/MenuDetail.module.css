@@ -2,7 +2,7 @@
     height: 100%;
     padding: 20px;
     border-radius: 6px;
-    grid-gap: 20px;
+    grid-gap: 8px;
     letter-spacing: 2px;
     display: flex;
     flex-direction: column;
@@ -13,6 +13,7 @@
     margin-bottom: 100px;
     flex-direction: column;
     margin: 75px 20px;
+    margin-bottom: 10px;
 }
 
 .menuDetailHr {
@@ -39,7 +40,26 @@
     font-size: 1rem;
     width: 100%;
     color: white;
-    cursor: pointer;
+    
+}
+
+.reviewWriteBtn {
+    margin-top:10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: inline-block;
+    border-radius: 10px;
+    background-color: rgb(80, 176, 209);
+    font-size: 1rem;
+    padding: 8px;
+    height: 100%;
+    color: white;
+}
+
+.reviewWriteBtn:hover {
+    background-color: rgb(50, 163, 201);
+    color: white;
 }
 
 .optionButton1 {
@@ -271,6 +291,9 @@ footer {
     flex-direction: row;
     gap: 20px;
 }
+
+
+
 
 @media screen and (min-width: 1000px) {
 

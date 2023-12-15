@@ -15,6 +15,8 @@ export const TabMenu = styled.li`
   top: 60px;
   left: 0;
   width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-top: 1px solid #dcdcdc;
 
   @media screen and (max-width: 700px){
     margin-top: -11px;
