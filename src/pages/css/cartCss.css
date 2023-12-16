@@ -1,7 +1,9 @@
 
 .body {
+    margin: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    overflow: hidden;
     background-color: rgb(244, 244, 244);
 }
 
@@ -56,16 +58,23 @@
 }
 
 .content {
-    padding: 10px;
+    padding: 10px 0px;
     border-radius: 6px;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 1rem;
     text-align: center;
-    margin-bottom: 125px;
+    /* margin-bottom: 125px; */
     margin-top: 50px;
-    overflow-x: hidden;
+}
+
+.cartMList {
+    margin-top:70px;
+    margin-bottom:130px;
+    margin: 70px auto 130px auto;
+    width: 100%;
+    max-width: 650px;
 }
 
 .menuBox { 
@@ -74,6 +83,7 @@
 }
 
 .menuInfo {
+    box-sizing: border-box;
     display: flex;
     background-color: white;
     margin-top: 10px;
@@ -81,7 +91,7 @@
     align-items: center;
     padding: 15px 10px;
     position: relative;
-    width: 700px;
+    width: 100%;
     border-radius: 6px;
     justify-self: center;
 }

@@ -133,23 +133,29 @@ export const MyOrderList = (): JSX.Element => {
         }));
     };
 
-    const formatOrderDate = (orderDateStr: string): string => {
-        const orderDate = new Date(orderDateStr);
+    const formatOrderDate = (dateString: string | number | Date) => {
+        const date = new Date(dateString);
         const options: Intl.DateTimeFormatOptions = {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            weekday: 'long',
-            hour: 'numeric',
-            minute: 'numeric',
+            year: '2-digit',
+            month: '2-digit',
+            day: '2-digit',
+            weekday: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
         };
-
-        return orderDate.toLocaleDateString('ko-KR', options);
+    
+        const formattedDate = date.toLocaleDateString('ko-KR', options);
+        let [year, month, day, weekday, time, hour] = formattedDate.split(' ');
+        year = year.slice(0, -1);
+        month = month.slice(0, -1);
+        day = day.slice(0, -1);
+    
+        return `${year}/${month}/${day} ${weekday} ${time} ${hour}`;
     };
 
     const Button = styled.button `
-        border: 0.5px solid #bebebe;
-        background-color: #F9F7F6;
+        border: 0.5px solid #bababa;
+        background-color: #ffffff;
         border-radius: 20px;
         align-items: center;
         justify-content: center;
@@ -178,7 +184,7 @@ export const MyOrderList = (): JSX.Element => {
                         </Link>
                         <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} />
                         <Link className={MenuStyle.link} to="/cart">
-                            <IoCartSharp className={MenuStyle.faCartShopping} />
+                            <IoCartSharp className={MenuStyle.faCartShopping} style={{color:'transparent'}}/>
                         </Link>
                     </div>
 

@@ -16,7 +16,11 @@ export const AdminMenuListPage = (): JSX.Element => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [activeSection, setActiveSection] = useState('S');
+    const [activeSection, setActiveSection] = useState(() => {
+        // localStorage에서 값을 가져오거나 기본값 'S'를 사용합니다.
+        const savedSection = localStorage.getItem('activeSection');
+        return savedSection || 'S';
+    });
     const [menu_id, setMenuId] = useState < number > (0); // 메뉴 ID 상태 (숫자)
     const [selectedOption, setSelectedOption] = useState < any > (null); // 선택된 옵션을 저장할 상태
     const [sections, setSections] = useState < {
@@ -46,6 +50,7 @@ export const AdminMenuListPage = (): JSX.Element => {
     }[] > ([]); // 초기 데이터를 저장할 상태
 
     useEffect(() => {
+        document.body.style.overflow = 'auto';
         window.scrollTo(0, 0);
         axios.get("/adminmenu").then((res) => {
             setSections(res.data);
@@ -54,17 +59,42 @@ export const AdminMenuListPage = (): JSX.Element => {
         })
     }, [])
 
+    useEffect(() => {
+        document.body.style.overflow = 'auto';
+        window.scrollTo(0, 0);
+        if (location.state && location.state.activeSection) {
+            // 로그아웃 상태에서 새로운 사용자가 접속할 때, localStorage에 값이 없으면 'S'로 초기화합니다.
+            setActiveSection(location.state.activeSection);
+            localStorage.setItem('activeSection', 'S'); // 값이 있어도 무조건 'S'로 초기화
+        } else if (!localStorage.getItem('activeSection')) {
+            // 값이 없으면 무조건 'S'로 초기화
+            setActiveSection('S');
+            localStorage.setItem('activeSection', 'S');
+        } else {
+            // 페이지가 로드될 때마다 localStorage에 activeSection을 저장합니다.
+            localStorage.setItem('activeSection', activeSection);
+        }
+        axios.get("/adminmenu").then((res) => {
+            setSections(res.data);
+            setOriginalSections(res.data);
+            console.log(res);
+        })
+    }, [location.state, activeSection]);
+
     const [resetSelect, setResetSelect] = useState < undefined | null > (undefined);
 
     const handleSectionClick = (section: string) => {
         setActiveSection(section);
         setResetSelect(undefined);
-        setSelectedOption(null);
         window.scrollTo(0, 0);
 
         if (section === 'P' || section === 'B' || section === 'S' || section === 'F') {
             setSections(originalSections);
             setResetSelect(null);
+        }
+
+        if (section !== 'S') {
+            setActiveSection(section);
         }
     };
 
@@ -74,6 +104,7 @@ export const AdminMenuListPage = (): JSX.Element => {
         localStorage.removeItem("user_name");
         localStorage.removeItem("user_dept");
         localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem('activeSection');
 
         setIsLoggedIn(false);
 
@@ -158,7 +189,6 @@ export const AdminMenuListPage = (): JSX.Element => {
         navigate('/');
     }
 
-
     return (
         <>
 
@@ -186,7 +216,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                             <nav className={style.menuNav}>
                                 <ul className={style.menuUl}>
                                     {corner.map((section) => (
-                                        <li key={section} className={style.li}>
+                                        <li key={section} className={style.li} >
                                             <a
                                                 href={`#${section}`}
                                                 onClick={(e) => {
@@ -194,11 +224,17 @@ export const AdminMenuListPage = (): JSX.Element => {
                                                     handleSectionClick(section);
                                                 }}
                                                 className={activeSection === section ? style.active : ''}
+                                                style={{flexDirection:'column'}}
                                             >
-                                                {section === 'S' && '면분식류(S)'}
-                                                {section === 'B' && '비빔밥덮밥류(B)'}
-                                                {section === 'F' && '돈까스라이스류(F)'}
-                                                {section === 'P' && '포장(P)'}
+                                                
+                                                {section === 'S' && '면분식류'}
+                                                <span>{section === 'S' && '(S)'} </span>
+                                                {section === 'B' && '비빔밥덮밥류'}
+                                                <span>{section === 'B' && '(B)'} </span>
+                                                {section === 'F' && '돈까스라이스류'}
+                                                <span>{section === 'F' && '(F)'} </span>
+                                                {section === 'P' && '포장'}
+                                                <span>{section === 'P' && '(P)'} </span>
                                             </a>
                                         </li>
                                     ))}
@@ -217,7 +253,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                                     className={style.selectoption}
                                     onChange={handleOptionChange}
                                     isClearable
-                                    isSearchable
+                                    isSearchable={false} 
                                     placeholder={selectedOption ? selectedOption.label : "메뉴를 선택하세요"} // 선택된 옵션을 표시할 부분
                                     value={resetSelect}
                                 />
@@ -234,7 +270,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                                     className={style.selectoptionP}
                                     onChange={handleOptionChange}
                                     isClearable
-                                    isSearchable
+                                    isSearchable={false} 
                                     placeholder="메뉴를 선택하세요"
                                     value={resetSelect} />
                             </div>
@@ -289,7 +325,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                     </div>
 
                 </body>
-             ) : (
+            ) : (
                 <WrongApproach />
             )}
         </>

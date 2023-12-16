@@ -1,11 +1,15 @@
 import { Button } from "antd";
 import '../../css/cartCss.css'
+import MenuStyle from '../../css/Menu.module.css';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Input from "antd/es/input/Input";
 import { Cart, Orders } from './state/cart.state'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RequestPayResponseCallback } from "../Order/Payment";
+import { BiArrowBack } from "react-icons/bi";
+import WrongApproach from "../WrongApproach";
+import { IoHomeSharp } from "react-icons/io5";
 
 export const CartList = (): JSX.Element => {
   const [cartList, setCartList] = useState < Cart[] > ([]);
@@ -116,21 +120,21 @@ export const CartList = (): JSX.Element => {
     const { success, error_msg, imp_uid, merchant_uid, pay_method, paid_amount, status } = response;
 
     if (success) {
-      
+
       axios.put("cart/update", cartItems)
-      .then((updateRes) => {
-        axios.post("/order/insert", orderInfo)
-          .then((orderRes) => {
-            setOrderList(orderInfo);
-            navigate("/order");
-          })
-          .catch((orderError) => {
-            console.error("주문 요청 실패:", orderError);
-          });
-      })
-      .catch((updateError) => {
-        console.error("수량 업데이트 실패:", updateError);
-      });
+        .then((updateRes) => {
+          axios.post("/order/insert", orderInfo)
+            .then((orderRes) => {
+              setOrderList(orderInfo);
+              navigate("/order");
+            })
+            .catch((orderError) => {
+              console.error("주문 요청 실패:", orderError);
+            });
+        })
+        .catch((updateError) => {
+          console.error("수량 업데이트 실패:", updateError);
+        });
     } else {
       alert(`결제 실패: ${error_msg}`);
     }
@@ -160,7 +164,7 @@ export const CartList = (): JSX.Element => {
       }
     };
 
-    if(data.m_redirect_url) {
+    if (data.m_redirect_url) {
       handleOrder();
     }
 
@@ -179,53 +183,70 @@ export const CartList = (): JSX.Element => {
 
 
     console.log(data);
-    
+
   }
 
   return (
     <>
-      {cartList.map((cart, index) => (
-        <div className="menuInfo" key={index}>
-          <img className="menuImg" src={require(`../../img/${decodeURIComponent(cart['menu_image'])}`)} alt={cart['menu_name']} />
-          <div className="cartMInfo">
-            <div className="menuName">{cart.menu_name}</div>
-            <div className="isPacked">• 방법 : {cart.is_packed ? '포장' : '매장'}</div>
-            <div className="isPacked">• 코너 : {cart.menu_corner}</div>
-            <div className="menuPrice">
-              {cart.is_packed ? cart.menu_price + 500 : cart.menu_price}<span style={{fontWeight:'600'}}>원</span>
-            </div>
-            <div className="menuQuantity">
-              <div className="count" >
-                {cart.quantity === 1 ? (
-                  <Button className="minus" onClick={() => handleDecrement(cart.menu_id)} disabled>-</Button>) :
-                  (
-                    <Button className="minus" onClick={() => handleDecrement(cart.menu_id)}>-</Button>
-                  )}
-                < Input className="quantityInput" name="counter" value={cart.quantity} readOnly />
-                {cart.quantity === 100 ? (
-                  <Button className="plus" onClick={() => handleIncrement(cart.menu_id)} disabled>+</Button>
-                ) : (
-                  <Button className="plus" onClick={() => handleIncrement(cart.menu_id)}>+</Button>
-                )}
-              </div>
-            </div>
+      {userId ? (
+            <><div className="body">
+          <div className="cartTop">
+            <Link className={MenuStyle.link} to="/Menu">
+              <BiArrowBack className={MenuStyle.faArrowLeft} />
+            </Link>
+            <p className="topTxt"> 장바구니</p>
+            <Link className={MenuStyle.link} to="/Menu">
+              <IoHomeSharp className={MenuStyle.faArrowLeft} />
+            </Link>
           </div>
-          <Button className="cartDelBtn" onClick={() => handleDelete(cart.menu_id)}>X</Button>
-        </div>
-      ))}
-      <div className="priceBox">
-        <div className="priceTxt">
-          총 수량 <span style={{fontWeight:'500'}}>{totalQuantity}</span>개
-        </div>
-        <div className="totalPrice">
-          총 주문금액 <span style={{fontWeight:'500'}}>{totalPriceStr}</span>원
-        </div>
-      </div>
-      <div className="bottom">
-        <button className="orderBtn" onClick={onClickPayment}>
-          주문하기
-        </button>
-      </div>
+          
+        <div className='cartMList'>
+            {cartList.map((cart, index) => (
+              <div className="menuInfo" key={index}>
+                <img className="menuImg" src={require(`../../img/${decodeURIComponent(cart['menu_image'])}`)} alt={cart['menu_name']} />
+                <div className="cartMInfo">
+                  <div className="menuName">{cart.menu_name}</div>
+                  <div className="isPacked">• 방법 : {cart.is_packed ? '포장' : '매장'}</div>
+                  <div className="isPacked">• 코너 : {cart.menu_corner}</div>
+                  <div className="menuPrice">
+                    {cart.is_packed ? cart.menu_price + 500 : cart.menu_price}<span style={{ fontWeight: '600' }}>원</span>
+                  </div>
+                  <div className="menuQuantity">
+                    <div className="count">
+                      {cart.quantity === 1 ? (
+                        <Button className="minus" onClick={() => handleDecrement(cart.menu_id)} disabled>-</Button>) :
+                        (
+                          <Button className="minus" onClick={() => handleDecrement(cart.menu_id)}>-</Button>
+                        )}
+                      <Input className="quantityInput" name="counter" value={cart.quantity} readOnly />
+                      {cart.quantity === 100 ? (
+                        <Button className="plus" onClick={() => handleIncrement(cart.menu_id)} disabled>+</Button>
+                      ) : (
+                        <Button className="plus" onClick={() => handleIncrement(cart.menu_id)}>+</Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <Button className="cartDelBtn" onClick={() => handleDelete(cart.menu_id)}>X</Button>
+              </div>
+            ))}
+          </div><div className="priceBox">
+            <div className="priceTxt">
+              총 수량 <span style={{ fontWeight: '500' }}>{totalQuantity}</span>개
+            </div>
+            <div className="totalPrice">
+              총 주문금액 <span style={{ fontWeight: '500' }}>{totalPriceStr}</span>원
+            </div>
+          </div><div className="bottom">
+            <button className="orderBtn" onClick={onClickPayment}>
+              주문하기
+            </button>
+          </div>
+          </div></>
+
+      ) : (
+        <WrongApproach />
+      )}
     </>
   );
 

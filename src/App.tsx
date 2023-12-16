@@ -17,6 +17,7 @@ import WrongApproach from './pages/views/WrongApproach';
 import { MenuReviewTab } from './pages/views/MenuReviewTab';
 import { ReviewListPage } from './pages/views/Review/ReviewListPage';
 import { ReviewWritePage } from './pages/views/Review/ReviewWritePage';
+import CartList from './pages/views/Cart/CartList';
 
 export const App =  ():JSX.Element => {
   return (
@@ -47,7 +48,7 @@ export const App =  ():JSX.Element => {
         <Route path="/myPage" element={<MyPage />} />
         <Route path="/myOrderList" element={<MyOrderList />} />
         <Route path="/myReview" element={<MyReview />} />
-        <Route path="/cart" element={<CartMain />} />
+        <Route path="/cart" element={<CartList />} />
         <Route path="/order" element={<OrderComplete />} />
         <Route path="/adminMenu" element={<AdminMenuListPage />} /> {/* 메뉴관리 */}
         <Route path="/adminMenu/menuInsert" element={<AdminMenuInsert />} /> {/* 메뉴등록 */}

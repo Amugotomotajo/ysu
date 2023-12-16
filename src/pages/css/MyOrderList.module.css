@@ -9,7 +9,6 @@
     font-size: 1rem;
     text-align: center;
     margin: 20px;
-    margin-bottom: 100px;
     margin-top: 120px;
     flex-direction: column;
     overflow-x: hidden;
@@ -56,10 +55,12 @@
 .orderDate {
     font-weight: 500;
     padding: 10px 0px; 
+    font-size: 14px;
+    padding-left: 5px;
     margin-top: 12px;
     margin-bottom: 12px;
     background-color: #F9F7F6;
-    border-left: 0.2em solid #4D5964;
+    /* border-left: 0.2em solid #4D5964; */
 }
 
 .menuItem {
@@ -149,6 +150,8 @@
     .MyOrderList {
         margin-top: 110px;
         padding-top: 10px;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .orderContainer {
@@ -158,6 +161,7 @@
         width:100%;
         border-radius: 6px;
         padding: 20px 10px;
+        
     }
 
     .orderHeader {

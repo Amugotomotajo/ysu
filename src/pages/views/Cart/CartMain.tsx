@@ -22,7 +22,7 @@ export const CartMain = (): JSX.Element => {
                     </Link>
                     <p className="topTxt"> 장바구니</p>
                     <Link className={MenuStyle.link} to="/Menu">
-                        <IoHomeSharp className={MenuStyle.faArrowLeft} />
+                        <IoHomeSharp className={MenuStyle.faArrowLeft}/>
                     </Link>
                 </div>
                 <div className="content">

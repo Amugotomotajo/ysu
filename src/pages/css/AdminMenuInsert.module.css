@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-
 .body {
   margin: 0;
   background-color: #f1f1f1;
@@ -7,12 +5,12 @@
 
 
 .signupform {
-  font-family: "Roboto", sans-serif;
+  font-family: "NotoSans";
   width: 650px;
-  margin: 30px auto;
+  margin: 20px auto;
   background: linear-gradient(to right, #ffffff 0%, #fafafa 50%, #ffffff 99%);
   border-radius: 20px;
-  margin-top: 140px;
+  margin-top: 130px;
   align-items: center;
 }
 
@@ -81,7 +79,7 @@
 .formbody .labeltitle {
   color: black;
   font-size: 17px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .formbody .forminput {
@@ -97,7 +95,7 @@
   border-radius: 4px;
   background: white;
   outline: none;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .formbody .forminput:focus {
@@ -126,10 +124,23 @@
 }
 
 input[type="file"] {
+  box-sizing: border-box;
   outline: none;
   cursor: pointer;
   font-size: 17px;
-  margin-top: 10px;
+  margin-top: 8px;
+  border: 0.5px solid #bababa;
+    background-color: #ffffff;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    padding: 5px 12px;
+  margin-bottom: 0px;
+    font-size: 12px;
+    height: 100%;
+    margin-right: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.02);
 }
 
 #rangelabel {
@@ -155,7 +166,7 @@ input[type="file"] {
   background-color: #EFF0F1;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  padding: 15px 40px 20px;
+  padding: 25px 40px 20px;
   text-align: right;
   clear: both;
   background-color: white;
@@ -262,7 +273,7 @@ input[type="file"] {
 }
 
 .inputgroup {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 @media screen and (max-width: 700px) {
@@ -281,7 +292,6 @@ input[type="file"] {
 
   input[type="file"] {
     width: 100%;
-    margin-bottom: 10px;
   }
 
   .horizontalgroup .left,
@@ -294,7 +304,7 @@ input[type="file"] {
   }
 
   .formbody {
-    padding: 50px 25px 0px 25px;
+    padding: 25px 25px 0px 25px;
   }
 
   .formfooter {
@@ -308,6 +318,6 @@ input[type="file"] {
 
   .btninsert {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 8px;
   }
 }

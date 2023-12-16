@@ -1,8 +1,8 @@
-html {
+/* html {
     width: 100%;
     height: 100%;
     font-family: 'NotoSans';
-}
+} */
 
 body {
     margin: 0;
@@ -109,17 +109,22 @@ body {
     text-align: center;
     font-size: 18px;
     color: #000;
-    font-weight: bold;
+    font-weight: 600;
     text-decoration: none;
     height: 100%;
 }
 
-li a.active {
+li a span {
+    font-weight: 500;
+    color: #555;
+}
+
+li a.active, li a.active span {
     background-color: #555;
     color: white;
 }
 
-li a:hover:not(.active) {
+li a:hover:not(.active), li a:hover:not(.active) span {
     background-color: #555;
     color: white;
 }
@@ -160,7 +165,6 @@ li a:hover {
 .soldOutOverlay {
     position: relative;
     display: inline-block;
-    overflow: auto;
     display: flex;
     flex-direction: column;
 }

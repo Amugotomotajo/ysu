@@ -13,7 +13,6 @@ body {
     font-size: 1rem;
     text-align: center;
     margin: 20px;
-    margin-bottom: 100px;
     margin-top: 120px;
     overflow-x: hidden;
     font-family: 'NotoSans';
@@ -65,10 +64,14 @@ body {
 .orderDate {
     font-weight: 500;
     padding: 10px 0px;
+    font-size: 14px;
+    padding-left: 5px;
     margin-top: 15px;
     margin-bottom: 0px;
     background-color: #F9F7F6;
-    border-left: 0.2em solid #4D5964;
+    /* border-left: 0.2em solid rgb(80, 176, 209); */
+    display: flex;
+  align-items: center;
 }
 
 .menuItem {
@@ -140,29 +143,47 @@ body {
     font-size: 23px;
 }
 
+.deleteBtn {
+    border: 0.5px solid #bababa;
+    background-color: #ffffff;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    padding: 5px 12px;
+    float: right;
+    font-size: 12px;
+    height: 100%;
+    margin-right: 10px;
+    margin-left: auto;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.02);
+}
+
 .Review {
-    margin-top: 10px;
-    position: relative; /* 말풍선의 부모 요소에 대해 position 설정 */
-    background-color: #e0f3ff;
-    display: inline-block; /* 혹시 인라인 요소일 경우 block으로 변경 */
+    max-width: 220px;
+    margin-top: 15px;
+    position: relative;
+    background-color: #F9F7F6;
+    display: inline-block;
     justify-self: end;
     padding: 20px;
     border-radius: 10px;
     text-align: right;
-    
+
+    box-shadow: 0px 0px 6px #B2B2B2;
 }
 
 .Review::after {
-    border-top:15px solid #e0f3ff;
- border-left: 15px solid transparent;
- border-right: 0px solid transparent;
- border-bottom: 0px solid transparent;
- content:"";
- position:absolute;
- top:10px;
- left:-15px;
+    border-top: 15px solid #F9F7F6;
+    border-left: 15px solid transparent;
+    border-right: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -15px;
+    box-shadow: 0px 6px 6px #B2B2B2; /* 말풍선 꼬리에 그림자 추가 */
 }
-
 
 .reviewStar {
     display: flex;
@@ -203,9 +224,12 @@ body {
     .countHead {
         padding-left: 10px;
     }
+
     .MyOrderList {
         margin-top: 110px;
         padding-top: 10px;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .orderHeader {

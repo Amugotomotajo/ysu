@@ -10,6 +10,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { MdLogout } from "react-icons/md";
 import ysuLogo from '../img/ysu_logo.jpg';
 import WrongApproach from './WrongApproach';
+import { FaTrashAlt } from 'react-icons/fa';
 
 export const AdminMenuDetail = (): JSX.Element => {
     const location = useLocation();
@@ -369,9 +370,11 @@ export const AdminMenuDetail = (): JSX.Element => {
                             <div className={MdStyle.modal}>
                                 <div className={MdStyle.modalContent}>
                                     <span className={MdStyle.close} onClick={closeDeleteModal}>&times;</span>
-                                    <p>메뉴를 삭제하시겠습니까?</p>
-                                    <button type="submit" className={MdStyle.btncancel} onClick={closeDeleteModal}>취소</button>
-                                    <button type="submit" className={MdStyle.btninsert} onClick={openDeModal}>삭제</button>
+                                    <p>메뉴를 정말 삭제하시겠습니까?</p>
+                                    <div className={MdStyle.ModalBtn}>
+                                        <button type="submit" className={MdStyle.btncancel} onClick={closeDeleteModal}>취소</button>
+                                        <button type="submit" className={MdStyle.btninsert} onClick={openDeModal}>삭제</button>
+                                    </div>
                                 </div>
                             </div>
                         )}

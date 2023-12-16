@@ -18,6 +18,8 @@ export const Login = (): JSX.Element => {
     const [showErrorText, setShowErrorText] = useState(false);
 
     useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        
         console.log(localStorage.getItem('user_name'));
         const storedInformation = localStorage.getItem("isLoggedIn");
 

@@ -11,7 +11,7 @@ import style from '../css/MyReview.module.css';
 import axios from 'axios';
 import noOrders from '../img/noOrders.png';
 import WrongApproach from './WrongApproach';
-import { Rate } from 'antd';
+import { Rate, message } from 'antd';
 
 export const MyReview = (): JSX.Element => {
     const [menu_id, setMenuId] = useState < number > (0); // 메뉴 ID 상태 (숫자)
@@ -22,6 +22,7 @@ export const MyReview = (): JSX.Element => {
     const [score, setScore] = useState([false, false, false, false, false]);
     const [reviewCount, setReviewCount] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [triggerEffect, setTriggerEffect] = useState(false);
     const [myReviews, setMyReviews] = useState < {
         u_id: string,
         order_id: number,
@@ -55,6 +56,7 @@ export const MyReview = (): JSX.Element => {
     const userDept = localStorage.getItem("user_dept") || '';
 
     useEffect(() => {
+        document.body.style.overflow = 'auto';
 
         console.log(userId);
         setUserInfo({
@@ -100,7 +102,7 @@ export const MyReview = (): JSX.Element => {
             const isMounted = false; // 컴포넌트가 언마운트되면 isMounted 값을 false로 변경하여 setState 호출 방지
         };
 
-    }, [localStorage]);
+    }, [localStorage, triggerEffect]);
 
     const [expandedOrders, setExpandedOrders] = useState < { [orderId: number]: boolean } > ({});
 
@@ -111,19 +113,41 @@ export const MyReview = (): JSX.Element => {
         }));
     };
 
-    const formatOrderDate = (orderDateStr: string): string => {
-        const orderDate = new Date(orderDateStr);
-        const options: Intl.DateTimeFormatOptions = {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            weekday: 'long',
-            hour: 'numeric',
-            minute: 'numeric',
-        };
+    // const formatOrderDate = (orderDateStr: string): string => {
+    //     const orderDate = new Date(orderDateStr);
+    //     const options: Intl.DateTimeFormatOptions = {
+    //         year: 'numeric',
+    //         month: 'short',
+    //         day: 'numeric',
+    //         weekday: 'short',
+    //         hour: 'numeric',
+    //         minute: 'numeric',
+    //     };
 
-        return orderDate.toLocaleDateString('ko-KR', options);
+    //     return orderDate.toLocaleDateString('ko-KR', options);
+    // };
+
+    const formatOrderDate = (dateString: string | number | Date) => {
+        const date = new Date(dateString);
+        const options: Intl.DateTimeFormatOptions = {
+            year: '2-digit',
+            month: '2-digit',
+            day: '2-digit',
+            weekday: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+    
+        const formattedDate = date.toLocaleDateString('ko-KR', options);
+        let [year, month, day, weekday, time, hour] = formattedDate.split(' ');
+        year = year.slice(0, -1);
+        month = month.slice(0, -1);
+        day = day.slice(0, -1);
+    
+        return `${year}/${month}/${day} ${weekday} ${time} ${hour}`;
     };
+    
+      
 
     const starScore = (index: number) => {
         let star = [...score];
@@ -133,6 +157,21 @@ export const MyReview = (): JSX.Element => {
         setScore(star);
     };
 
+    const handleReviewDelete = (reviewId: number) => {
+        // 각 reviewId에 대해 순회하며 삭제 요청 보내기
+        axios.delete(`/review/delete/${reviewId}/${userId}`)
+            .then((res) => {
+                setTriggerEffect(prevState => !prevState);
+                // 서버로부터 성공적인 응답을 받으면, 현재 리뷰를 목록에서 제거
+                message.success("리뷰가 삭제되었습니다.");
+                console.log(res);
+
+            })
+            .catch((error) => {
+                console.error("리뷰 삭제 중 오류:", error);
+                message.error("리뷰 삭제 중 오류가 발생했습니다.");
+            });
+    };
 
     const handleLogout = () => {
         // 세션 초기화
@@ -156,7 +195,7 @@ export const MyReview = (): JSX.Element => {
                         </Link>
                         <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} />
                         <Link className={MenuStyle.link} to="/">
-                            <IoCartSharp className={MenuStyle.faCartShopping} />
+                        <IoCartSharp className={MenuStyle.faCartShopping} style={{color:'transparent'}}/>
                         </Link>
                     </div>
 
@@ -167,7 +206,7 @@ export const MyReview = (): JSX.Element => {
                     <div className={style.MyOrderList}>
                         {myReviews.length !== 0 ? (
                             <div className={style.orderContainer}>
-                                <span className={style.reviewCount}><span className={style.countHead}>내가 작성한 리뷰</span> <span style={{fontWeight:'500'}}>{reviewCount}</span> 개</span>
+                                <span className={style.reviewCount}><span className={style.countHead}>내가 작성한 리뷰</span> <span style={{ fontWeight: '500' }}>{reviewCount}</span> 개</span>
                             </div>
                         ) : (
                             <span></span>
@@ -187,19 +226,33 @@ export const MyReview = (): JSX.Element => {
                                         {/* 주문 번호를 클릭하여 상세 정보를 펼치거나 접는 부분 */}
                                         <div className={style.orderHeader}>
 
-                                            <span style={{ fontSize: '20px' }}>&nbsp;주문 번호 &nbsp;{orderId}</span>
+                                            <span style={{ fontSize: '20px' }}>
+                                                &nbsp;주문 번호 {orderId}
+                                            </span>
 
                                             {/* 주문 날짜 */}
                                             {Array.from(new Set(myReviews.filter(review => review.order_id === orderId).map(order => order.review_time))).map(orderDate => (
                                                 <div key={`${orderId}-${orderDate}`} className={style.orderDateHeader}>
-
                                                     {/* 날짜 표시 */}
-                                                    <p className={style.orderDate}>&nbsp;&nbsp;&nbsp;{formatOrderDate(orderDate)} </p>
+                                                    <p className={style.orderDate}>
+                                                        &nbsp;&nbsp;&nbsp;{formatOrderDate(orderDate)}
+                                                        {myReviews
+                                                            .filter(review => review.order_id === orderId && review.review_time === orderDate)
+                                                            .map(review => (
+                                                                <button className={style.deleteBtn}
+                                                                    key={review.review_id}
+                                                                    onClick={() => handleReviewDelete(review.review_id)}
+                                                                >
+                                                                    삭제
+                                                                </button>
+                                                            ))}
+                                                    </p>
 
                                                     {myReviews
                                                         .filter(review => review.order_id === orderId && review.review_time === orderDate)
                                                         .map((myReview, idx) => (
                                                             <><div key={`${orderId}-${orderDate}-${idx}`} className={style.menuItem}>
+
                                                                 {/* 메뉴 상세 정보 표시 */}
                                                                 <div className={style.menuImage}>
                                                                     <img src={require(`../img/${decodeURIComponent(myReview['menu_image'])}`)} alt={myReview['menu_name']} />
@@ -209,7 +262,7 @@ export const MyReview = (): JSX.Element => {
                                                                     <div className={style.menuCorner}>• 코너 : {myReview.menu_corner}</div>
 
                                                                     <div className={style.menuPrice}>
-                                                                        <span style={{fontWeight: '500'}}>{myReview.menu_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                                                                        <span style={{ fontWeight: '500' }}>{myReview.menu_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                                                                         원
                                                                     </div>
                                                                 </div>
@@ -224,24 +277,24 @@ export const MyReview = (): JSX.Element => {
                                                             .filter(review => review.order_id === orderId && review.review_time === orderDate)
                                                             .map((myReview, idx) => (
                                                                 <>
-                                                                <div style={{display:'flex', justifyContent: 'flex-end', textAlign:'right'}}>
-                                                                    <div className={style.Review}>
-                                                                        <div className={style.reviewStar}>
-                                                                            &nbsp;
+                                                                    <div style={{ display: 'flex', justifyContent: 'flex-end', textAlign: 'right' }}>
+                                                                        <div className={style.Review}>
+                                                                            <div className={style.reviewStar}>
+                                                                                &nbsp;
 
-                                                                            <Rate
-                                                                                allowHalf={false} 
-                                                                                count={5} // 별 개수
-                                                                                value={myReview.review_star} // 현재 평점 값
-                                                                                style={{ fontSize: '20px', margin: '10px 0' }} 
-                                                                            />
+                                                                                <Rate
+                                                                                    allowHalf={false}
+                                                                                    count={5} // 별 개수
+                                                                                    value={myReview.review_star} // 현재 평점 값
+                                                                                    style={{ fontSize: '20px', margin: '10px 0' }}
+                                                                                />
 
-                                                                            &nbsp; {myReview.review_star}.0
+                                                                                &nbsp; {myReview.review_star}.0
+                                                                            </div>
+
+                                                                            <div className={style.reviewWriting}>&nbsp;{myReview.review_writing}</div>
                                                                         </div>
-
-                                                                        <div className={style.reviewWriting}>&nbsp;{myReview.review_writing}</div>
                                                                     </div>
-                                                                </div>
                                                                 </>
                                                             ))
                                                         }

@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { OrderDetail, Orders } from "../Order/state/order.state";
 import axios from "axios";
 import "./css/complete.css";
+import MenuStyle from '../../css/Menu.module.css';
 import { IoHomeSharp } from "react-icons/io5";
 import { LiaCheckCircle } from "react-icons/lia";
 import React from "react";
 import WrongApproach from '../WrongApproach';
+import { Link } from "react-router-dom";
+import { BiArrowBack } from "react-icons/bi";
 
 export const OrderComplete = (): JSX.Element => {
   const [orderList, setOrderList] = useState < Orders[] > ([]);
@@ -39,16 +42,16 @@ export const OrderComplete = (): JSX.Element => {
       {userId ? (
         <div>
           {orderList.map((order, index) => (
-            <div className="body" key={order.order_id}>
+            <div className="completeBody" key={order.order_id}>
 
               <div className="orderTop">
-                <div className="odTopHome" >
-                  <IoHomeSharp fontSize="1.2em" style={{ color: 'transparent' }} />
-                </div>
-                <p className="topTxt"> 주문완료</p>
-                <div className="odTopHome">
-                  <IoHomeSharp fontSize="1.2em" />
-                </div>
+                    <Link className={MenuStyle.link} to="/Menu"> 
+                        <BiArrowBack className={MenuStyle.faArrowLeft} style={{color: 'transparent', cursor: 'default'} }/>
+                    </Link>
+                    <p className="topTxt">주문완료</p>
+                    <Link className={MenuStyle.link} to="/Menu">
+                        <IoHomeSharp className={MenuStyle.faArrowLeft} style={{color:'white'}}  />
+                    </Link>
               </div>
 
               <div className="odContent">

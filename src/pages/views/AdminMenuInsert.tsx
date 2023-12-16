@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MStyle from '../css/Menu.module.css'
 import style from '../css/AdminMenuInsert.module.css'
 import WrongApproach from './WrongApproach';
+import { FaTrashAlt } from "react-icons/fa";
 
 export const AdminMenuInsert = (): JSX.Element => {
   const [menu_name, setMenuName] = useState('');
@@ -267,7 +268,7 @@ export const AdminMenuInsert = (): JSX.Element => {
 
               {/* 메뉴가격 */}
               <div className={style.formgroup}>
-                <label className={style.labeltitle}>메뉴가격</label><br />
+                <label className={style.labeltitle}>메뉴 가격</label><br />
                 <input className={`${style.forminput} ${menuPriceError ? style.error : ''}`} value={menu_price === 0 ? '' : menu_price} placeholder="메뉴가격을 입력하세요." onChange={(e) => {
                   const inputValue = e.target.value;
                   const numericValue = Number(inputValue);
@@ -284,7 +285,7 @@ export const AdminMenuInsert = (): JSX.Element => {
               {/* 포장가능유무 */}
               <div className={style.horizontalgroup}>
                 <div className={style.formgroup}>
-                  <label className={style.labeltitle}>포장가능여부</label>
+                  <label className={style.labeltitle}>포장 가능 여부</label>
                   <div className={style.inputgroup}>
                     <label id={style.male}><input type="radio" name="pack" value="1" onChange={(e) => {
                       const inputValue = e.target.value;
@@ -311,8 +312,8 @@ export const AdminMenuInsert = (): JSX.Element => {
 
               {/* 이미지 사진 */}
               <div className={style.horizontalgroup}>
-                <div className={style.formgroup}>
-                  <label className={style.labeltitle}>메뉴이미지</label><br />
+                <div className={style.formgroup} style={{marginBottom:'0px'}}>
+                  <label className={style.labeltitle}>메뉴 이미지</label><br />
                   <input type="file" accept="image/*" onChange={(e) => handleImageChange(e)} />
                   {menuImageError && <p className={style.errorMsg}>{menuImageError}</p>}
                 </div>

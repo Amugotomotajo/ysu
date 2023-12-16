@@ -55,7 +55,7 @@ export const MyPage = (): JSX.Element => {
         localStorage.removeItem("user_name");
         localStorage.removeItem("user_dept");
         localStorage.removeItem("isLoggedIn");
-
+        localStorage.removeItem('activeSection');
         setIsLoggedIn(false);
         // 로그인 페이지로 이동
         navigate('/');
