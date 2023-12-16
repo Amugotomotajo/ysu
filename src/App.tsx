@@ -6,7 +6,7 @@ import { AdminMenuInsert } from "./pages/AdminMenuInsert";
 import { AdminMenuDetail } from "./pages/AdminMenuDetail";
 import { Main } from "./pages/Main";
 import { Login } from "./pages/Login";
-
+import WrongApproach from './pages/WrongApproach';
 import { MyPage } from './pages/MyPage';
 import { MyOrderList } from './pages/MyOrderList';
 import { MenuDetail } from './pages/MenuDetail';
@@ -24,7 +24,7 @@ const App = ():JSX.Element => {
         <Route path="/adminmenu/menuinsert" element={<AdminMenuInsert />} /> {/* 메뉴등록 */}
         <Route path="/adminmenu/menudetail" element={<AdminMenuDetail />} /> {/* 메뉴정보(수정, 삭제) */}
         <Route path="/login" element={<Login />} /> {/* 로그인 */}
-
+        <Route path='/wrongApproach' element={<WrongApproach/>} />
         <Route path="/Menu" element={<Menu />} /> {/* 사용자메뉴 */}
         <Route path="/MenuDetail" element={<MenuDetail />} /> {/* 메뉴정보 */}
         <Route path="/MyPage" element={<MyPage />} /> {/* 마이페이지 */}

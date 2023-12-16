@@ -1,5 +1,4 @@
 import React from 'react';
-import { PlusOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
 import { JSX } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
@@ -11,11 +10,24 @@ import { BiArrowBack } from "react-icons/bi";
 import { MdLogout } from "react-icons/md";
 import { faPlus, faArrowLeft, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MStyle from '../css/Menu.module.css'
 import style from '../css/AdminMenuInsert.module.css'
+import WrongApproach from './WrongApproach';
 
 export const AdminMenuInsert = (): JSX.Element => {
+  const [menu_name, setMenuName] = useState('');
+  const [menu_corner, setMenuCorner] = useState('');
+  const [menu_price, setMenuPrice] = useState < number > (0);
+  const [menu_pack, setMenuPack] = useState < number | 2 > (2);
+  const [menu_image, setMenuImage] = useState < File | null > (null);
+  const [menuNameError, setMenuNameError] = useState('');
+  const [menuCornerError, setMenuCornerError] = useState('');
+  const [menuPriceError, setMenuPriceError] = useState('');
+  const [menuPackError, setMenuPackError] = useState('');
+  const [menuImageError, setMenuImageError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const userDept = localStorage.getItem('user_dept');
 
   const MainPage = () => {
     navigate("/");
@@ -31,6 +43,7 @@ export const AdminMenuInsert = (): JSX.Element => {
     localStorage.removeItem("user_name");
     localStorage.removeItem("user_dept");
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem('activeSection');
 
     setIsLoggedIn(false);
 
@@ -43,16 +56,7 @@ export const AdminMenuInsert = (): JSX.Element => {
     navigate(-1);
   }
 
-  const [menu_name, setMenuName] = useState('');
-  const [menu_corner, setMenuCorner] = useState('');
-  const [menu_price, setMenuPrice] = useState<number>(0);
-  const [menu_pack, setMenuPack] = useState<number | 2>(2);
-  const [menu_image, setMenuImage] = useState<File | null>(null);
-  const [menuNameError, setMenuNameError] = useState('');
-  const [menuCornerError, setMenuCornerError] = useState('');
-  const [menuPriceError, setMenuPriceError] = useState('');
-  const [menuPackError, setMenuPackError] = useState('');
-  const [menuImageError, setMenuImageError] = useState('');
+  
 
   const handleAddToMenu = async () => {
     setMenuNameError('');
@@ -93,9 +97,6 @@ export const AdminMenuInsert = (): JSX.Element => {
     }
     openCheckModal();
 
-
-    // FormData 객체 생성
-
   };
 
   const [checkModal, setCheckModal] = useState(false);
@@ -104,6 +105,7 @@ export const AdminMenuInsert = (): JSX.Element => {
   const openCheckModal = () => {
     setCheckModal(true);
   }
+
 
   const openModal = () => {
     setShowModal(true);
@@ -134,12 +136,13 @@ export const AdminMenuInsert = (): JSX.Element => {
           console.error('Failed to insert data', error, formData);
         });
     } catch (error) {
-      console.error('메뉴 업데이트 오류:', error, formData);
+      console.error('Menu Insert Error:', error, formData);
     }
 
     const timeoutId = setTimeout(() => {
 
       setShowModal(false);
+      localStorage.removeItem('activeSection');
       navigate('/adminmenu');
     }, 3000);
 
@@ -161,8 +164,8 @@ export const AdminMenuInsert = (): JSX.Element => {
     if (file) {
       // 이미지를 Blob으로 변환
       const blobImage = await convertFileToBlob(file);
-      // Blob을 File 객체로 생성 (파일명을 생성하여)
-      const fileName = generateFileName();
+      // Blob을 File 객체로 생성
+      const fileName = generateFileName(menu_name || "");
       const blobFile = new File([blobImage], fileName);
 
       setMenuImage(blobFile);
@@ -171,13 +174,11 @@ export const AdminMenuInsert = (): JSX.Element => {
   };
 
   // 이미지 파일 이름 생성 함수
-  let imageCounter: number = parseInt(localStorage.getItem('imageCounter') || '1', 10);
-  const generateFileName = () => {
-    const fileName = `image${imageCounter}.jpg`;
-    imageCounter += 1;
-    localStorage.setItem('imageCounter', imageCounter.toString());
+  const generateFileName = (menu_name: string) => {
+    const sanitizedMenuName = menu_name.replace(/\s+/g, '_');
+    const fileName = `${sanitizedMenuName}.jpg`;
     return fileName;
-  };
+};
 
   const convertFileToBlob = (file: File): Promise<Blob> => {
     return new Promise((resolve) => {
@@ -191,45 +192,43 @@ export const AdminMenuInsert = (): JSX.Element => {
     });
   };
 
-
-
   return (
     <>
       <head>
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
       </head>
-      <body className={style.body}>
-        <div id="head" className={style.head}>
-          <Link className={style.link} to="/adminmenu">
-            <BiArrowBack className={style.faArrowLeft} />
-          </Link>
-          <Link className={style.link} to="">
-            <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
+      {userDept == 'admin' ? (
+      <body className={MStyle.body}>
+        <div id="head" className={MStyle.head}>
+          <Link className={MStyle.link} to="/adminMenu">
+            <BiArrowBack className={MStyle.faArrowLeft} />
           </Link>
 
-          <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
-          <Link to="/" className={style.link}>
-            <FontAwesomeIcon id="faArrowRightFromBracket" icon={faArrowRightFromBracket} className={style.faArrowRightFromBracketopacity} />
-          </Link>
-          <Link to="/login" className={style.link}>
-            <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} />
+          <img id="logo" className={MStyle.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
+
+          <Link to="/login" className={MStyle.link}>
+            <MdLogout className={MStyle.faArrowRightFromBracket} onClick={handleLogout} style={{ color: 'transparent' }} />
           </Link>
         </div>
+        <div className={style.pageHead}>
+          메뉴 등록
+        </div>
+
         <div className={style.signupform}>
           {/* 제목 */}
-          <div className={style.formheader}>
-            <h1>메뉴등록</h1>
+          {/* <div className={style.formheader}>
+            <h1>메뉴 등록</h1>
             <hr className={style.hrline1}></hr>
-          </div>
+          </div> */}
 
           <div className={style.formbody}>
             {/* 메뉴이름 */}
             <div className={style.formgroup}>
-              <label className={style.labeltitle}>메뉴이름</label><br />
+              <label className={style.labeltitle}>메뉴 이름</label><br />
               <input className={`${style.forminput} ${menuNameError ? style.error : ''}`} value={menu_name} placeholder="메뉴이름을 입력하세요."
                 onChange={(e) => {
                   setMenuName(e.target.value);
-                  setMenuNameError(''); // 에러 메시지 초기화
+                  setMenuNameError('');
                 }} />
               {menuNameError && <p className={style.errorMsg}>{menuNameError}</p>}
             </div>
@@ -238,19 +237,19 @@ export const AdminMenuInsert = (): JSX.Element => {
             {/* 코너종류 */}
             <div className={style.horizontalgroup}>
               <div className={style.formgroup}>
-                <label className={style.labeltitle}>코너종류</label>
+                <label className={style.labeltitle}>코너 종류</label>
                 <div className={style.inputgroup}>
                   <label><input type="radio" name="corner" value="S" onChange={(e) => {
                     setMenuCorner(e.target.value);
-                    setMenuCornerError(''); // 에러 메시지 초기화
+                    setMenuCornerError(''); 
                   }} /> S</label>
                   <label><input type="radio" name="corner" value="B" onChange={(e) => {
                     setMenuCorner(e.target.value);
-                    setMenuCornerError(''); // 에러 메시지 초기화
+                    setMenuCornerError(''); 
                   }} /> B</label>
                   <label><input type="radio" name="corner" value="F" onChange={(e) => {
                     setMenuCorner(e.target.value);
-                    setMenuCornerError(''); // 에러 메시지 초기화
+                    setMenuCornerError(''); 
                   }} /> F</label>
                 </div>
                 {menuCornerError && <p className={style.errorMsg}>{menuCornerError}</p>}
@@ -267,7 +266,7 @@ export const AdminMenuInsert = (): JSX.Element => {
 
                 if (!isNaN(numericValue)) {
                   setMenuPrice(numericValue);
-                  setMenuPriceError(''); // 에러 메시지 초기화
+                  setMenuPriceError(''); 
                 }
               }}
               />
@@ -310,10 +309,8 @@ export const AdminMenuInsert = (): JSX.Element => {
                 {menuImageError && <p className={style.errorMsg}>{menuImageError}</p>}
               </div>
             </div>
-
-
-            <hr className={style.hrline2}></hr>
           </div>
+          <hr className={style.hrline2}></hr>
           <div className={style.formfooter}>
             <button type="submit" className={style.btncancel} onClick={() => { handleBackClick(); }}>취소</button>
             <button type="submit" className={style.btninsert} onClick={() => { handleAddToMenu(); }}>등록</button>
@@ -344,6 +341,11 @@ export const AdminMenuInsert = (): JSX.Element => {
         )}
 
       </body>
+
+      ) : (
+                   <WrongApproach />
+
+                )}
     </>
   );
 }

@@ -1,23 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import style from '../css/AdminMenuList.module.css';
+import style from '../css/Menu.module.css';
 import axios from 'axios';
-import { faArrowLeft, faPlus, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
 import { BiArrowBack } from "react-icons/bi";
 import { FiPlus } from "react-icons/fi";
-import { MdLogout, MdOutlineRateReview } from "react-icons/md";
+import { MdLogout } from "react-icons/md";
 import ysuLogo from '../img/ysu_logo.jpg';
 import Select from "react-select"
+import wrongAstyle from '../css/WrongApproach.module.css';
+import WrongApproach from './WrongApproach';
 
 export const AdminMenuListPage = (): JSX.Element => {
     const corner = ['S', 'B', 'F', 'P']
     const navigate = useNavigate();
     const location = useLocation();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
-    const [sections, setSections] = useState<{
+    const [menu_id, setMenuId] = useState < number > (0); // 메뉴 ID 상태 (숫자)
+    const [selectedOption, setSelectedOption] = useState < any > (null); // 선택된 옵션을 저장할 상태
+    const [sections, setSections] = useState < {
         menu_id: number,
         menu_name: string,
         menu_corner: string,
@@ -26,13 +27,13 @@ export const AdminMenuListPage = (): JSX.Element => {
         menu_image: string,
         menu_sales: number,
         menu_regist: number
-    }[]>([]);
+    }[] > ([]);
 
-    const userId = sessionStorage.getItem("user_id");
-    const userName = sessionStorage.getItem("user_name");
-    const userDept = sessionStorage.getItem("user_dept")
+    const userId = localStorage.getItem("user_id");
+    const userName = localStorage.getItem("user_name");
+    const userDept = localStorage.getItem("user_dept");
 
-    const [originalSections, setOriginalSections] = useState<{
+    const [originalSections, setOriginalSections] = useState < {
         menu_id: number,
         menu_name: string,
         menu_corner: string,
@@ -41,7 +42,7 @@ export const AdminMenuListPage = (): JSX.Element => {
         menu_image: string,
         menu_sales: number,
         menu_regist: number
-    }[]>([]); // 초기 데이터를 저장할 상태
+    }[] > ([]); // 초기 데이터를 저장할 상태
 
     const [activeSection, setActiveSection] = useState(() => {
         // localStorage에서 값을 가져오거나 기본값 'S'를 사용합니다.
@@ -71,27 +72,19 @@ export const AdminMenuListPage = (): JSX.Element => {
           });
         }, [location.state, activeSection]);
 
-    const MenuListPage = () => {
-        navigate("/adminmain");
-    };
-
-    const [resetSelect, setResetSelect] = useState<undefined | null>(undefined);
+    const [resetSelect, setResetSelect] = useState < undefined | null > (undefined);
 
     const handleSectionClick = (section: string) => {
         setActiveSection(section);
         setResetSelect(undefined);
+        setSelectedOption(null);
         window.scrollTo(0, 0);
 
         if (section === 'P' || section === 'B' || section === 'S' || section === 'F') {
             setSections(originalSections);
             setResetSelect(null);
         }
-
-        if (section !== 'S') {
-            setActiveSection(section);
-        }
     };
-
 
     const handleLogout = () => {
         // 세션 초기화
@@ -136,6 +129,7 @@ export const AdminMenuListPage = (): JSX.Element => {
     ]
 
     const handleOptionChange = (selectedOption: any) => {
+        setSelectedOption(selectedOption);
         if (selectedOption && selectedOption.value === 'packtrue') {
             // 판매가능메뉴확인이 선택되었을 때, menu_pack 1인 메뉴만 필터링
             const filteredSections = originalSections.filter(section => section.menu_pack === 1);
@@ -179,6 +173,10 @@ export const AdminMenuListPage = (): JSX.Element => {
         }
     };
 
+    const goToMain = () => {
+        navigate('/');
+    }
+
 
     return (
         <>
@@ -186,125 +184,133 @@ export const AdminMenuListPage = (): JSX.Element => {
             <head>
                 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
             </head>
-            <body className={style.body}>
-                <div>
-                    <div id="head" className={style.head}>
-                        <Link className={style.link} to="/adminmain">
-                            <BiArrowBack className={style.faArrowLeft} />
-                        </Link>
-                        <Link className={style.link} to="">
-                            <FontAwesomeIcon id="faArrowRightFromBracket" className={style.faArrowRightFromBracket} icon={faArrowRightFromBracket} style={{ color: 'transparent' }} />
-                        </Link>
+            {userDept == 'admin' ? (
+                <body className={style.body}>
+                    <div>
+                        <div id="head" className={style.head}>
 
-                        <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} onClick={MenuListPage} />
-                        <Link to="/login" className={style.link} >
-                            <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} />
-                        </Link>
-                        <Link className={style.link} to="./menuinsert" state={{activeSection}}>
-                            <FiPlus className={style.faPlus} />
-                        </Link>
+                            <Link className={style.link} to="./menuInsert">
+                                <FiPlus className={style.faArrowRightFromBracket} />
+                            </Link>
+                            <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
+                            <Link to="/login" className={style.link} >
+                                <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} />
+                            </Link>
 
-                    </div>
-                    <nav className={style.nav}>
-                        <ul className={style.ul}>
-                            {corner.map((section) => (
-                                <li key={section} className={style.li}>
-                                    <a
-                                        href={`#${section}`}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            handleSectionClick(section);
-                                        }}
-                                        className={activeSection === section ? style.active : ''}
-                                    >
-                                        {section === 'S' && '면분식류(S)'}
-                                        {section === 'B' && '비빔밥덮밥류(B)'}
-                                        {section === 'F' && '돈까스라이스류(F)'}
-                                        {section === 'P' && '포장(P)'}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
-                </div>
-
-                {(activeSection === 'S' || activeSection === 'B' || activeSection === 'F') && (
-                    <div className={style.selectMenu}>
-                        <div className={style.MainpriceIcons}>
-                            <span className={style.MainredCircle} /><a className={style.CircleText}>포장메뉴</a>
-                            <span className={style.MainblueCircle} /><a className={style.CircleText}>등록메뉴</a>
                         </div>
-                        <Select options={options} className={style.selectoption} onChange={handleOptionChange} isClearable
-                            isSearchable
-                            value={resetSelect}
-                            placeholder="메뉴를 선택하세요" />
                     </div>
-                )}
 
-                {activeSection === 'P' && (
-                    <div className={style.selectMenu}>
-                        <div className={style.MainpriceIcons}>
-                            <span className={style.MainredCircle} /><a className={style.CircleText}>포장메뉴</a>
-                            <span className={style.MainblueCircle} /><a className={style.CircleText}>등록메뉴</a>
+                    <div>
+                        <div>
+                            <nav className={style.menuNav}>
+                                <ul className={style.menuUl}>
+                                    {corner.map((section) => (
+                                        <li key={section} className={style.li}>
+                                            <a
+                                                href={`#${section}`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handleSectionClick(section);
+                                                }}
+                                                className={activeSection === section ? style.active : ''}
+                                            >
+                                                {section === 'S' && '면분식류(S)'}
+                                                {section === 'B' && '비빔밥덮밥류(B)'}
+                                                {section === 'F' && '돈까스라이스류(F)'}
+                                                {section === 'P' && '포장(P)'}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </nav>
                         </div>
-                        <Select options={options}
-                            className={style.selectoptionP}
-                            onChange={handleOptionChange}
-                            isClearable
-                            isSearchable
-                            placeholder="메뉴를 선택하세요"
-                            value={resetSelect} />
-                    </div>
-                )}
 
-
-
-                <div className={style.menuList} >
-                    {sections.map((section, idx) => (
-                        <div key={`${idx}-${section['menu_corner']}`} id={section['menu_corner']} className={activeSection === section['menu_corner'] || (activeSection === 'P' && section['menu_pack'] === 1) ? style.active : style.hidden}>
-                            <button
-                                key={section['menu_id']}
-                                onClick={() => {
-                                    navigate('/adminmenu/menudetail', {
-                                        state: {
-                                            u_id: userId,
-                                            menu_id: section['menu_id'],
-                                            menu_pack: (activeSection === 'P' && section['menu_pack'] === 1) ? 1 : 0
-                                        },
-                                    });
-                                }}
-                            >
-                                {/* Sold Out 오버레이 */}
-                                {section['menu_sales'] === 0 && (
-                                    <div className={style.soldOutOverlay}>
-                                        <img src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
-                                    </div>
-                                )}
-
-                                {section['menu_sales'] === 1 && (
-                                    <img src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
-                                )}
-
-                                <hr id="menuHr" className={style.menuHr}></hr>
-                                <div className={style.menuInfo}>
-                                    <div className={style.menuName}>{section['menu_name']}</div>
-                                    <div className={style.menuPrice}>가격 : {(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
-
-                                    {/* 이 부분이 초록 원, 파란 원 부분 */}
-                                    <div className={style.priceIcons}>
-                                        {section['menu_pack'] === 1 && (
-                                            <span className={style.redCircle}></span>
-                                        )}
-                                        {section['menu_regist'] === 1 && (
-                                            <span className={style.blueCircle}></span>
-                                        )}
-                                    </div>
+                        {(activeSection === 'S' || activeSection === 'B' || activeSection === 'F') && (
+                            <div className={style.selectMenu}>
+                                <div className={style.MainpriceIcons}>
+                                    <span className={style.MainblueCircle} /><a className={style.CircleText}>포장메뉴</a>
+                                    <span className={style.MaingreenCircle} /><a className={style.CircleText}>등록메뉴</a>
                                 </div>
-                            </button>
+                                <Select
+                                    options={options}
+                                    className={style.selectoption}
+                                    onChange={handleOptionChange}
+                                    isClearable
+                                    isSearchable
+                                    placeholder={selectedOption ? selectedOption.label : "메뉴를 선택하세요"} // 선택된 옵션을 표시할 부분
+                                    value={resetSelect}
+                                />
+                            </div>
+                        )}
+
+                        {activeSection === 'P' && (
+                            <div className={style.selectMenu}>
+                                <div className={style.MainpriceIcons}>
+                                    <span className={style.MainblueCircle} /><a className={style.CircleText}>포장메뉴</a>
+                                    <span className={style.MaingreenCircle} /><a className={style.CircleText}>등록메뉴</a>
+                                </div>
+                                <Select options={options}
+                                    className={style.selectoptionP}
+                                    onChange={handleOptionChange}
+                                    isClearable
+                                    isSearchable
+                                    placeholder="메뉴를 선택하세요"
+                                    value={resetSelect} />
+                            </div>
+                        )}
+
+                        <div className={style.menuList} style={{ marginTop: '0px' }} >
+                            {sections.map((section, idx) => (
+                                <div key={`${idx}-${section['menu_corner']}`} id={section['menu_corner']} className={activeSection === section['menu_corner'] || (activeSection === 'P' && section['menu_pack'] === 1) ? style.active : style.hidden}>
+                                    <button
+                                        key={section['menu_id']}
+                                        onClick={() => {
+                                            navigate('/adminMenu/menuDetail', {
+                                                state: {
+                                                    u_id: userId,
+                                                    menu_id: section['menu_id'],
+                                                    menu_pack: (activeSection === 'P' && section['menu_pack'] === 1) ? 1 : 0
+                                                },
+                                            });
+                                        }}
+                                    >
+                                        {/* Sold Out 오버레이 */}
+                                        {section['menu_sales'] === 0 && (
+                                            <div className={style.soldOutOverlay}>
+                                                <img src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
+                                            </div>
+                                        )}
+
+                                        {section['menu_sales'] === 1 && (
+                                            <img src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
+                                        )}
+
+                                        <hr id="menuHr" className={style.menuHr}></hr>
+                                        <div className={style.menuInfo}>
+                                            <div className={style.menuName} style={{ display: 'flex', flexDirection: 'row' }}>{section['menu_name']} &nbsp;
+                                                {/* 이 부분이 초록 원, 파란 원 부분 */}
+                                                <div className={style.priceIcons}>
+                                                    {section['menu_pack'] === 1 && (
+                                                        <span className={style.blueCircle}></span>
+                                                    )}
+                                                    {section['menu_regist'] === 1 && (
+                                                        <span className={style.greenCircle}></span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className={style.menuPrice}>가격 : {(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
+
+                                        </div>
+                                    </button>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-            </body>
+                    </div>
+
+                </body>
+             ) : (
+                <WrongApproach />
+            )}
         </>
     );
 }

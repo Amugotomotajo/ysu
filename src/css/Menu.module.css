@@ -12,6 +12,7 @@ body {
     margin: 0;
     background-color: #f1f1f1;
     width:100%;
+    font-family: "SUIT-Regular";
 }
 
 .head {
@@ -38,21 +39,17 @@ body {
     width: 100%;
     max-width: 140px;
     margin: 0 auto; /* 로고를 가운데에 고정 */
-    cursor: pointer;
 }
 
-.faArrowLeft, .faCartShopping, .faArrowRightFromBracket {
+.faArrowLeft, .faCartShopping, .faArrowRightFromBracket,.faArrowRightFromBracket  {
     width: 100%;
-    min-width: 30px;
+    min-width: 32px;
+    min-height: 32px;
     max-width: 35px;
     font-size: 2em;
     color: rgb(42, 52, 55);
     display: flex;
     align-items: center;
-}
-
-.faArrowRightFromBracket {
-    margin-right: 10px;
 }
 
 .menuNav .menuUl {
@@ -94,7 +91,7 @@ body {
     width: 100%;
 }
 
-li {
+.li {
     flex-grow: 1;
     height: 100%;
     align-items: center;
@@ -102,14 +99,13 @@ li {
     justify-content: center;
 }
 
-li a {
+.li a {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     text-align: center;
     font-size: 18px;
-    letter-spacing: 3px;
     color: #000;
     font-weight: bold;
     text-decoration: none;
@@ -156,7 +152,7 @@ li a:hover {
 }
 
 .menuInfo div {
-    letter-spacing: 2px;
+    
 }
 
 .soldOutOverlay {
@@ -189,19 +185,104 @@ li a:hover {
     font-weight: bold;
 }
 
+.selectMenu{
+    margin-top: 155px;
+    margin-right: 50px;
+    display: flex;
+    align-items: right;
+    justify-content: space-between;
+    color: black;
+}
+
+.selectoption{
+    width: 220px;
+}
+
+.selectoptionP{
+    width: 220px;
+    opacity: 0;
+}
+
+.selectoption:hover, .selectoption:focus {
+    background-color: #f1f1f1; /* 마우스를 올렸을 때와 포커스 시 배경색 변경 */
+    outline: none; /* 포커스 효과 제거 */
+  }
+
+  .selectoption option {
+    font-size: 14px;
+    padding: 8px;
+    background-color: #f1f1f1;
+  }
+  
+  .selectoption option:hover {
+    background-color: #f1f1f1;
+  }
+
+  .priceIcons {
+    display: flex;
+    align-items: center;
+}
+
+.redCircle,
+.blueCircle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.blueCircle {
+    background-color: rgb(80, 176, 209);
+}
+
+.greenCircle {
+    background-color: rgb(181, 220, 16);
+}
+
+.MainpriceIcons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.MainblueCircle,
+.MaingreenCircle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.MainblueCircle {
+    background-color: rgb(80, 176, 209);
+    margin-left: 30px;
+}
+
+.MaingreenCircle {
+    background-color: rgb(181, 220, 16);
+}
+
+.CircleText{
+    margin-right: 20px;
+}
 
 @media screen and (min-width: 700px) {
+    .menuList button {
+        height: 312.19px;
+    }
 
     .menuList img {
-        width: 100%;
-        height: 100%;
-        min-width: 60px;
+        width: 200px;
+        height: 200px;
+        min-width: 200px;
+        min-height: 200px;
+        max-height: 500px;
+        max-width: 500px;
         border-radius: 10%;
         margin-bottom: 10px;
         max-width: 500px;
-        margin: 0 auto;
-        max-width: 200px;
-        max-height: 200px;
+        margin: auto;
+        object-fit: cover;
     }
 
     .menuInfo {
@@ -223,16 +304,19 @@ li a:hover {
         margin-bottom: 15px;
     }
 
+    .menuCircle {
+        font-size: 17px;
+    }
+
     .menuList {
         height: 100%;
-        padding:20px;
+        padding: 15px;
         margin-top: 140px;
         border-radius: 6px;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
         grid-gap:20px; 
-        letter-spacing: 2px;
     }
 
     .menuInfo {
@@ -242,7 +326,7 @@ li a:hover {
     }
 
     .menuName {
-        font-size: 18px;
+        font-size: 16px;
         margin-top:10px;
         margin-bottom: 9px;
         font-weight:600;
@@ -271,21 +355,25 @@ li a:hover {
     .menuList {
         display: grid;
         grid-template-columns: 1fr;
+        color: black;
     }
 
     .menuList img {
         width: 90px;
         height: 90px;
         border-radius: 10%;
+        min-width: 90px;
+        min-height: 90px;
         max-width: 200px;
         max-height: 200px;
+        object-fit: cover;
     }
 
     .menuNav .menuUl {
         list-style-type: none;
         margin: 0;
         padding: 0;
-        top: 50px;
+        top: 49px;
         width: 100%;
         background-color: #f1f1f1;
         position: fixed;
@@ -314,6 +402,7 @@ li a:hover {
         justify-content: flex-start;
         font-size: 1.2rem;
         width: 100%;
+        color: black;
     }
 
     .menuInfo {
@@ -325,16 +414,25 @@ li a:hover {
 
     .menuList {
         height: 100%;
-        padding:20px;
+        padding:15px;
         margin-top: 130px;
         border-radius: 6px;
         display: grid;
         grid-gap:15px; 
-        letter-spacing: 2px;
+    }
+
+    .adminMenuList {
+        height: 100%;
+        padding : 20px;
+        border-radius: 6px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
+        grid-gap:20px; 
     }
 
     .menuInfo div {
-        letter-spacing: 2px;
+
     }
 
     .menuName {
@@ -342,17 +440,93 @@ li a:hover {
         margin-top:5px;
         margin-bottom: 9px;
         font-weight:600;
-        color: black;
     }
 
     .menuPrice {
         font-size: 15px;
         margin-bottom: 45px;
-        color: black;
     }
 
     .soldOutOverlay::before {
         font-size: 1.2em;
+    }
+
+    .MainpriceIcons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    
+    .MainblueCircle,
+    .MaingreenCircle {
+        width: 7px;
+        height: 7px;
+        border-radius: 100%;
+        margin-right: 10px;
+    }
+    
+    .MainblueCircle {
+        background-color: rgb(80, 176, 209);
+        margin-left: 30px;
+    }
+    
+    .MaingreenCircle {
+        background-color: rgb(181, 220, 16);
+    }
+    
+    .CircleText{
+        margin-right: 20px;
+        font-size: 15px;
+    }
+
+    /* .priceIcons {
+        display: flex;
+        align-items: center;
+        margin-top:-30px;
+        justify-content: flex-end;
+    } */
+    
+    .blueCircle,
+    .greenCircle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+    
+    .blueCircle {
+        background-color: rgb(80, 176, 209);
+    }
+    
+    .greenCircle {
+        background-color: rgb(181, 220, 16);
+    }
+
+    .CircleText{
+        font-size: 13.5px;
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+
+    .selectoption{
+        width: 200px;
+        font-size: 11px;
+        margin-right: -20px;
+    }
+
+    .selectoptionP{
+        width: 200px;
+        font-size: 11px;
+        margin-right: -20px;
+        opacity: 0;
+    }
+
+    .selectMenu{
+        margin-top: 145px;
+        margin-right: 50px;
+        display: flex;
+        align-items: right;
+        justify-content: space-between;
     }
 
 }

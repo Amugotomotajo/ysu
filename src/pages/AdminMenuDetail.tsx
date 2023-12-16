@@ -73,6 +73,7 @@ export const AdminMenuDetail = (): JSX.Element => {
         localStorage.removeItem("user_name");
         localStorage.removeItem("user_dept");
         localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem('activeSection');
 
         setIsLoggedIn(false);
 
@@ -140,6 +141,7 @@ export const AdminMenuDetail = (): JSX.Element => {
         const timeoutId = setTimeout(() => {
             handleUpdateClick();
             setShowModal(false);
+            localStorage.removeItem('activeSection');
             navigate('/adminmenu');
         }, 3000);
 
@@ -179,7 +181,7 @@ export const AdminMenuDetail = (): JSX.Element => {
         const timeoutId = setTimeout(() => {
             handleDeleteClick();
             setShowModal(false);
-
+            localStorage.removeItem('activeSection');
             navigate('/adminmenu');
         }, 3000);
 
@@ -207,8 +209,8 @@ export const AdminMenuDetail = (): JSX.Element => {
         if (file) {
             // 이미지를 Blob으로 변환
             const blobImage = await convertFileToBlob(file);
-            // Blob을 File 객체로 생성 (파일명을 생성하여)
-            const fileName = generateFileName();
+            // Blob을 File 객체로 생성
+            const fileName = generateFileName(section?.menu_name || "");
             const blobFile = new File([blobImage], fileName);
 
             setSelectedImage(blobFile);
@@ -216,11 +218,9 @@ export const AdminMenuDetail = (): JSX.Element => {
     };
 
     // 이미지 파일 이름 생성 함수
-    let imageCounter: number = parseInt(localStorage.getItem('imageCounter') || '1', 10);
-    const generateFileName = () => {
-        const fileName = `image${imageCounter}.jpg`;
-        imageCounter += 1;
-        localStorage.setItem('imageCounter', imageCounter.toString());
+    const generateFileName = (menu_name: string) => {
+        const sanitizedMenuName = menu_name.replace(/\s+/g, '_');
+        const fileName = `${sanitizedMenuName}.jpg`;
         return fileName;
     };
 
@@ -257,12 +257,12 @@ export const AdminMenuDetail = (): JSX.Element => {
                     {section && (
                         <div id={section['menu_corner']}>
                             {isEditing ? (
-                                // 이미지 업로드 입력
                                 <>
                                     <img
                                         id="menuDetailImg"
                                         className={MdStyle.menuDetailImg}
-                                        src={selectedImage ? URL.createObjectURL(selectedImage) : require(`../img/${decodeURIComponent(section['menu_image'])}`)}
+                                        src={selectedImage ? URL.createObjectURL(selectedImage) : 
+                                            require(`../img/${decodeURIComponent(section['menu_image'])}`)}
                                         alt={section['menu_name']}
                                     />
                                     <br />
@@ -280,7 +280,8 @@ export const AdminMenuDetail = (): JSX.Element => {
                                     />
                                 </>
                             ) : (
-                                <img id="menuDetailImg" className={MdStyle.menuDetailImg} src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
+                                <img id="menuDetailImg" className={MdStyle.menuDetailImg} 
+                                src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
                             )}
                             <hr id="menuDetailHr" className={MdStyle.menuDetailHr}></hr>
                             {isEditing ? (
