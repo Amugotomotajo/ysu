@@ -1,17 +1,15 @@
-import { Avatar, Button, Card, Divider, Dropdown, List, Rate, Result, message } from "antd";
+import { Button, Card, Divider, Dropdown, List, Rate, Result, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react"
-import { ReviewList } from "../../state/review";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import MenuStyle from '../../css/Menu.module.css';
-import { UserOutlined } from '@ant-design/icons';
 import Rlstyle from '../../css/ReviewList.module.css';
 import { format } from 'date-fns';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ysuLogo from '../img/ysu_logo.jpg';
 import { faArrowLeft, faArrowRightFromBracket, faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { ReviewWritePage } from "./ReviewWritePage";
-import { MenuReviewTab } from "../MenuReviewTab";
+import MdStyle from '../../css/MenuDetail.module.css'
+import { ReviewList } from "../../state/review";
 
 export const ReviewListPage = (): JSX.Element => {
   const [reviews, setReviews] = useState<{
@@ -24,6 +22,7 @@ export const ReviewListPage = (): JSX.Element => {
     review_time: Date,
     order_id: number,
     review_regist: number,
+    review_img: string,
   }[]>([]);
 
   const [triggerEffect, setTriggerEffect] = useState(false);
@@ -54,6 +53,9 @@ export const ReviewListPage = (): JSX.Element => {
     navigate("/menu");
   }
 
+  const reviewWritePage = () => {
+    navigate(`menu/${menu_id}/review/write`);
+  }
 
   const ReviewWritePage = () => {
     navigate(`/menu/${menuId}/review/write`, {
@@ -66,7 +68,7 @@ export const ReviewListPage = (): JSX.Element => {
 
   const formattedDate = (dateString: string | number | Date) => {
     const date = new Date(dateString);
-    return format(date, 'yyyy/MM/dd HH:mm:ss');
+    return format(date, 'yyyy.MM.dd HH:MM');
   };
 
   // 리뷰 불러오기
@@ -128,38 +130,43 @@ export const ReviewListPage = (): JSX.Element => {
           />
         </>
       ) : (
-        <div className={Rlstyle.reviewList}>
-          <List className={Rlstyle.reviewItem}
-            itemLayout="horizontal"
-            dataSource={reviews}
-            renderItem={(item) => (
-              <List.Item key={item.menu_id}>
-                <Card style={{ width: "97%" }}>
-
-                  <Meta key={item.review_id}
-                    className={Rlstyle.reviewMeta}
-                    // avatar={<Avatar icon={<UserOutlined />} style={{ marginRight: "-40px" }} />}
-                    title={item.u_name}
-                    description={
-
-                      <><div style={{ fontSize: "10px" }}>{formattedDate(item.review_time)}</div>
-                        <div>{(item.review_id)}</div>
-                        <Divider />
-                        <div><Rate className={Rlstyle.reviewRate} disabled defaultValue={item.review_star}></Rate></div>
-                        <br />
-                        <div style={{ color: "black" }}>{item.review_writing}</div>
-                      </>
-                    }
+        <Card className={Rlstyle.reviewCard}>
+          <div className={Rlstyle.reviewList}>
+            {reviews.map((reviewData) => (
+              <div className={Rlstyle.reviewItem}>
+                <div className={Rlstyle.reviewInfo} >
+                  <div className={Rlstyle.userName}>{reviewData.u_name}</div>
+                  <div id="reviewTime" style={{ fontSize: "10px" }}>{formattedDate(reviewData.review_time)}</div>
+                </div>
+                <div>
+                  <Rate id="reviewRate" className={Rlstyle.reviewRate} disabled defaultValue={reviewData.review_star}></Rate>
+                </div>
+                {reviewData.review_img && (
+                  <img
+                    className={Rlstyle.reviewImg}
+                    src={require(`../img/${decodeURIComponent(reviewData.review_img)}`)}
+                    alt="Review"
+                    // style={{
+                    //   paddingBottom: reviewData.review_img ? "13%" : "0%"
+                    // }}
                   />
-                  {/* <div>{item.u_name}</div> */}
-                  <button onClick={() => { handleReviewDelete(item.review_id) }}>삭제 제발</button>
-                  {/* <ReviewDelete /> */}
-                </Card>
-              </List.Item>
-            )}>
-
-          </List>
-        </div>
-      )}</>
+                )}
+  
+                <div
+                  id="reviewWriting"
+                  className={Rlstyle.reviewWriting}
+                  style={{
+                    paddingBottom: reviewData.review_img ? "25%" : "30%"
+                  }}
+                >
+                  {reviewData.review_writing}
+                </div>
+              </div>
+            ))}
+          </div>
+          <button onClick={reviewWritePage}></button>
+        </Card >
+      )}
+    </>
   )
 }

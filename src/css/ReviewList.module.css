@@ -1,57 +1,51 @@
-.reviewList {
-    align-items: center;
-    padding-top: 50px;
-    justify-content: center;
+.reviewCard {
+    margin-top: 6%;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.reviewMeta {
-    padding-top: 10px;
-    text-align: center;
-    /* padding-left: 10px; */
+.reviewImg {
+    height: 300px;
+    width: auto;
+    padding-bottom: 5%;
+    display: block;
+    clear: both;
 }
 
-.result {
-    padding-top: 50px;
+.userName {
+    font-weight: bold;
+    margin-right: 0.5%;
+    font-size: medium;
 }
 
-.unameTitle {
-    padding-left: 10px;
-    justify-content: center;
-}
-
-.review {
-    padding-left: 10px;
-    justify-content: center;
-}
-
-.reviewBtnAll {
+.reviewInfo{
     display: flex;
-    justify-content: center;
+    align-items: center;
+    margin-bottom: 1%;
 }
 
 .reviewRate {
     font-size: medium;
-}
-
-@media screen and (min-width: 700px) {
-    .reviewItem {
-        align-items: center;
-        /* padding-left: 15%; */
-        width:100%;
-
-    }
+    margin-bottom: 3%;
 }
 
 @media screen and (max-width: 700px) {
-    #reviewList {
-        align-items: center;
-        padding-top: 50px;
-        display: fixed;
-        /* justify-content: center; */
+    .reviewCard {
+        margin-top: 18%;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .reviewItem {
-        align-items: center;
-        margin-left: 9px;
+    .reviewImg {
+        height: 150px;
+        width: auto;
+        display: block;
+        clear: both;
+    }
+
+    .userName {
+        margin-right: 2%;
     }
 }
