@@ -77,7 +77,7 @@ export const AdminMenuInsert = (): JSX.Element => {
       hasError = true;
     }
 
-    if (menu_price <= 0) {
+    if (menu_price <= 0) { 
       setMenuPriceError('메뉴 가격을 입력하세요.');
       hasError = true;
     }
@@ -153,10 +153,6 @@ export const AdminMenuInsert = (): JSX.Element => {
   const closeChceckModal = () => {
     setCheckModal(false);
   }
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -16,9 +16,9 @@ export const AdminMenuListPage = (): JSX.Element => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [menu_id, setMenuId] = useState < number > (0); // 메뉴 ID 상태 (숫자)
-    const [selectedOption, setSelectedOption] = useState < any > (null); // 선택된 옵션을 저장할 상태
-    const [sections, setSections] = useState < {
+    const [menu_id, setMenuId] = useState<number>(0); // 메뉴 ID 상태 (숫자)
+    const [selectedOption, setSelectedOption] = useState<any>(null); // 선택된 옵션을 저장할 상태
+    const [sections, setSections] = useState<{
         menu_id: number,
         menu_name: string,
         menu_corner: string,
@@ -27,13 +27,13 @@ export const AdminMenuListPage = (): JSX.Element => {
         menu_image: string,
         menu_sales: number,
         menu_regist: number
-    }[] > ([]);
+    }[]>([]);
 
     const userId = localStorage.getItem("user_id");
     const userName = localStorage.getItem("user_name");
     const userDept = localStorage.getItem("user_dept");
 
-    const [originalSections, setOriginalSections] = useState < {
+    const [originalSections, setOriginalSections] = useState<{
         menu_id: number,
         menu_name: string,
         menu_corner: string,
@@ -42,13 +42,13 @@ export const AdminMenuListPage = (): JSX.Element => {
         menu_image: string,
         menu_sales: number,
         menu_regist: number
-    }[] > ([]); // 초기 데이터를 저장할 상태
+    }[]>([]); // 초기 데이터를 저장할 상태
 
     const [activeSection, setActiveSection] = useState(() => {
         // localStorage에서 값을 가져오거나 기본값 'S'를 사용합니다.
         const savedSection = localStorage.getItem('activeSection');
         return savedSection || 'S';
-      });
+    });
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -64,15 +64,15 @@ export const AdminMenuListPage = (): JSX.Element => {
             // 페이지가 로드될 때마다 localStorage에 activeSection을 저장합니다.
             localStorage.setItem('activeSection', activeSection);
         }
-      
-          axios.get("/adminmenu").then((res) => {
+
+        axios.get("/adminmenu").then((res) => {
             setSections(res.data);
             setOriginalSections(res.data);
             console.log(res);
-          });
-        }, [location.state, activeSection]);
+        });
+    }, [location.state, activeSection]);
 
-    const [resetSelect, setResetSelect] = useState < undefined | null > (undefined);
+    const [resetSelect, setResetSelect] = useState<undefined | null>(undefined);
 
     const handleSectionClick = (section: string) => {
         setActiveSection(section);
@@ -100,6 +100,15 @@ export const AdminMenuListPage = (): JSX.Element => {
         navigate('/login');
         window.alert("로그아웃 되었습니다.");
     };
+
+    const customStyles = {
+        option: (provided, state) => ({
+          ...provided,
+          fontWeight: state.isSelected ? 'bold' : 'normal',
+          backgroundColor: state.isSelected ? '#E0F2F7' : 'white', // 선택되었을 때 배경색을 투명으로 변경
+          color: state.isSelected ? 'black' : 'inherit', // 선택되었을 때 글자색을 검정으로 변경
+        }),
+      };
 
 
     const options = [
@@ -214,9 +223,9 @@ export const AdminMenuListPage = (): JSX.Element => {
                                                 }}
                                                 className={activeSection === section ? style.active : ''}
                                             >
-                                                {section === 'S' && '면분식류(S)'}
-                                                {section === 'B' && '비빔밥덮밥류(B)'}
-                                                {section === 'F' && '돈까스라이스류(F)'}
+                                                {section === 'S' && '면·분식류(S)'}
+                                                {section === 'B' && '비빔밥·덮밥류(B)'}
+                                                {section === 'F' && '돈까스·라이스류(F)'}
                                                 {section === 'P' && '포장(P)'}
                                             </a>
                                         </li>
@@ -239,6 +248,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                                     isSearchable
                                     placeholder={selectedOption ? selectedOption.label : "메뉴를 선택하세요"} // 선택된 옵션을 표시할 부분
                                     value={resetSelect}
+                                    styles={customStyles}
                                 />
                             </div>
                         )}
@@ -308,11 +318,11 @@ export const AdminMenuListPage = (): JSX.Element => {
                     </div>
 
                 </body>
-             ) : (
+            ) : (
                 <WrongApproach />
             )}
         </>
     );
 }
 
-export default AdminMenuListPage;
+export default AdminMenuListPage; 
