@@ -143,7 +143,6 @@ export const ReviewWritePage = (): JSX.Element => {
   };
 
 
-
   useEffect(() => {
     if (menu_id !== undefined) {
       // menu_id가 정의되어 있으면 해당 메뉴 데이터를 가져오기
@@ -194,11 +193,13 @@ export const ReviewWritePage = (): JSX.Element => {
           </div>
           <div>
             <Input.TextArea
+              showCount
               maxLength={100}
               placeholder="리뷰를 작성해주세요."
-              className={RwStyle.reviewWriting}
+              name="review_writing"
               onChange={onChange}
               style={{ height: 100 }} />
+
           </div>
           {review_img ? (
             <>
@@ -219,12 +220,13 @@ export const ReviewWritePage = (): JSX.Element => {
             </label>
             </>
           )}
+          <div className={RwStyle.reviewWriteBtnWrapper}>
+            <button className={RwStyle.reviewWriteBtn} onClick={handleFormSubmit}>
+              리뷰 등록
+            </button>
+          </div>
         </div>
-        <div className={RwStyle.reviewWriteBtnWrapper}>
-          <button className={RwStyle.reviewWriteBtn} onClick={handleFormSubmit}>
-            리뷰 등록
-          </button>
-        </div>
+
       </form >
 
 
