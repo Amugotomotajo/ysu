@@ -1,6 +1,6 @@
 import { Button, Card, Divider, Input, Rate, message } from "antd";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import MenuStyle from '../../css/Menu.module.css';
 import { faArrowLeft, faArrowRightFromBracket, faCartShopping } from "@fortawesome/free-solid-svg-icons";
@@ -60,7 +60,6 @@ export const ReviewWritePage = (): JSX.Element => {
       ...inputs,
       review_star: value,
     });
-
   };
 
   // 이미지 삭제
@@ -199,34 +198,35 @@ export const ReviewWritePage = (): JSX.Element => {
               name="review_writing"
               onChange={onChange}
               style={{ height: 100 }} />
-
           </div>
-          {review_img ? (
-            <>
-              <img
-                className={RwStyle.previewImg}
-                src={URL.createObjectURL(new Blob([review_img]))} />
-              <button className={RwStyle.deleteBtn} onClick={deleteImgHandler}>x</button>
-            </>
-          ) : (
-            <><label htmlFor="imgUpload"><img className={RwStyle.imgAdd} src={imageAdd} />
-              <input
-                type="file"
-                accept="image/*"
-                id="imgUpload"
-                onChange={onChangeImg}
-                className={RwStyle.reviewFile}
-              />
-            </label>
-            </>
-          )}
-          <div className={RwStyle.reviewWriteBtnWrapper}>
-            <button className={RwStyle.reviewWriteBtn} onClick={handleFormSubmit}>
-              리뷰 등록
-            </button>
+          <div className={RwStyle.imgWrap}>
+            {review_img ? (
+
+              <><div className={RwStyle.imgBox}>
+                <img
+                  className={RwStyle.previewImg}
+                  src={URL.createObjectURL(new Blob([review_img]))} />
+              </div><button className={RwStyle.deleteBtn} onClick={deleteImgHandler}>✕</button></>
+
+            ) : (
+              <><label htmlFor="imgUpload"><img className={RwStyle.imgAdd} src={imageAdd} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="imgUpload"
+                  onChange={onChangeImg}
+                  className={RwStyle.reviewFile}
+                />
+              </label>
+              </>
+            )}
           </div>
         </div>
-
+        <div className={RwStyle.reviewWriteBtnWrapper}>
+          <button className={RwStyle.reviewWriteBtn} onClick={handleFormSubmit}>
+            리뷰 등록
+          </button>
+        </div>
       </form >
 
 
