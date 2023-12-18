@@ -1,6 +1,6 @@
 .menuDetail {
     height: 100%;
-    padding: 20px;
+    padding: 10px;
     border-radius: 6px;
     grid-gap: 20px;
     letter-spacing: 2px;
@@ -24,9 +24,7 @@
 }
 
 .menuDetailName {
-    font-size: 25px;
-    margin-top: 7px;
-    margin-bottom: 9px;
+    font-size: 20px;
     font-weight: 600;
 }
 
@@ -44,10 +42,17 @@
 
 .reviewWriteBtn {
     width: 100%;
-    position: absolute;
-    height: 10%;
+    height: 40px;
     border: none;
+    border-radius: 10px;
+    background-color: rgb(80, 176, 209);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    border: 0;
+    cursor: pointer;
 }
+
 .imgWrap {
     position: relative;
     border: 1px solid #e5e5e5;

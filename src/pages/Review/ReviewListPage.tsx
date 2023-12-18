@@ -8,8 +8,8 @@ import { format } from 'date-fns';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ysuLogo from '../img/ysu_logo.jpg';
 import { faArrowLeft, faArrowRightFromBracket, faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import MdStyle from '../../css/MenuDetail.module.css'
 import { ReviewList } from "../../state/review";
+import { FaUserCircle } from "react-icons/fa";
 
 export const ReviewListPage = (): JSX.Element => {
   const [reviews, setReviews] = useState<{
@@ -119,6 +119,7 @@ export const ReviewListPage = (): JSX.Element => {
       </div>
 
       {reviews.length === 0 && reviews.filter(review => review.review_regist === 0) ? (
+
         <>
           <Result
             style={{ marginTop: "40px" }}
@@ -131,39 +132,59 @@ export const ReviewListPage = (): JSX.Element => {
         </>
       ) : (
         <Card className={Rlstyle.reviewCard}>
-          <div className={Rlstyle.reviewList}>
-            {reviews.map((reviewData) => (
-              <div className={Rlstyle.reviewItem}>
-                <div className={Rlstyle.reviewInfo} >
-                  <div className={Rlstyle.userName}>{reviewData.u_name}</div>
-                  <div id="reviewTime" style={{ fontSize: "10px" }}>{formattedDate(reviewData.review_time)}</div>
-                </div>
+
+
+          {reviews.map((reviewData) => (
+            <div className={Rlstyle.reviewItem}>
+              <div className={Rlstyle.reviewBox}>
+
+                <div style={{ display: "flex", alignItems:"center" }}>
+
                 <div>
-                  <Rate id="reviewRate" className={Rlstyle.reviewRate} disabled defaultValue={reviewData.review_star}></Rate>
+                  <div className={Rlstyle.reviewInfo} >
+                    <div className={Rlstyle.reviewFix}>
+                      <div className={Rlstyle.userName}>{reviewData.u_name}</div> {/* 이름 */}
+                      <div id="reviewTime" className={Rlstyle.reviewTime} style={{ fontSize: "10px" }}>{formattedDate(reviewData.review_time)}</div> {/* 날짜 */}
+
+                    </div>
+                    <div style={{display:"flex", alignItems:"center"}}> {/* 별점 */}
+                      <Rate id="reviewRate" className={Rlstyle.reviewRate} disabled defaultValue={reviewData.review_star}></Rate>
+
+                    </div>
+                  </div>
                 </div>
-                {reviewData.review_img && (
-                  <img
-                    className={Rlstyle.reviewImg}
-                    src={require(`../img/${decodeURIComponent(reviewData.review_img)}`)}
-                    alt="Review"
-                    // style={{
-                    //   paddingBottom: reviewData.review_img ? "13%" : "0%"
-                    // }}
-                  />
-                )}
-  
-                <div
-                  id="reviewWriting"
-                  className={Rlstyle.reviewWriting}
-                  style={{
-                    paddingBottom: reviewData.review_img ? "25%" : "30%"
-                  }}
-                >
-                  {reviewData.review_writing}
+                </div>
+
+                <div className={Rlstyle.contentBox}>
+                  {/* 글 */}
+                  <div
+                    id="reviewWriting"
+                    className={Rlstyle.reviewWriting}
+                    style={{
+                      paddingBottom: reviewData.review_img ? "5%" : "10%"
+                    }}
+                  >
+                    {reviewData.review_writing}
+                  </div>
+
+                  <div className={Rlstyle.reviewImgList}> {/* 사진 */}
+                    {reviewData.review_img && (
+                      <img
+                        className={Rlstyle.reviewImg}
+                        src={require(`../img/${decodeURIComponent(reviewData.review_img)}`)}
+                        alt="Review"
+                      style={{
+                        paddingBottom: reviewData.review_img ? "15%" : "0%"
+                      }}
+                      />
+                    )}
+                  </div>
+
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+
+          ))}
           <button onClick={reviewWritePage}></button>
         </Card >
       )}

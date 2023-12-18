@@ -221,12 +221,13 @@ export const ReviewWritePage = (): JSX.Element => {
               </>
             )}
           </div>
-        </div>
-        <div className={RwStyle.reviewWriteBtnWrapper}>
+          <div className={RwStyle.reviewWriteBtnWrapper}>
           <button className={RwStyle.reviewWriteBtn} onClick={handleFormSubmit}>
             리뷰 등록
           </button>
         </div>
+        </div>
+
       </form >
 
 
