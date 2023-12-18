@@ -103,12 +103,12 @@ export const AdminMenuListPage = (): JSX.Element => {
 
     const customStyles = {
         option: (provided, state) => ({
-          ...provided,
-          fontWeight: state.isSelected ? 'bold' : 'normal',
-          backgroundColor: state.isSelected ? '#E0F2F7' : 'white', // 선택되었을 때 배경색을 투명으로 변경
-          color: state.isSelected ? 'black' : 'inherit', // 선택되었을 때 글자색을 검정으로 변경
+            ...provided,
+            fontWeight: state.isSelected ? 'bold' : 'normal',
+            backgroundColor: state.isSelected ? '#E0F2F7' : 'white', // 선택되었을 때 배경색을 투명으로 변경
+            color: state.isSelected ? 'black' : 'inherit', // 선택되었을 때 글자색을 검정으로 변경
         }),
-      };
+    };
 
 
     const options = [
@@ -183,8 +183,9 @@ export const AdminMenuListPage = (): JSX.Element => {
     };
 
     const goToMain = () => {
-        navigate('/');
+        navigate('/adminmain');
     }
+
 
 
     return (
@@ -201,7 +202,7 @@ export const AdminMenuListPage = (): JSX.Element => {
                             <Link className={style.link} to="./menuInsert">
                                 <FiPlus className={style.faArrowRightFromBracket} />
                             </Link>
-                            <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
+                            <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} onClick={goToMain} />
                             <Link to="/login" className={style.link} >
                                 <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} />
                             </Link>

@@ -26,8 +26,8 @@ export const AdminMainPage = (): JSX.Element => {
     navigate("/adminmenu");
   }
 
-  const reviewPage = () => {
-    navigate("/review");
+  const lastmenuwPage = () => {
+    navigate("/lastmenu");
   }
 
   const MainListPage = () => {
@@ -91,7 +91,7 @@ export const AdminMainPage = (): JSX.Element => {
             <h2><PiNoteLight /></h2>
           </div>
           <div className={style.content}>
-            <a onClick={reviewPage}>리뷰 관리</a>
+            <a onClick={lastmenuwPage}>주차별 메뉴 관리</a>
           </div>
         </div>
       </div>

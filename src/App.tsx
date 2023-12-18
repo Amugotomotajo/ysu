@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { AdminMainPage } from "./pages/AdminMainPage";
+import { AdminLastMenuListPage } from "./pages/AdminLastMenuListPage";
 import { UsertListPage } from "./pages/UserListPage";
 import { AdminMenuListPage } from "./pages/AdminMenuListPage";
 import { AdminMenuInsert } from "./pages/AdminMenuInsert";
@@ -20,6 +21,7 @@ const App = ():JSX.Element => {
         <Route path="/" element={<Main />} /> {/* 메인페이지 */}
         <Route path="/adminmain" element={<AdminMainPage />} /> {/* 관리자메인 */}
         <Route path="/user" element={<UsertListPage />} /> {/* 사용자관리 */}
+        <Route path="/lastmenu" element={<AdminLastMenuListPage />} /> {/* 지난메뉴관리 */}
         <Route path="/adminmenu" element={<AdminMenuListPage />} /> {/* 메뉴관리 */}
         <Route path="/adminmenu/menuinsert" element={<AdminMenuInsert />} /> {/* 메뉴등록 */}
         <Route path="/adminmenu/menudetail" element={<AdminMenuDetail />} /> {/* 메뉴정보(수정, 삭제) */}
