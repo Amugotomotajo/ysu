@@ -65,6 +65,10 @@ export const AdminMenuDetail = (): JSX.Element => {
                 .then((res) => {
                     setSection(res.data);
                     setOriginalSection(res.data);
+                    const timeoutId = setTimeout(() => {
+                        localStorage.removeItem('activeSection');
+                        navigate('/adminMenu');
+                      }, 1000);
                     console.log(res);
                 })
                 .catch((error) => {

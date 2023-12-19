@@ -340,7 +340,7 @@ export const CartList = (): JSX.Element => {
               총 주문금액 <span style={{ fontWeight: '500' }}>{totalPriceStr}</span>원
             </div>
             <div className="bottom">
-            <button className="orderBtn" onClick={handleOrderCheck}>
+            <button className="orderBtn" onClick={handleOrderCheck} disabled={totalQuantity===0}>
               주문하기
             </button>
           </div>

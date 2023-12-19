@@ -578,6 +578,7 @@ li a:hover {
     
     .selectMenu h2 {
         text-align: center; /* 수평 방향 가운데 정렬 */
+        font-size: 20px;
     }
 
 }

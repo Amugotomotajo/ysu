@@ -66,6 +66,7 @@ export const AdminMenuListPage = (): JSX.Element => {
         axios.get("/adminmenu").then((res) => {
             setSections(res.data);
             setOriginalSections(res.data);
+            
             console.log(res);
         })
     }, [])
