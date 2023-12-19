@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import style from '../css/LastMenu.module.css';
 import axios from 'axios';
@@ -54,6 +54,23 @@ export const AdminLastMenuListPage = (): JSX.Element => {
         return savedSection || 'S';
     });
 
+    const [startDate, setStartDate] = useState<Date>(new Date());
+    const [endDate, setEndDate] = useState<Date>(new Date());
+
+    const getCurrentWeekRange = () => {
+        const today = new Date();
+        const currentDay = today.getDay();
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - currentDay + (currentDay === 0 ? -6 : 1));
+        const endOfWeek = new Date(today);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+        return {
+            start: startOfWeek,
+            end: endOfWeek,
+        };
+    };
+
     useEffect(() => {
         window.scrollTo(0, 0);
         if (location.state && location.state.activeSection) {
@@ -69,10 +86,15 @@ export const AdminLastMenuListPage = (): JSX.Element => {
             localStorage.setItem('activeSection', activeSection);
         }
 
+        const { start, end } = getCurrentWeekRange();
+
+        setStartDate(start);
+        setEndDate(end);
+
         axios.get("/lastmenu", {
             params: {
-                startDate: startDate,  // 시작 날짜
-                endDate: endDate     // 종료 날짜
+                startDate: start.toISOString(),  // 시작 날짜
+                endDate: end.toISOString()     // 종료 날짜
             }
         }).then((res) => {
             setSections(res.data);
@@ -81,24 +103,12 @@ export const AdminLastMenuListPage = (): JSX.Element => {
         }).catch((error) => {
             console.error("Error fetching menu data:", error);
         });
-
-        const { start, end } = getCurrentWeekRange();
-        setStartDate(start);
-        setEndDate(end);
     }, [location.state, activeSection]);
-
-    const [resetSelect, setResetSelect] = useState<undefined | null>(undefined);
 
     const handleSectionClick = (section: string) => {
         setActiveSection(section);
-        setResetSelect(undefined);
         setSelectedOption(null);
         window.scrollTo(0, 0);
-
-        // if (section === 'P' || section === 'B' || section === 'S' || section === 'F') {
-        //     setSections(originalSections);
-        //     setResetSelect(null);
-        // }
     };
 
     const handleLogout = () => {
@@ -120,88 +130,61 @@ export const AdminLastMenuListPage = (): JSX.Element => {
         navigate('/adminmain');
     }
 
-    const getCurrentWeekRange = () => {
-        const today = new Date();
-        const currentDay = today.getDay();
-        const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - currentDay + (currentDay === 0 ? -6 : 1));
-        const endOfWeek = new Date(today);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-        return {
-            start: startOfWeek.toLocaleDateString(),
-            end: endOfWeek.toLocaleDateString(),
-        };
-    };
-
-    const [startDate, setStartDate] = useState<string>('');
-    const [endDate, setEndDate] = useState<string>('');
-
-    const filterMenusByDateRange = (menus: any[], startDate: string, endDate: string) => {
+    const filterMenusByDateRange = (menus: any[], startDate: Date, endDate: Date) => {
         const filteredMenus = menus.filter((menu) => {
             const menuDate = new Date(menu.menu_date);
-            const startDateObj = new Date(startDate);
-            const endDateObj = new Date(endDate);
-
-            return menuDate >= startDateObj && menuDate <= endDateObj;
+            return menuDate >= startDate && menuDate <= endDate;
         });
-
+    
         console.log('Filtered Menus:', filteredMenus);
-
+    
         return filteredMenus;
     };
 
     const handleBackIconClick = () => {
         const oneWeekAgo = new Date(startDate);
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
+    
         const startOfWeek = new Date(oneWeekAgo);
         startOfWeek.setDate(oneWeekAgo.getDate() - oneWeekAgo.getDay() + (oneWeekAgo.getDay() === 0 ? -6 : 1));
-
+    
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-        const newStartDate = startOfWeek.toLocaleDateString();
-        const newEndDate = endOfWeek.toLocaleDateString();
-
-        setStartDate(newStartDate);
-        setEndDate(newEndDate);
-
-        const filteredMenus = filterMenusByDateRange(originalSections, newStartDate, newEndDate);
+    
+        setStartDate(startOfWeek);
+        setEndDate(endOfWeek);
+    
+        // 현재 startDate와 endDate에 따라 메뉴 필터링
+        const filteredMenus = filterMenusByDateRange(originalSections, startOfWeek, endOfWeek);
         setSections(filteredMenus);
     };
-
+    
     const handleNextIconClick = () => {
         const today = new Date(endDate);
         const nextWeek = new Date(today);
         nextWeek.setDate(today.getDate() + 1);
-
+    
         const startOfWeek = new Date(nextWeek);
         startOfWeek.setDate(nextWeek.getDate() - nextWeek.getDay() + (nextWeek.getDay() === 0 ? -6 : 1));
-
+    
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-        const newStartDate = startOfWeek.toLocaleDateString();
-        const newEndDate = endOfWeek.toLocaleDateString();
-
-        setStartDate(newStartDate);
-        setEndDate(newEndDate);
-
-        const filteredMenus = filterMenusByDateRange(originalSections, newStartDate, newEndDate);
+    
+        setStartDate(startOfWeek);
+        setEndDate(endOfWeek);
+    
+        // 현재 startDate와 endDate에 따라 메뉴 필터링
+        const filteredMenus = filterMenusByDateRange(originalSections, startOfWeek, endOfWeek);
         setSections(filteredMenus);
     };
 
-    const formatDateString = (date) => {
+    const formatDateString = (date: Date) => {
         const options = { year: '2-digit', month: '2-digit', day: '2-digit' } as const;
-        const formattedDate = new Date(date);
-        const formattedDateString = formattedDate.toLocaleDateString(undefined, options);
-        return formattedDateString.split('/').join('.');
+        return date.toLocaleDateString('ko-KR', options);
     };
 
     return (
         <>
-
             <head>
                 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
             </head>
@@ -255,36 +238,32 @@ export const AdminLastMenuListPage = (): JSX.Element => {
                         <div className={style.menuList} style={{ marginTop: '0px' }} >
                             {sections.length === 0 ? (
                                 <div className={wrongAstyle.wrongApproachDiv} style={{ padding: '0px', margin: '0' }}>
-                                <img src={require(`../img/NoFile.png`)} className={wrongAstyle.wrongApproach} alt={'잘못된 접근'} />
-                                <div className={wrongAstyle.wrongApproachP}>
-                                    <span style={{ fontWeight: 'bold', fontSize: '25px', marginBottom: '5px' }}>메뉴가 없습니다.</span>
-                                    <span style={{ fontSize: '20px', marginBottom: '10px' }}>다른 날짜의 메뉴 확인 부탁드립니다.</span>
+                                    <img src={require(`../img/NoFile.png`)} className={wrongAstyle.wrongApproach} alt={'잘못된 접근'} />
+                                    <div className={wrongAstyle.wrongApproachP}>
+                                        <span style={{ fontWeight: 'bold', fontSize: '25px', marginBottom: '5px' }}>메뉴가 없습니다.</span>
+                                        <span style={{ fontSize: '20px', marginBottom: '10px' }}>다른 날짜의 메뉴 확인 부탁드립니다.</span>
+                                    </div>
                                 </div>
-                            </div>
                             ) : (
                                 filterMenusByDateRange(sections, startDate, endDate).map((section, idx) => (
                                     <div key={`${idx}-${section['menu_corner']}`} id={section['menu_corner']} className={activeSection === section['menu_corner'] || (activeSection === 'P' && section['menu_pack'] === 1) ? style.active : style.hidden}>
                                         <button>
-
                                             <img src={require(`../img/${decodeURIComponent(section['menu_image'])}`)} alt={section['menu_name']} />
-
                                             <hr id="menuHr" className={style.menuHr}></hr>
                                             <div className={style.menuInfo}>
                                                 <div className={style.menuName} style={{ display: 'flex', flexDirection: 'row' }}>
                                                     {section['menu_name']}
                                                     {section['menu_pack'] === 1 && <span style={{ marginTop: '-2px' }}>ⓟ</span>}
                                                     &nbsp;
-
                                                 </div>
                                                 <div className={style.menuPrice}>가격 : {(activeSection === 'P' && section['menu_pack'] === 1) ? (section['menu_price'] + 500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : section['menu_price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
-
                                             </div>
                                         </button>
                                     </div>
-                                )))}
+                                ))
+                            )}
                         </div>
                     </div>
-
                 </body>
             ) : (
                 <WrongApproach />
@@ -293,4 +272,4 @@ export const AdminLastMenuListPage = (): JSX.Element => {
     );
 }
 
-export default AdminLastMenuListPage; 
+export default AdminLastMenuListPage;

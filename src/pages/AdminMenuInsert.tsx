@@ -144,7 +144,7 @@ export const AdminMenuInsert = (): JSX.Element => {
       setShowModal(false);
       localStorage.removeItem('activeSection');
       navigate('/adminmenu');
-    }, 3000);
+    }, 5000);
 
     // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
     return () => clearTimeout(timeoutId);

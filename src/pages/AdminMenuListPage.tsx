@@ -104,9 +104,8 @@ export const AdminMenuListPage = (): JSX.Element => {
     const customStyles = {
         option: (provided, state) => ({
             ...provided,
-            fontWeight: state.isSelected ? 'bold' : 'normal',
-            backgroundColor: state.isSelected ? '#E0F2F7' : 'white', // 선택되었을 때 배경색을 투명으로 변경
-            color: state.isSelected ? 'black' : 'inherit', // 선택되었을 때 글자색을 검정으로 변경
+            backgroundColor: state.isSelected ? 'white' : 'white', // 선택되었을 때 배경색을 투명으로 변경
+            color: state.isSelected ? 'black' : 'black', // 선택되었을 때 글자색을 검정으로 변경
         }),
     };
 

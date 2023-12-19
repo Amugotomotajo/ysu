@@ -277,10 +277,12 @@ li a:hover {
 
 .backIcon{
     margin-right: 20px;
+    cursor: pointer;
 }
 
 .nextIcon{
     margin-left: 20px;
+    cursor: pointer;
 }
 
 @media screen and (min-width: 700px) {
