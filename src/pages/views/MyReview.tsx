@@ -76,7 +76,8 @@ export const MyReview = (): JSX.Element => {
                     setIsLoading(false);
                     console.log("데이터 가져오기 실패!");
                 } else {
-                    setMyReviews(data);
+                    const sortedReviews = [...data].sort((a, b) => b.order_id - a.order_id);
+                    setMyReviews(sortedReviews);
                     setReviewCount(data.length);
                     console.log(data.length);
                     console.log("데이터 가져오기 성공!");
@@ -184,6 +185,7 @@ export const MyReview = (): JSX.Element => {
                 });
         }
     };
+
 
     const handleLogout = () => {
         // 세션 초기화

@@ -1,7 +1,7 @@
 .body {
     margin: 0;
     width: 100%;
-    height: 100vh;
+
     background-color: rgb(243, 243, 243);
     font-size: 15px;
 }
@@ -16,7 +16,6 @@
     box-sizing: border-box;
     background-color: rgb(80, 176, 209);
     color: white;
-    position: fixed;
     top: 0;
     left: 0;
     padding: 10px 15px;
@@ -81,13 +80,16 @@
 
 .chkContent {
     width: 100%;
-    margin-top: 60px;
-    margin-bottom: 130px;
+    margin: 70px auto 100px auto;
+    /* margin-top: 70px;
+    margin-bottom: 130px; */
+    overflow-x: hidden;
     overflow-y: auto;
 }
 
 .chkInfoBox{
     width: 100%;
+    /* margin-top: 60px; */
 }
 
 .chkInfoBoxTop {
@@ -177,8 +179,9 @@
 .chkPaymentBox {
     margin-top: 30px;
     /* height: 20vh; */
-    
+    /* padding-bottom: 60px; */
     width: 100%;
+    margin-bottom: 120px;
 }
 .chkPaymentTop {
     height: 50px;
@@ -221,23 +224,37 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 10px;
 }
 
 .odTotalPriceTxt {
     float: left;
-
     font-weight: bold;
     padding: 10px;
 }
 
 .odTotalPrice {
-
     margin-right: 10px;
     color: rgb(80, 176, 209);
     font-weight: bold;
     font-size: 19px;
-
     padding: 10px;
+}
+
+.bottom {
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+@media screen and (max-width: 700px) {
+    .chkContent {
+        width: 100%;
+        margin-top: 60px;
+        margin-bottom: 30px;
+    }
+    
 }

@@ -14,10 +14,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 export const OrderComplete = (): JSX.Element => {
   const [orderList, setOrderList] = useState < Orders[] > ([]);
   const [orderDetail, setOrderDetail] = useState < OrderDetail[] > ([]);
-  const userId = localStorage.getItem('user_id');
-
   const [searchParams] = useSearchParams(); //URL에서 파라미터 검색하기
   const navigate = useNavigate();
+  const userId = localStorage.getItem('user_id');
 
   //localStorage로 받아온 총 수량과 총 금액 get
   const totalQuantity = localStorage.getItem('totalQuantity');
@@ -26,7 +25,7 @@ export const OrderComplete = (): JSX.Element => {
   const orderInfo = {
     ...orderList,
     order_id: undefined,
-    u_id: undefined,
+    u_id: userId,
     total_quantity: totalQuantity,
     total_price: totalPrice,
     order_date: undefined
@@ -38,7 +37,7 @@ export const OrderComplete = (): JSX.Element => {
     try {
       await axios.post("/order/insert", orderInfo);
       await Promise.all([
-        axios.delete("/cart/drop"),
+        axios.delete(`/cart/drop/${userId}`),
         axios.get(`/order/list/${userId}`).then((orderListRes) => setOrderList(orderListRes.data)),
       ]);
     } catch (error) {
@@ -63,7 +62,11 @@ export const OrderComplete = (): JSX.Element => {
       console.log(userId);
       console.log(res.data);
     })
+    
+  }, []);
 
+  // 주문 상세 정보 가져오기
+  useEffect(() => {
     if (orderList.length > 0) {
       const orderId = orderList[0].order_id;
       console.log(orderId);
@@ -71,14 +74,8 @@ export const OrderComplete = (): JSX.Element => {
         setOrderDetail((prevOrderDetail) => [...prevOrderDetail, res.data]);
         setOrderDetail([res.data]); // 새로운 주문 내역으로 업데이트
       });
-    }
-  }, []);
-
-  // 주문 상세 정보 가져오기
-  useEffect(() => {
-    // orderList가 비어있거나 첫 번째 주문의 id만을 고려
-    
-  }, []);
+    } 
+  }, [orderList]);
 
   return (
     <div className="body">

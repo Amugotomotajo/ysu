@@ -61,7 +61,6 @@ export const OrderCheck = (): JSX.Element => {
 
     // 결제 아임포트
     useEffect(() => {
-        // document.body.style.overflow = 'auto';
         const jquery = document.createElement("script");
         jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
         const iamport = document.createElement("script");
