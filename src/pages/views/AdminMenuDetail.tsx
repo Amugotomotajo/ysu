@@ -11,6 +11,9 @@ import { MdLogout } from "react-icons/md";
 import ysuLogo from '../img/ysu_logo.jpg';
 import WrongApproach from './WrongApproach';
 import { FaTrashAlt } from 'react-icons/fa';
+import MIStyle from '../css/AdminMenuInsert.module.css'
+import { Modal, message } from 'antd';
+import styled from 'styled-components';
 
 export const AdminMenuDetail = (): JSX.Element => {
     const location = useLocation();
@@ -39,6 +42,7 @@ export const AdminMenuDetail = (): JSX.Element => {
         menu_sales: number,
         menu_regist: number
     } > ();
+
     const [selectedImage, setSelectedImage] = useState < File | null > (null); // 추가: 선택한 이미지 파일을 저장
 
     const MainPage = () => {
@@ -80,7 +84,6 @@ export const AdminMenuDetail = (): JSX.Element => {
 
         // 로그인 페이지로 이동
         navigate('/login');
-        window.alert("로그아웃 되었습니다.");
     };
 
     const handleBackClick = () => {
@@ -113,7 +116,7 @@ export const AdminMenuDetail = (): JSX.Element => {
 
         if (section) {
             try {
-                await axios.post(`/adminMenu/menuDetail/${section.menu_id}`, formData, {
+                await axios.post(`/adminmenu/menudetail/${section.menu_id}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data', // 폼 데이터로 보냄
                     },
@@ -129,78 +132,48 @@ export const AdminMenuDetail = (): JSX.Element => {
 
     };
 
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const [updateModal, setUpdateModal] = useState(false);
 
     const openUpdateModal = () => {
+        setIsModalVisible(true);
         setUpdateModal(true);
     }
 
     const openUpModal = () => {
         setAction('update');
-        setShowModal(true);
-
+        setIsModalVisible(false);
+        
         const timeoutId = setTimeout(() => {
             handleUpdateClick();
-            setShowModal(false);
+            localStorage.removeItem('activeSection');
             navigate('/adminMenu');
-        }, 3000);
+        }, 1000);
 
-        // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
+        message.success({
+            content: '메뉴를 수정하였습니다.',
+            style: {
+                fontSize: '17px',
+            },
+        });
+
         return () => clearTimeout(timeoutId);
-
     };
 
-
-    // 메뉴 delete
-    const handleDeleteClick = () => {
-        const menuId = location.state && location.state.menu_id;
-        axios.delete(`/adminMenu/menuDetail/${menuId}`)
-            .then((res) => {
-                console.log('메뉴 삭제 성공:', res.data);
-
-            })
-            .catch((error) => {
-                console.error('메뉴 삭제 오류:', error, menuId);
-            });
-
-    };
-
-    const [showModal, setShowModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
 
-
-    const openDeleteModal = () => {
-        setDeleteModal(true);
-    }
-
-    const openDeModal = () => {
-        setAction('back');
-        setShowModal(true);
-
-        const timeoutId = setTimeout(() => {
-            handleDeleteClick();
-            setShowModal(false);
-
-            navigate('/adminMenu');
-        }, 3000);
-
-        // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
-        return () => clearTimeout(timeoutId);
+    const showModal = () => {
+        setIsModalVisible(true);
     };
-
-
 
     const closeUpdateModal = () => {
         setUpdateModal(false);
+        setIsModalVisible(false);
     }
 
-    const closeDeleteModal = () => {
-        setDeleteModal(false);
-    }
-
-    const closeModal = () => {
-        setShowModal(false);
-    };
+    // const closeModal = () => {
+    //     setShowModal(false);
+    // };
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -208,8 +181,8 @@ export const AdminMenuDetail = (): JSX.Element => {
         if (file) {
             // 이미지를 Blob으로 변환
             const blobImage = await convertFileToBlob(file);
-            // Blob을 File 객체로 생성 (파일명을 생성하여)
-            const fileName = generateFileName();
+            // Blob을 File 객체로 생성
+            const fileName = generateFileName(section?.menu_name || "");
             const blobFile = new File([blobImage], fileName);
 
             setSelectedImage(blobFile);
@@ -217,11 +190,9 @@ export const AdminMenuDetail = (): JSX.Element => {
     };
 
     // 이미지 파일 이름 생성 함수
-    let imageCounter: number = parseInt(localStorage.getItem('imageCounter') || '1', 10);
-    const generateFileName = () => {
-        const fileName = `image${imageCounter}.jpg`;
-        imageCounter += 1;
-        localStorage.setItem('imageCounter', imageCounter.toString());
+    const generateFileName = (menu_name: string) => {
+        const sanitizedMenuName = menu_name.replace(/\s+/g, '_');
+        const fileName = `${sanitizedMenuName}.jpg`;
         return fileName;
     };
 
@@ -237,6 +208,22 @@ export const AdminMenuDetail = (): JSX.Element => {
         });
     };
 
+    const CustomModal = styled(Modal)`
+        top: 250px;
+
+        .ant-btn-primary {
+            background-color:rgb(80, 176, 209);
+        }
+
+        @media screen and (max-width: 700px) {
+            top: 300px;
+            
+            .ant-modal-content {
+                width: 80%;
+                margin: 0 auto;
+            }
+        }
+    `;
 
     return (
         <html className={MdStyle.html}>
@@ -252,7 +239,10 @@ export const AdminMenuDetail = (): JSX.Element => {
                                 <MdLogout className={MenuStyle.faArrowRightFromBracket} onClick={handleLogout} />
                             </Link>
                         </div>
-                        <div className={MdStyle.menuDetail}>
+                        <div className={MdStyle.pageHead}>
+                            메뉴 수정
+                        </div>
+                        <div className={MdStyle.adminMenuDetail}>
                             {section && (
                                 <div id={section['menu_corner']}>
                                     {isEditing ? (
@@ -284,16 +274,16 @@ export const AdminMenuDetail = (): JSX.Element => {
                                     <hr id="menuDetailHr" className={MdStyle.menuDetailHr}></hr>
                                     {isEditing ? (
                                         // 편집 모드일 때, input을 렌더링
-                                        <div className={MdStyle.menuDetailInfo}>
-                                            <div className={MdStyle.formGroup}>
-                                                <label>메뉴이름</label>
-                                                <input type="text" value={section['menu_name']} onChange={(e) => setSection({ ...section, menu_name: e.target.value })} />
+                                        <div className={MIStyle.formbody} style={{ margin: '0 auto', textAlign: 'left', padding: '20px 10px 10px 10px' }}>
+                                            <div className={MIStyle.formgroup} style={{ marginBottom: '0px' }}>
+                                                <label className={MIStyle.labeltitle}>메뉴 이름</label>
+                                                <input className={MIStyle.forminput} type="text" value={section['menu_name']} onChange={(e) => setSection({ ...section, menu_name: e.target.value })} />
                                             </div>
                                             <br />
-                                            <div className={MdStyle.horizontalgroup}>
-                                                <div className={MdStyle.formGroup}>
-                                                    <label>코너종류</label>
-                                                    <div className={MdStyle.radioGroup}>
+                                            <div className={MIStyle.horizontalgroup}>
+                                                <div className={MIStyle.formgroup} style={{ marginBottom: '0px' }}>
+                                                    <label className={MIStyle.labeltitle}>코너 종류</label>
+                                                    <div className={MIStyle.inputgroup}>
                                                         <label><input type="radio" name="corner" value="S" checked={section['menu_corner'] === 'S'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> S</label>
                                                         <label><input type="radio" name="corner" value="B" checked={section['menu_corner'] === 'B'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> B</label>
                                                         <label><input type="radio" name="corner" value="F" checked={section['menu_corner'] === 'F'} onChange={(e) => setSection({ ...section, menu_corner: e.target.value })} /> F</label>
@@ -301,38 +291,38 @@ export const AdminMenuDetail = (): JSX.Element => {
                                                 </div>
                                             </div>
                                             <br />
-                                            <div className={MdStyle.formGroup}>
-                                                <label>메뉴가격</label>
-                                                <input type="text" value={section['menu_price']} onChange={(e) => setSection({ ...section, menu_price: parseInt(e.target.value, 10) || 0 })} />
+                                            <div className={MIStyle.formgroup} style={{ marginBottom: '0px' }}>
+                                                <label className={MIStyle.labeltitle}>메뉴 가격</label>
+                                                <input className={MIStyle.forminput} style={{}} type="text" value={section['menu_price']} onChange={(e) => setSection({ ...section, menu_price: parseInt(e.target.value, 10) || 0 })} />
                                             </div>
                                             <br />
-                                            <div className={MdStyle.horizontalgroup}>
-                                                <div className={MdStyle.formGroup}>
-                                                    <label>포장가능여부</label>
-                                                    <div className={MdStyle.radioGroup}>
-                                                        <label><input type="radio" name="pack" value="1" checked={section['menu_pack'] === 1} onChange={(e) => setSection({ ...section, menu_pack: parseInt(e.target.value, 10) || 0 })} /> O</label>
-                                                        <label><input type="radio" name="pack" value="0" checked={section['menu_pack'] === 0} onChange={(e) => setSection({ ...section, menu_pack: parseInt(e.target.value, 10) || 0 })} /> X</label>
+                                            <div className={MIStyle.horizontalgroup}>
+                                                <div className={MIStyle.formgroup} style={{ marginBottom: '0px' }}>
+                                                    <label className={MIStyle.labeltitle}>포장 가능 여부</label>
+                                                    <div className={MIStyle.inputgroup}>
+                                                        <label id={MIStyle.male}><input type="radio" name="pack" value="1" checked={section['menu_pack'] === 1} onChange={(e) => setSection({ ...section, menu_pack: parseInt(e.target.value, 10) || 0 })} /> O</label>
+                                                        <label id={MIStyle.female}><input type="radio" name="pack" value="0" checked={section['menu_pack'] === 0} onChange={(e) => setSection({ ...section, menu_pack: parseInt(e.target.value, 10) || 0 })} /> X</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <br />
 
-                                            <div className={MdStyle.horizontalgroup}>
-                                                <div className={MdStyle.formGroup}>
-                                                    <label>판매가능여부</label>
-                                                    <div className={MdStyle.radioGroup}>
-                                                        <label><input type="radio" name="sales" value="1" checked={section['menu_sales'] === 1} onChange={(e) => setSection({ ...section, menu_sales: parseInt(e.target.value, 10) || 0 })} /> O</label>
-                                                        <label><input type="radio" name="sales" value="0" checked={section['menu_sales'] === 0} onChange={(e) => setSection({ ...section, menu_sales: parseInt(e.target.value, 10) || 0 })} /> X</label>
+                                            <div className={MIStyle.horizontalgroup}>
+                                                <div className={MIStyle.formGroup} style={{ marginBottom: '0px' }}>
+                                                    <label className={MIStyle.labeltitle}>판매 가능 여부</label>
+                                                    <div className={MIStyle.inputgroup}>
+                                                        <label id={MIStyle.male}><input type="radio" name="sales" value="1" checked={section['menu_sales'] === 1} onChange={(e) => setSection({ ...section, menu_sales: parseInt(e.target.value, 10) || 0 })} /> O</label>
+                                                        <label id={MIStyle.female}><input type="radio" name="sales" value="0" checked={section['menu_sales'] === 0} onChange={(e) => setSection({ ...section, menu_sales: parseInt(e.target.value, 10) || 0 })} /> X</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <br />
-                                            <div className={MdStyle.horizontalgroup}>
-                                                <div className={MdStyle.formGroup}>
-                                                    <label>메뉴등록여부</label>
-                                                    <div className={MdStyle.radioGroup}>
-                                                        <label><input type="radio" name="regist" value="1" checked={section['menu_regist'] === 1} onChange={(e) => setSection({ ...section, menu_regist: parseInt(e.target.value, 10) || 0 })} /> O</label>
-                                                        <label><input type="radio" name="regist" value="0" checked={section['menu_regist'] === 0} onChange={(e) => setSection({ ...section, menu_regist: parseInt(e.target.value, 10) || 0 })} /> X</label>
+                                            <div className={MIStyle.horizontalgroup}>
+                                                <div className={MIStyle.formgroup} style={{ marginBottom: '0px' }}>
+                                                    <label className={MIStyle.labeltitle}>메뉴 등록 여부</label>
+                                                    <div className={MIStyle.inputgroup}>
+                                                        <label id={MIStyle.male}><input type="radio" name="regist" value="1" checked={section['menu_regist'] === 1} onChange={(e) => setSection({ ...section, menu_regist: parseInt(e.target.value, 10) || 0 })} /> O</label>
+                                                        <label id={MIStyle.female}><input type="radio" name="regist" value="0" checked={section['menu_regist'] === 0} onChange={(e) => setSection({ ...section, menu_regist: parseInt(e.target.value, 10) || 0 })} /> X</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -349,49 +339,45 @@ export const AdminMenuDetail = (): JSX.Element => {
                             {isEditing ? (
                                 // 편집 모드일 때, 저장 버튼을 표시
                                 <>
-                                    <div className={MdStyle.buttons}>
-                                        <button id="optionButton" className={MdStyle.optionButton1} onClick={openUpdateModal}>저장</button>
-                                        <button id="optionButton" className={MdStyle.optionButton2} onClick={handleBackClick}>취소</button>
+                                    <div className={MdStyle.bottom}>
+                                        <button id="optionButton" className={MdStyle.saveBtn} onClick={openUpdateModal}>저장</button>
                                     </div>
                                 </>
                             ) : (
                                 // 편집 모드가 아닐 때, 메뉴 수정 및 삭제 버튼 표시
                                 <>
-                                    <div className={MdStyle.buttons}>
-                                        <button id="optionButton" className={MdStyle.optionButton1} onClick={handleUpdateFormClick}>메뉴 수정</button>
-                                        <button id="optionButton" className={MdStyle.optionButton2} onClick={openDeleteModal}>메뉴 삭제</button>
+                                    <div className={MdStyle.bottom}>
+                                        <button className={MdStyle.menuUpdateBtn} onClick={handleUpdateFormClick}>메뉴 수정</button>
                                     </div>
                                 </>
                             )}
                         </div>
 
-                        {/* 모달 창 */}
-                        {deleteModal && (
-                            <div className={MdStyle.modal}>
-                                <div className={MdStyle.modalContent}>
-                                    <span className={MdStyle.close} onClick={closeDeleteModal}>&times;</span>
-                                    <p>메뉴를 정말 삭제하시겠습니까?</p>
-                                    <div className={MdStyle.ModalBtn}>
-                                        <button type="submit" className={MdStyle.btncancel} onClick={closeDeleteModal}>취소</button>
-                                        <button type="submit" className={MdStyle.btninsert} onClick={openDeModal}>삭제</button>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
                         {updateModal && (
-                            <div className={MdStyle.modal}>
-                                <div className={MdStyle.modalContent}>
-                                    <span className={MdStyle.close} onClick={closeUpdateModal}>&times;</span>
-                                    <p>메뉴를 수정하시겠습니까?</p>
-                                    <button type="submit" className={MdStyle.btncancel} onClick={closeUpdateModal}>취소</button>
-                                    <button type="submit" className={MdStyle.btninsert} onClick={openUpModal}>수정</button>
-                                </div>
-                            </div>
+                            <CustomModal
+                                title="메뉴 수정"
+                                visible={isModalVisible}
+                                onOk={openUpModal}
+                                onCancel={closeUpdateModal}
+                                okText="수정"
+                                cancelText="취소"
+                            >
+                                <p>메뉴를 수정하시겠습니까 ?</p>
+                            </CustomModal>
+                            // <div className={MdStyle.modal}>
+                            //     <div className={MdStyle.modalContent}>
+                            //         <span className={MdStyle.close} onClick={closeUpdateModal}>&times;</span>
+                            //         <p>메뉴를 수정하시겠습니까?</p>
+                            //         <div className={MdStyle.ModalBtn}>
+                            //         <button type="submit" className={MdStyle.btncancel} onClick={closeUpdateModal}>취소</button>
+                            //         <button type="submit" className={MdStyle.btninsert} onClick={openUpModal}>수정</button>
+                            //         </div>
+                            //     </div>
+                            // </div>
                         )}
 
 
-                        {showModal && (
+                        {/* {showModal && (
                             <div className={MdStyle.modal}>
                                 <div className={MdStyle.modalContent}>
                                     {action === 'update' ? (
@@ -407,7 +393,7 @@ export const AdminMenuDetail = (): JSX.Element => {
                                     )}
                                 </div>
                             </div>
-                        )}
+                        )} */}
                     </div>
                 ) : (
                     <WrongApproach />

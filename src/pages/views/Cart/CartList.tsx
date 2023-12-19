@@ -15,6 +15,7 @@ export const CartList = (): JSX.Element => {
   const [cartList, setCartList] = useState < Cart[] > ([]);
   const [orderList, setOrderList] = useState < Orders[] > ([]);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const userId = localStorage.getItem('user_id');
 
   //장바구니 목록 불러오기  
@@ -22,39 +23,51 @@ export const CartList = (): JSX.Element => {
 
     axios.get(`/cart/list/${userId}`).then((res) => {
       setCartList(res.data);
+      setIsLoading(false);
     })
 
   }, []);
 
   // 장바구니에서 메뉴 삭제
-  const handleDelete = (menu_id: number) => {
-    axios.delete(`/cart/delete/${menu_id}`).then((res) => {
-      setCartList((prevCartList) => prevCartList.filter((cart) => cart.menu_id !== menu_id));
+  const handleDelete = (menu_id: number, is_packed: number) => {
+    axios.delete(`cart/delete/${menu_id}/${userId}/${is_packed}`).then((res) => {
+      if (res.status === 200) {
+        setCartList((prevCartList) =>
+          prevCartList.filter((cart) => cart.menu_id !== menu_id || cart.is_packed !== is_packed)
+        );
+      }
     });
   };
 
+  // 뒤로가기 or 홈 버튼 클릭시 현재 장바구니 수량 저장
+  const handleCart = () => {
+    axios.put(`cart/update/${userId}`, cartItems)
+    console.log(cartItems)
+  }
+
   // 수량 감소
-  const handleDecrement = (menu_id: number) => {
+  const handleDecrement = (menu_id: number, is_packed: number) => {
     setCartList((prevCartList) =>
       prevCartList.map((cart) =>
-        cart.menu_id === menu_id && cart.quantity > 1
+        cart.menu_id === menu_id && cart.is_packed === is_packed && cart.quantity > 1
           ? { ...cart, quantity: cart.quantity - 1 }
           : cart
       )
     );
   };
+
   //수량 증가
-  const handleIncrement = (menu_id: number) => {
+  const handleIncrement = (menu_id: number, is_packed: number) => {
     setCartList((prevCartList) =>
       prevCartList.map((cart) =>
-        cart.menu_id === menu_id
+        cart.menu_id === menu_id && cart.is_packed === is_packed
           ? { ...cart, quantity: cart.quantity + 1 } : cart
       )
     );
   };
 
   const totalQuantity = cartList.reduce((totalQ, cart) => totalQ + cart.quantity, 0);
-  const totalPrice = cartList.reduce((totalQ, cart) => totalQ + cart.menu_price * cart.quantity, 0);
+  const totalPrice = cartList.reduce((totalQ, cart) => totalQ + cart.cart_price * cart.quantity, 0);
   const totalPriceStr = totalPrice?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); //1000단위 콤마
 
   const quantity = cartList.map((cart) => cart.quantity);
@@ -78,16 +91,16 @@ export const CartList = (): JSX.Element => {
   const cartItems = cartInfo.menu_id.map((menu_id, index) => ({
     menu_id: menu_id,
     quantity: cartInfo.quantity[index],
-    is_packed: is_packed[index],
+    is_packed: cartInfo.is_packed[index],
     u_id: userId
   }));
 
   console.log(cartItems)
 
   const handleOrder = () => {
-    axios.put("cart/update", cartItems)
+    axios.put(`cart/update/${userId}`, cartItems)
       .then((updateRes) => {
-        axios.post("/order/insert", orderInfo)
+        axios.post(`/order/insert/${userId}`, orderInfo)
           .then((orderRes) => {
             setOrderList(orderInfo);
             navigate("/order");
@@ -98,6 +111,53 @@ export const CartList = (): JSX.Element => {
       })
       .catch((updateError) => {
         console.error("수량 업데이트 실패:", updateError);
+      });
+  };
+
+  // 수량 입력
+  const [inputQuantity, setInputQuantity] = useState('');
+  const handleQuantityChange = (menu_id: number, is_packed: number, quantity: number) => {
+    let updatedQuantity = '1';
+    if (isNaN(quantity) || quantity === 0) {
+      updatedQuantity = '1';
+    } else if (quantity > 99) {
+      updatedQuantity = '99';
+    } else if (quantity === 0) {
+      updatedQuantity = '1';
+    } else {
+      updatedQuantity = quantity.toString();
+    }
+    setInputQuantity(updatedQuantity);
+    const updatedCartList = cartList.map((item) => {
+      if (item.menu_id === menu_id && item.is_packed === is_packed) {
+        return {
+          ...item,
+          quantity: parseInt(updatedQuantity)
+        };
+      }
+      return item;
+    });
+    setCartList(updatedCartList);
+  };
+
+  const cartLength = cartItems.length;
+
+  // 메뉴 페이지로 이동
+  const goMenuPage = () => {
+    navigate('/menu'); //메뉴 목록 페이지 URL 추가
+  }
+
+  // 주문하기 버튼 클릭시 장바구니 update => 주문확인 페이지로
+  const handleOrderCheck = () => {
+    localStorage.setItem('totalPrice', totalPrice.toString());
+    localStorage.setItem('totalQuantity', totalQuantity.toString());
+
+    axios.put(`cart/update/${userId}`, cartItems) // 장바구니 업데이트
+      .then((updateRes) => {
+        navigate("/order/check")
+      })
+      .catch((error) => {
+        console.error('수량 업데이트 실패:', error);
       });
   };
 
@@ -188,8 +248,9 @@ export const CartList = (): JSX.Element => {
 
   return (
     <>
+
       {userId ? (
-            <><div className="body">
+        <><div className="body">
           <div className="cartTop">
             <Link className={MenuStyle.link} to="/Menu">
               <BiArrowBack className={MenuStyle.faArrowLeft} />
@@ -199,38 +260,79 @@ export const CartList = (): JSX.Element => {
               <IoHomeSharp className={MenuStyle.faArrowLeft} />
             </Link>
           </div>
-          
-        <div className='cartMList'>
-            {cartList.map((cart, index) => (
-              <div className="menuInfo" key={index}>
-                <img className="menuImg" src={require(`../../img/${decodeURIComponent(cart['menu_image'])}`)} alt={cart['menu_name']} />
-                <div className="cartMInfo">
-                  <div className="menuName">{cart.menu_name}</div>
-                  <div className="isPacked">• 방법 : {cart.is_packed ? '포장' : '매장'}</div>
-                  <div className="isPacked">• 코너 : {cart.menu_corner}</div>
-                  <div className="menuPrice">
-                    {cart.is_packed ? cart.menu_price + 500 : cart.menu_price}<span style={{ fontWeight: '600' }}>원</span>
-                  </div>
-                  <div className="menuQuantity">
-                    <div className="count">
-                      {cart.quantity === 1 ? (
-                        <Button className="minus" onClick={() => handleDecrement(cart.menu_id)} disabled>-</Button>) :
-                        (
-                          <Button className="minus" onClick={() => handleDecrement(cart.menu_id)}>-</Button>
+
+          <div className='cartMList'>
+            {
+              isLoading ? (
+                <></>
+              ) : cartLength > 0 ?
+                (<>
+                  {cartList.map((cart, index) => (
+                    <div className="menuInfo" key={index}>
+                      <img className="menuImg" src={require(`../../img/${decodeURIComponent(cart['menu_image'])}`)} alt={cart['menu_name']} />
+                      <div className="cartMInfo">
+                        {cart.is_packed === 1 ? (
+                          <div className="menuName">{cart.menu_name} ⓟ</div>
+                        ) : (
+                          <div className="menuName">{cart.menu_name}</div>
                         )}
-                      <Input className="quantityInput" name="counter" value={cart.quantity} readOnly />
-                      {cart.quantity === 100 ? (
-                        <Button className="plus" onClick={() => handleIncrement(cart.menu_id)} disabled>+</Button>
-                      ) : (
-                        <Button className="plus" onClick={() => handleIncrement(cart.menu_id)}>+</Button>
-                      )}
+                        {/* <div className="isPacked">• 방법 : {cart.is_packed ? '포장' : '매장'}</div>
+                        <div className="isPacked">• 코너 : {cart.menu_corner}</div> */}
+                        <div className="menuPrice">
+                          가격 : {cart.is_packed ? cart.menu_price + 500 : cart.menu_price}원
+                        </div>
+                        <div className="menuQuantity">
+                          <div className="count">
+                            {cart.quantity === 1 ? (
+                              <Button className="minus" onClick={() => handleDecrement(cart.menu_id, cart.is_packed)} disabled>-</Button>) :
+                              (
+                                <Button className="minus" onClick={() => handleDecrement(cart.menu_id, cart.is_packed)}>-</Button>
+                              )}
+                            <Input
+                              className="quantityInput"
+                              name="counter"
+                              value={cart.quantity}
+                              onChange={(e: any) => handleQuantityChange(cart.menu_id, cart.is_packed, parseInt(e.target.value))}
+                              onBlur={(e: any) => {
+                                const quantity = parseInt(e.target.value);
+                                if (isNaN(quantity) || quantity === 0) {
+                                  handleQuantityChange(cart.menu_id, cart.is_packed, 1);
+                                }
+                              }}
+                            />
+                            {cart.quantity === 99 ? (
+                              <Button className="plus" onClick={() => handleIncrement(cart.menu_id, cart.is_packed)} disabled>+</Button>
+                            ) : (
+                              <Button className="plus" onClick={() => handleIncrement(cart.menu_id, cart.is_packed)}>+</Button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <Button className="cartDelBtn" onClick={() => handleDelete(cart.menu_id, cart.is_packed)}>X</Button>
+                    </div>
+                  ))}
+                </>
+                )
+                :
+                (
+                  <div className="cartZero">
+                    <div>
+                      <div className="imgBox">
+                        <div className="cartImg"></div>
+                      </div>
+                      <div className="zeroTxt">
+                        장바구니에 담긴 상품이 없습니다.
+                      </div>
+                      <div className="zeroBtn">
+                        <button className="goMenuBtn" onClick={goMenuPage}>메뉴 보러 가기</button> {/* 메뉴 리스트 링크 달기 */}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <Button className="cartDelBtn" onClick={() => handleDelete(cart.menu_id)}>X</Button>
-              </div>
-            ))}
-          </div><div className="priceBox">
+                )
+            }
+          </div>
+
+          <div className="priceBox">
             <div className="priceTxt">
               총 수량 <span style={{ fontWeight: '500' }}>{totalQuantity}</span>개
             </div>
@@ -238,11 +340,11 @@ export const CartList = (): JSX.Element => {
               총 주문금액 <span style={{ fontWeight: '500' }}>{totalPriceStr}</span>원
             </div>
           </div><div className="bottom">
-            <button className="orderBtn" onClick={onClickPayment}>
+            <button className="orderBtn" onClick={handleOrderCheck}>
               주문하기
             </button>
           </div>
-          </div></>
+        </div></>
 
       ) : (
         <WrongApproach />

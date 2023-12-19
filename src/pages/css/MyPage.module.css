@@ -46,6 +46,7 @@
     justify-content: space-between;
     align-items: center;
     z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
+    font-weight: 600;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
 }
 
@@ -92,14 +93,18 @@
 .RiFileList3Line {
     color: rgb(45, 52, 55);
     font-size: 50px;
+    width: 60px;
+    margin-top: 30px;
+    margin-bottom: 10px;
 }
 
 .myPageButtons a {
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    padding: 20px;
+    padding: 10px 25px;
     background: none;
+    align-items: center;
 }
 
 .myPageButtons button {
@@ -113,7 +118,7 @@
     padding: 0px;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
     .myPage {
         margin-top: 120px;
     }
@@ -154,10 +159,18 @@
         display: flex;
         flex-direction: column;
         text-decoration: none;
-        padding: 0px 35px;
+        padding: 0px 30px;
     }
 
     .pageHead {
         top: 50px;
+    }
+
+    .RiFileList3Line {
+        color: rgb(45, 52, 55);
+        font-size: 35px;
+        width: 55px;
+        margin-bottom: 10px;
+        margin: 0px auto 10px auto;
     }
 }

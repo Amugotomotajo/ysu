@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, KeyboardEvent } from 'react';
 import style from '../css/Login.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -70,6 +70,12 @@ export const Login = (): JSX.Element => {
         }
     };
 
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+          handleLogin(u_id, u_pw);
+        }
+      };
+
     const [userInfo, setUserInfo] = useState<{
         u_id: String,
         u_pw: String,
@@ -140,10 +146,10 @@ export const Login = (): JSX.Element => {
                     <div className={style.loginWrapper}>
                         <div id={style.loginForm}>
                             <h2 id={style.loginH2}>Login</h2>
-                            <input type="text" name="userName" placeholder="아이디" value={u_id} onChange={(e) => {
+                            <input type="text" name="userName" placeholder="아이디" value={u_id} onKeyDown={handleKeyPress} onChange={(e) => {
                                 setUid(e.target.value);
                             }} />
-                            <input type="password" name="userPassword" placeholder="비밀번호" value={u_pw} onChange={(e) => setUpw(e.target.value)} />
+                            <input type="password" name="userPassword" placeholder="비밀번호" value={u_pw} onKeyDown={handleKeyPress}  onChange={(e) => setUpw(e.target.value)} />
                             {showErrorText && (
                     <p className={style.errorText}>
                         아이디 또는 비밀번호를 잘못 입력했습니다. <br></br>입력하신 내용을 다시 확인해주세요.

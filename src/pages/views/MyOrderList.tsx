@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import { BiArrowBack, BiSolidUpArrow, BiSolidDownArrow } from "react-icons/bi";
 import { IoCartSharp, } from "react-icons/io5";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward, IoIosArrowUp } from "react-icons/io";
 import style from '../css/MyOrderList.module.css';
 import WrongApproach from './WrongApproach';
 import { Button } from 'antd';
@@ -61,6 +61,7 @@ export const MyOrderList = (): JSX.Element => {
     const userDept = localStorage.getItem("user_dept") || '';
 
     useEffect(() => {
+        document.body.style.overflow = 'auto';
 
         setUserInfo({
             u_id: userId,
@@ -80,7 +81,11 @@ export const MyOrderList = (): JSX.Element => {
                         setIsLoading(false);
                     } else {
                         // 받아온 데이터를 처리하는 로직...
-                        setMyOrders(data);
+                        // setMyOrders(data);
+                        
+                        const sortedOrders = [...data].sort((a, b) => b.order_id - a.order_id);
+                        setMyOrders(sortedOrders);
+
                         console.log("데이터 가져오기 성공!");
                         setIsLoading(false);
                     }
@@ -143,17 +148,17 @@ export const MyOrderList = (): JSX.Element => {
             hour: '2-digit',
             minute: '2-digit'
         };
-    
+
         const formattedDate = date.toLocaleDateString('ko-KR', options);
         let [year, month, day, weekday, time, hour] = formattedDate.split(' ');
         year = year.slice(0, -1);
         month = month.slice(0, -1);
         day = day.slice(0, -1);
-    
+
         return `${year}/${month}/${day} ${weekday} ${time} ${hour}`;
     };
 
-    const Button = styled.button `
+    const Button = styled.button`
         border: 0.5px solid #bababa;
         background-color: #ffffff;
         border-radius: 20px;
@@ -165,12 +170,6 @@ export const MyOrderList = (): JSX.Element => {
         font-size: 11px;
         height: 100%;
         box-shadow: 0 0 0 rgba(0, 0, 0, 0.02);
-
-        &:active,
-        &:hover {
-            border: 1px solid rgb(80, 176, 209);
-            color: rgb(80, 176, 209);
-        }
     `;
 
 
@@ -184,7 +183,7 @@ export const MyOrderList = (): JSX.Element => {
                         </Link>
                         <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} />
                         <Link className={MenuStyle.link} to="/cart">
-                            <IoCartSharp className={MenuStyle.faCartShopping} style={{color:'transparent'}}/>
+                            <IoCartSharp className={MenuStyle.faCartShopping} style={{ color: 'transparent' }} />
                         </Link>
                     </div>
 
@@ -198,23 +197,24 @@ export const MyOrderList = (): JSX.Element => {
                         ) : (myOrders.length === 0 ? (
                             <div className={style.noOrders}>
                                 <img id="noOrdersImg" className={style.noOrdersImg} src={noOrders} alt={"logo"} />
-                                <p>주문 내역이 없습니다.</p>
+                                <p>주문 내역이 없습니다</p>
                             </div>
                         ) : (
                             Array.from(new Set(myOrders.map(order => order.order_id))).map(orderId => (
                                 <div key={orderId} className={style.orderContainer}>
                                     {/* 주문 번호를 클릭하여 상세 정보를 펼치거나 접는 부분 */}
                                     <div className={style.orderHeader} onClick={() => toggleOrder(orderId)}>
+
+                                        <span style={{ fontSize: '19px' }}>
+                                            &nbsp;주문 번호&nbsp;
+                                            {orderId}
+                                        </span>&nbsp;&nbsp;
                                         {expandedOrders[orderId] ? (
-                                            <IoIosArrowDown className={style.arrowIcon} style={{ color: '#4D5964' }} />
+                                            <IoIosArrowForward className={style.arrowIcon} style={{ color: '#4D5964' }} />
 
                                         ) : (
-                                            <IoIosArrowUp className={style.arrowIcon} style={{ color: '#4D5964' }} />
+                                            <IoIosArrowDown className={style.arrowIcon} style={{ color: '#4D5964' }} />
                                         )}
-                                        <span style={{ fontSize: '19px' }}> 
-                                        &nbsp;&nbsp;주문 번호&nbsp;
-                                        {orderId}
-                                        </span>
 
                                         {/* 주문 날짜 */}
                                         {Array.from(new Set(myOrders.filter(order => order.order_id === orderId).map(order => order.order_date))).map(orderDate => (
@@ -237,22 +237,23 @@ export const MyOrderList = (): JSX.Element => {
 
                                                                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                                                             <span className={style.menuName}>
-                                                                                {myOrder.menu_name} <span style={{fontWeight:'500'}}>
+                                                                                {myOrder.menu_name} <span style={{ fontWeight: '500' }}>
                                                                                     {myOrder.quantity}
                                                                                 </span>
                                                                                 개 &nbsp;
                                                                             </span>
-                                                                            {myReviews.filter(review => review.order_id === myOrder.order_id && review.menu_id === myOrder.menu_id).length > 0 ? (
-                                                                                <span></span>
+                                                                            {myReviews.filter(review => review.order_id === myOrder.order_id 
+                                                                                                && review.menu_id === myOrder.menu_id).length > 0 ? (
+                                                                                <></>
                                                                             ) : (
-                                                            
+
                                                                                 <Button className={style.reviewWriting} onClick={() => navigate(`/review/write`, {
                                                                                     state: {
-                                                                                      menu_id: myOrder.menu_id,
-                                                                                      user_id: userId,
-                                                                                      order_id: myOrder.order_id
+                                                                                        menu_id: myOrder.menu_id,
+                                                                                        user_id: userId,
+                                                                                        order_id: myOrder.order_id
                                                                                     }
-                                                                                  })}>리뷰 작성</Button>
+                                                                                })}>리뷰 작성</Button>
                                                                             )}
 
                                                                         </div>
@@ -270,7 +271,7 @@ export const MyOrderList = (): JSX.Element => {
                                         {/* 주문의 총 결제 금액 표시 */}
                                         <div className={style.totalPrice}>
                                             &nbsp;&nbsp;결제 금액&nbsp;
-                                            <span style={{fontWeight:'500'}}>{myOrders.filter(order => order.order_id === orderId).reduce((total, order) => order.total_price, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>원
+                                            <span style={{ fontWeight: '500' }}>{myOrders.filter(order => order.order_id === orderId).reduce((total, order) => order.total_price, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>원
                                         </div>
                                     </div>
 

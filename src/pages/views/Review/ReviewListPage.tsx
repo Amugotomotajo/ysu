@@ -4,12 +4,10 @@ import { useEffect, useState } from "react"
 import { ReviewList } from "../state/review";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import MenuStyle from '../../css/Menu.module.css';
-import MdStyle from '../../css/MenuDetail.module.css'
 import Rlstyle from '../../css/ReviewList.module.css';
 import { format } from 'date-fns';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ysuLogo from '../../img/ysu_logo.jpg';
-import { faArrowLeft, faArrowRightFromBracket, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import noReviews from '../../img/noReview.png';
 import { ReviewWritePage } from "./ReviewWritePage";
 import { MenuReviewTab } from "../MenuReviewTab";
 import { BsFillPersonFill } from "react-icons/bs";
@@ -27,6 +25,7 @@ export const ReviewListPage = (): JSX.Element => {
     review_time: Date,
     order_id: number,
     review_regist: number,
+    review_img: string
   }[]>([]);
 
   const [triggerEffect, setTriggerEffect] = useState(false);
@@ -56,10 +55,9 @@ export const ReviewListPage = (): JSX.Element => {
     navigate("/menu");
   }
 
-
   const formattedDate = (dateString: string | number | Date) => {
     const date = new Date(dateString);
-    return format(date, 'yyyy/MM/dd HH:mm:ss');
+    return format(date, 'yyyy.MM.dd HH:MM');
   };
 
   // 리뷰 불러오기
@@ -113,48 +111,74 @@ export const ReviewListPage = (): JSX.Element => {
 
       {reviews.length === 0 && reviews.filter(review => review.review_regist === 0) ? (
         <>
-          <Result
+          <div className={Rlstyle.noReviews}>
+                <img id="noOrdersImg" className={Rlstyle.noReviewsImg} src={noReviews} alt={"logo"} />
+                <p>해당 메뉴의 리뷰가 없습니다</p>
+            </div>
+          {/* <Result
             style={{ marginTop: "100px" }}
             status="warning"
             title="해당 메뉴의 리뷰가 없습니다."
             extra={[
               // <><Button onClick={ReviewWritePage}>리뷰 적기</Button><Button onClick={menuPage}>메뉴</Button></>
-            ]}
-          />
+            ]} />*/}
+          
         </>
       ) : (
-        <div className={MdStyle.menuDetail}>
-          <List className={Rlstyle.reviewItem}
-            itemLayout="horizontal"
-            dataSource={reviews}
-            renderItem={(item) => (
-              <List.Item key={item.menu_id}>
-                <Card style={{ width: "97%" }}>
+        <Card className={Rlstyle.reviewCard}>
+            {reviews.map((reviewData) => (
+            <div className={Rlstyle.reviewItem}>
+              <div className={Rlstyle.reviewBox}>
 
-                  <Meta key={item.review_id}
-                    className={Rlstyle.reviewMeta}
-                    // avatar={<Avatar icon={<UserOutlined />} style={{ marginRight: "-40px" }} />}
-                    title={item.u_name}
-                    description={
+                <div style={{ display: "flex", alignItems:"center" }}>
 
-                      <><div style={{ fontSize: "10px" }}>{formattedDate(item.review_time)}</div>
-                        <div>{(item.review_id)}</div>
-                        <Divider />
-                        <div><Rate className={Rlstyle.reviewRate} disabled defaultValue={item.review_star}></Rate></div>
-                        <br />
-                        <div style={{ color: "black" }}>{item.review_writing}</div>
-                      </>
-                    }
-                  />
-                  {/* <div>{item.u_name}</div> */}
-                  <button onClick={() => { handleReviewDelete(item.review_id) }}>삭제</button>
-                  {/* <ReviewDelete /> */}
-                </Card>
-              </List.Item>
-            )}>
+                <div>
+                  <div className={Rlstyle.reviewInfo} >
+                    <div className={Rlstyle.reviewFix}>
+                      <div className={Rlstyle.userName}>{reviewData.u_name}</div> {/* 이름 */}
+                      <div id="reviewTime" className={Rlstyle.reviewTime} style={{ fontSize: "10px" }}>{formattedDate(reviewData.review_time)}</div> {/* 날짜 */}
 
-          </List>
-        </div>
+                    </div>
+                    <div style={{display:"flex", alignItems:"center"}}> {/* 별점 */}
+                      <Rate id="reviewRate" className={Rlstyle.reviewRate} disabled defaultValue={reviewData.review_star}></Rate>
+
+                    </div>
+                  </div>
+                </div>
+                </div>
+
+                <div className={Rlstyle.contentBox}>
+                  {/* 글 */}
+                  <div
+                    id="reviewWriting"
+                    className={Rlstyle.reviewWriting}
+                    style={{
+                      paddingBottom: reviewData.review_img ? "5%" : "15%",
+                      width: reviewData.review_img ? "60%" : "100%"
+                    }}
+                  >
+                    {reviewData.review_writing}
+                  </div>
+
+                  <div className={Rlstyle.reviewImgList}> {/* 사진 */}
+                    {reviewData.review_img && (
+                      <img
+                        className={Rlstyle.reviewImg}
+                        src={require(`../../img/${decodeURIComponent(reviewData.review_img)}`)}
+                        alt="Review"
+                      style={{
+                        paddingBottom: reviewData.review_img ? "15%" : "0%"
+                      }}
+                      />
+                    )}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          ))}
+        </Card >
       )}</>
   )
 }

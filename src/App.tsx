@@ -18,6 +18,9 @@ import { MenuReviewTab } from './pages/views/MenuReviewTab';
 import { ReviewListPage } from './pages/views/Review/ReviewListPage';
 import { ReviewWritePage } from './pages/views/Review/ReviewWritePage';
 import CartList from './pages/views/Cart/CartList';
+import OrderCheck from './pages/views/Order/OrderCheck';
+import { AdminLastMenuListPage } from "./pages/views/AdminLastMenuListPage";
+import AdminMyPage from './pages/views/AdminMyPage';
 
 export const App =  ():JSX.Element => {
   return (
@@ -50,9 +53,14 @@ export const App =  ():JSX.Element => {
         <Route path="/myReview" element={<MyReview />} />
         <Route path="/cart" element={<CartList />} />
         <Route path="/order" element={<OrderComplete />} />
+        <Route path="/order/check" element={<OrderCheck />} /> 
+        <Route path="/order/complete" element={<OrderComplete />} /> 
         <Route path="/adminMenu" element={<AdminMenuListPage />} /> {/* 메뉴관리 */}
+        <Route path="/adminMyPage" element={<AdminMyPage/>} />
         <Route path="/adminMenu/menuInsert" element={<AdminMenuInsert />} /> {/* 메뉴등록 */}
         <Route path="/adminMenu/menuDetail" element={<AdminMenuDetail />} /> {/* 메뉴정보(수정, 삭제) */}
+        <Route path="/lastmenu" element={<AdminLastMenuListPage />} /> {/* 지난메뉴관리 */}
+
         <Route path='/wrongApproach' element={<WrongApproach/>} />
         <Route path="/MenuDetail" element={<MenuReviewTab />} />
         <Route element={<MenuReviewTab />} >

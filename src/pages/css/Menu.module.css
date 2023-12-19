@@ -13,7 +13,7 @@ body {
 .mnbody {
     margin: 0;
     background-color: #f1f1f1;
-    width:100%;
+    width: 100%;
     font-family: 'NotoSans';
 }
 
@@ -30,7 +30,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
+    z-index: 1000;
+    /* 다른 요소 위에 보이도록 설정 */
 }
 
 .link {
@@ -40,18 +41,50 @@ body {
 .logo {
     width: 100%;
     max-width: 140px;
-    margin: 0 auto; /* 로고를 가운데에 고정 */
+    margin: 0 auto;
+    /* 로고를 가운데에 고정 */
 }
 
-.faArrowLeft, .faCartShopping, .faArrowRightFromBracket,.faArrowRightFromBracket  {
+.faArrowLeft,
+.faCartShopping,
+.faArrowRightFromBracket,
+.faArrowRightFromBracket {
     width: 100%;
-    min-width: 32px;
-    min-height: 32px;
+    min-width: 28px;
+    min-height: 28px;
     max-width: 35px;
-    font-size: 2em;
+    font-size: 1.5em;
     color: rgb(42, 52, 55);
     display: flex;
     align-items: center;
+}
+
+.noMenusImg {
+    width: 130px;
+    margin-bottom: 10px;
+}
+
+.noMenus {
+    width: 100%;
+    height: 60vh;
+    padding: 10px;
+    border-radius: 6px;
+    letter-spacing: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    font-size: 1rem;
+    text-align: center;
+    flex-direction: column;
+    background-color: #f1f1f1;
+    box-sizing: border-box;
+}
+
+.noMenus p {
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .menuNav .menuUl {
@@ -68,14 +101,19 @@ body {
     flex-direction: row;
     align-items: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
-    z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
+    z-index: 1000;
+    /* 다른 요소 위에 보이도록 설정 */
 }
 
-.menuList #S.active, .menuList #B.active,.menuList #F.active {
+.menuList #S.active,
+.menuList #B.active,
+.menuList #F.active {
     height: auto;
 }
 
-.menuList #S.hidden, .menuList .hidden,.menuList .hidden {
+.menuList #S.hidden,
+.menuList .hidden,
+.menuList .hidden {
     display: none;
 }
 
@@ -119,18 +157,21 @@ li a span {
     color: #555;
 }
 
-li a.active, li a.active span {
+li a.active,
+li a.active span {
     background-color: #555;
     color: white;
 }
 
-li a:hover:not(.active), li a:hover:not(.active) span {
+li a:hover:not(.active),
+li a:hover:not(.active) span {
     background-color: #555;
     color: white;
 }
 
 li a:hover {
-    background-color: #555; /* rgb(42, 52, 55) */
+    background-color: #555;
+    /* rgb(42, 52, 55) */
     color: white;
 }
 
@@ -158,9 +199,7 @@ li a:hover {
     display: none;
 }
 
-.menuInfo div {
-    
-}
+.menuInfo div {}
 
 .soldOutOverlay {
     position: relative;
@@ -182,7 +221,8 @@ li a:hover {
     width: 100%;
     height: 100%;
     border-radius: 10%;
-    background: rgba(0, 0, 0, 0.4); /* 배경색과 투명도를 조절하세요 */
+    background: rgba(0, 0, 0, 0.4);
+    /* 배경색과 투명도를 조절하세요 */
     color: #fff;
     display: flex;
     align-items: center;
@@ -191,7 +231,7 @@ li a:hover {
     font-weight: bold;
 }
 
-.selectMenu{
+.selectMenu {
     margin-top: 155px;
     margin-right: 50px;
     display: flex;
@@ -200,48 +240,51 @@ li a:hover {
     color: black;
 }
 
-.selectoption{
+.selectoption {
     width: 220px;
 }
 
-.selectoptionP{
+.selectoptionP {
     width: 220px;
     opacity: 0;
 }
 
-.selectoption:hover, .selectoption:focus {
-    background-color: #f1f1f1; /* 마우스를 올렸을 때와 포커스 시 배경색 변경 */
-    outline: none; /* 포커스 효과 제거 */
-  }
+.selectoption:hover,
+.selectoption:focus {
+    background-color: #f1f1f1;
+    /* 마우스를 올렸을 때와 포커스 시 배경색 변경 */
+    outline: none;
+    /* 포커스 효과 제거 */
+}
 
-  .selectoption option {
+.selectoption option {
     font-size: 14px;
     padding: 8px;
     background-color: #f1f1f1;
-  }
-  
-  .selectoption option:hover {
-    background-color: #f1f1f1;
-  }
+}
 
-  .priceIcons {
+.selectoption option:hover {
+    background-color: #f1f1f1;
+}
+
+.priceIcons {
     display: flex;
     align-items: center;
 }
 
-.redCircle,
-.blueCircle {
+.blueCircle,
+.greenCircle {
     width: 10px;
     height: 10px;
     border-radius: 50%;
     margin-right: 5px;
 }
 
-.redCircle {
+.blueCircle {
     background-color: rgb(80, 176, 209);
 }
 
-.blueCircle {
+.greenCircle {
     background-color: rgb(181, 220, 16);
 }
 
@@ -251,24 +294,24 @@ li a:hover {
     justify-content: flex-start;
 }
 
-.MainredCircle,
-.MainblueCircle {
+.MainblueCircle,
+.MaingreenCircle {
     width: 10px;
     height: 10px;
     border-radius: 50%;
     margin-right: 10px;
 }
 
-.MainredCircle {
+.MainblueCircle {
     background-color: rgb(80, 176, 209);
     margin-left: 30px;
 }
 
-.MainblueCircle {
+.MaingreenCircle {
     background-color: rgb(181, 220, 16);
 }
 
-.CircleText{
+.CircleText {
     margin-right: 20px;
 }
 
@@ -278,6 +321,7 @@ li a:hover {
     }
 
     .menuList img {
+        object-fit: cover;
         width: 200px;
         height: 200px;
         min-width: 200px;
@@ -309,7 +353,7 @@ li a:hover {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
-        grid-gap:20px; 
+        grid-gap: 20px;
     }
 
     .menuInfo {
@@ -320,9 +364,9 @@ li a:hover {
 
     .menuName {
         font-size: 17px;
-        margin-top:10px;
+        margin-top: 10px;
         margin-bottom: 9px;
-        font-weight:600;
+        font-weight: 600;
     }
 
     .menuPrice {
@@ -353,6 +397,7 @@ li a:hover {
     }
 
     .menuList img {
+        object-fit: cover;
         width: 90px;
         height: 90px;
         border-radius: 10%;
@@ -407,32 +452,30 @@ li a:hover {
 
     .menuList {
         height: 100%;
-        padding:15px;
+        padding: 15px;
         margin-top: 130px;
         border-radius: 6px;
         display: grid;
-        grid-gap:15px; 
+        grid-gap: 15px;
     }
 
     .adminMenuList {
         height: 100%;
-        padding : 20px;
+        padding: 20px;
         border-radius: 6px;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
-        grid-gap:20px; 
+        grid-gap: 20px;
     }
 
-    .menuInfo div {
-
-    }
+    .menuInfo div {}
 
     .menuName {
         font-size: 18px;
-        margin-top:5px;
+        margin-top: 5px;
         margin-bottom: 9px;
-        font-weight:600;
+        font-weight: 600;
     }
 
     .menuPrice {
@@ -449,25 +492,25 @@ li a:hover {
         align-items: center;
         justify-content: flex-start;
     }
-    
-    .MainredCircle,
-    .MainblueCircle {
+
+    .MainblueCircle,
+    .MaingreenCircle {
         width: 7px;
         height: 7px;
         border-radius: 100%;
         margin-right: 10px;
     }
-    
-    .MainredCircle {
+
+    .MainblueCircle {
         background-color: rgb(80, 176, 209);
         margin-left: 30px;
     }
-    
-    .MainblueCircle {
+
+    .MaingreenCircle {
         background-color: rgb(181, 220, 16);
     }
-    
-    .CircleText{
+
+    .CircleText {
         margin-right: 20px;
         font-size: 15px;
     }
@@ -478,43 +521,43 @@ li a:hover {
         margin-top:-30px;
         justify-content: flex-end;
     } */
-    
-    .redCircle,
-    .blueCircle {
+
+    .blueCircle,
+    .greenCircle {
         width: 10px;
         height: 10px;
         border-radius: 50%;
         margin-right: 5px;
     }
-    
-    .redCircle {
+
+    .blueCircle {
         background-color: rgb(80, 176, 209);
     }
-    
-    .blueCircle {
+
+    .greenCircle {
         background-color: rgb(181, 220, 16);
     }
 
-    .CircleText{
+    .CircleText {
         font-size: 13.5px;
         margin-right: 20px;
         white-space: nowrap;
     }
 
-    .selectoption{
+    .selectoption {
         width: 200px;
         font-size: 11px;
         margin-right: -20px;
     }
 
-    .selectoptionP{
+    .selectoptionP {
         width: 200px;
         font-size: 11px;
         margin-right: -20px;
         opacity: 0;
     }
 
-    .selectMenu{
+    .selectMenu {
         margin-top: 145px;
         margin-right: 50px;
         display: flex;

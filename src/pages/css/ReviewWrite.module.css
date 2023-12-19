@@ -1,26 +1,8 @@
-#reviewWriting{
-    padding-top: 0px;
-}
-
-.reviewCard{
-    margin-top: -50px;
-    justify-content: center;
-    width: auto;
-    text-align: center;
-    width: 100%;
-}
-
-.reviewWriteBtn {
-    margin-top:10px;
-    justify-content: center;
-    text-align: center;
-    display: inline-block;
-}
-
 .menuDetail {
     height: 100%;
-    padding: 20px;
+    padding: 10px;
     border-radius: 6px;
+    grid-gap: 20px;
     letter-spacing: 2px;
     display: flex;
     flex-direction: column;
@@ -28,66 +10,115 @@
     font-size: 1.2rem;
     background-color: white;
     text-align: center;
-    margin: 75px 20px 10px 20px;
+    margin: 20px;
+    margin-top: 70px;
     flex-direction: column;
 }
 
 .menuDetailImg {
-    width: 80%;
+    width: 100%;
     border-radius: 10%;
     margin-bottom: 10px;
-    max-width: 230px;
+    max-width: 300px;
     border-radius: 5%;
 }
 
-@media screen and (min-width: 1000px) {
+.menuDetailName {
+    font-size: 20px;
+    font-weight: 600;
+}
 
-    .menuDetailName {
-        font-size: 25px;
-        margin-top: 7px;
-        margin-bottom: 9px;
-        font-weight: 600;
-    }
-    .reviewCard {
-        width: 100%;
-    }
+.previewImg {
+    width: 80%;
+    margin: auto;
+    object-fit:scale-down ;
+}
+
+.reviewFile {
+    width: 80%;
+    display: none;
+    white-space: pre-line;
+}
+
+.reviewWriteBtn {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(80, 176, 209);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    border: 0;
+    cursor: pointer;
+}
+
+.imgWrap {
+    position: relative;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    padding: auto;
+    height: 200px;
+    overflow-y: scroll;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box; /* 패딩과 테두리를 포함하여 요소의 크기 계산 */
+}
+
+.imgWrap::-webkit-scrollbar {
+    display: none;
+}
+
+.imgAdd {
+    width: 50px;
+    height:auto;
+    margin: auto;
+}
+
+.deleteBtn {
+    position:absolute;   
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px; 
+    margin: auto;
+    top: 0;
+    right: 0;
+    color: black;
+}
+
+.imgBox {
+    height: 200px; 
 }
 
 @media screen and (max-width: 700px) {
-    .menuDetailImg {
-        width: 100%;
-        border-radius: 10%;
-        margin-bottom: 15px;
-        max-width: 250px;
-        border-radius: 5%;
-    }
-
-    .menuDetail {
-        height: 100%;
-        padding: 20px;
-        border-radius: 6px;
-        grid-gap: 20px;
-        letter-spacing: 2px;
-        display: flex;
-        flex-direction: column;
+    .imgWrap {
+        position: relative;
+        border: 1px solid #e5e5e5;
+        border-radius: 5px;
+        padding: auto;
+        height: 150px;
+        overflow-y: scroll;
         justify-content: center;
-        font-size: 1.2rem;
-        background-color: white;
-        text-align: center;
-        margin: 20px;
-        margin-bottom: 80px;
-        margin-top: 70px;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box; /* 패딩과 테두리를 포함하여 요소의 크기 계산 */
+        align-items: center;
     }
 
-    .menuDetailName {
-        font-size: 18px;
-        margin-top: 3px;
-        /* margin-bottom: 6px; */
-        font-weight: 600;
-        text-align: center;
+    .previewImg {
+        max-width: 90%;
+        height: auto;
+        margin: auto;
     }
-    .reviewCard{
-        width: 100%;
-        margin-top: -15px;
+
+    .deleteBtn {
+        position:absolute;   
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 20px; 
     }
+    
 }

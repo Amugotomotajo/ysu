@@ -7,9 +7,12 @@ import { BiArrowBack } from "react-icons/bi";
 import { FiPlus } from "react-icons/fi";
 import { MdLogout } from "react-icons/md";
 import ysuLogo from '../img/ysu_logo.jpg';
+import noMenus from '../img/noMenu.png';
 import Select from "react-select"
 import wrongAstyle from '../css/WrongApproach.module.css';
 import WrongApproach from './WrongApproach';
+import { StylesConfig } from 'react-select';
+import { BsFillPersonFill } from "react-icons/bs";
 
 export const AdminMenuListPage = (): JSX.Element => {
     const corner = ['S', 'B', 'F', 'P']
@@ -49,6 +52,15 @@ export const AdminMenuListPage = (): JSX.Element => {
         menu_regist: number
     }[] > ([]); // 초기 데이터를 저장할 상태
 
+    const customStyles : StylesConfig = {
+        option: (provided, state) => ({
+            ...provided,
+            fontWeight: state.isSelected ? 'bold' : 'normal',
+            backgroundColor: state.isSelected ? '#E0F2F7' : 'white', // 선택되었을 때 배경색을 투명으로 변경
+            color: state.isSelected ? 'black' : 'inherit', // 선택되었을 때 글자색을 검정으로 변경
+        }),
+    };
+
     useEffect(() => {
         document.body.style.overflow = 'auto';
         window.scrollTo(0, 0);
@@ -86,15 +98,12 @@ export const AdminMenuListPage = (): JSX.Element => {
     const handleSectionClick = (section: string) => {
         setActiveSection(section);
         setResetSelect(undefined);
+        setSelectedOption(null);
         window.scrollTo(0, 0);
-
+        console.log(activeSection);
         if (section === 'P' || section === 'B' || section === 'S' || section === 'F') {
             setSections(originalSections);
             setResetSelect(null);
-        }
-
-        if (section !== 'S') {
-            setActiveSection(section);
         }
     };
 
@@ -110,7 +119,6 @@ export const AdminMenuListPage = (): JSX.Element => {
 
         // 로그인 페이지로 이동
         navigate('/login');
-        window.alert("로그아웃 되었습니다.");
     };
 
 
@@ -182,6 +190,7 @@ export const AdminMenuListPage = (): JSX.Element => {
             // 다른 옵션이 선택되었을 때, 모든 메뉴를 보여줌
             setSections(originalSections);
             setResetSelect(undefined);
+
         }
     };
 
@@ -199,13 +208,13 @@ export const AdminMenuListPage = (): JSX.Element => {
                 <body className={style.body}>
                     <div>
                         <div id="head" className={style.head}>
-
-                            <Link className={style.link} to="./menuInsert">
-                                <FiPlus className={style.faArrowRightFromBracket} />
-                            </Link>
+                        <Link className={style.link} to="/adminMyPage">
+                            <BsFillPersonFill className={style.faArrowLeft}/>
+                        </Link>
+                            
                             <img id="logo" className={style.logo} src={ysuLogo} alt={"logo"} />
                             <Link to="/login" className={style.link} >
-                                <MdLogout className={style.faArrowRightFromBracket} onClick={handleLogout} />
+                                <MdLogout className={style.faArrowRightFromBracket} style={{color:'transparent', cursor: 'auto'}}/>
                             </Link>
 
                         </div>
@@ -224,9 +233,9 @@ export const AdminMenuListPage = (): JSX.Element => {
                                                     handleSectionClick(section);
                                                 }}
                                                 className={activeSection === section ? style.active : ''}
-                                                style={{flexDirection:'column'}}
+                                                style={{ flexDirection: 'column' }}
                                             >
-                                                
+
                                                 {section === 'S' && '면분식류'}
                                                 <span>{section === 'S' && '(S)'} </span>
                                                 {section === 'B' && '비빔밥덮밥류'}
@@ -245,34 +254,47 @@ export const AdminMenuListPage = (): JSX.Element => {
                         {(activeSection === 'S' || activeSection === 'B' || activeSection === 'F') && (
                             <div className={style.selectMenu}>
                                 <div className={style.MainpriceIcons}>
-                                    <span className={style.MainredCircle} /><a className={style.CircleText}>포장메뉴</a>
-                                    <span className={style.MainblueCircle} /><a className={style.CircleText}>등록메뉴</a>
+                                    <span className={style.MainblueCircle} /><a className={style.CircleText}>포장메뉴</a>
+                                    <span className={style.MaingreenCircle} /><a className={style.CircleText}>등록메뉴</a>
                                 </div>
                                 <Select
                                     options={options}
                                     className={style.selectoption}
                                     onChange={handleOptionChange}
                                     isClearable
-                                    isSearchable={false} 
+                                    isSearchable
                                     placeholder={selectedOption ? selectedOption.label : "메뉴를 선택하세요"} // 선택된 옵션을 표시할 부분
                                     value={resetSelect}
+                                    styles={customStyles}
                                 />
                             </div>
                         )}
 
+
+
+                        {(sections.length === 0 || (sections.every(section => activeSection !== section.menu_corner) && activeSection != 'P')) && (
+                            <div className={style.noMenus}>
+                                <img id="noReviewsImg" className={style.noMenusImg} src={noMenus} alt={"logo"} />
+                                <p>선택한 항목의 메뉴가 없습니다</p>
+                            </div>
+                        )}
+
+
+
                         {activeSection === 'P' && (
                             <div className={style.selectMenu}>
                                 <div className={style.MainpriceIcons}>
-                                    <span className={style.MainredCircle} /><a className={style.CircleText}>포장메뉴</a>
-                                    <span className={style.MainblueCircle} /><a className={style.CircleText}>등록메뉴</a>
+                                    <span className={style.MainblueCircle} /><a className={style.CircleText}>포장메뉴</a>
+                                    <span className={style.MaingreenCircle} /><a className={style.CircleText}>등록메뉴</a>
                                 </div>
                                 <Select options={options}
                                     className={style.selectoptionP}
                                     onChange={handleOptionChange}
                                     isClearable
-                                    isSearchable={false} 
+                                    isSearchable={false}
                                     placeholder="메뉴를 선택하세요"
-                                    value={resetSelect} />
+                                    value={resetSelect}
+                                    styles={customStyles} />
                             </div>
                         )}
 
@@ -308,10 +330,10 @@ export const AdminMenuListPage = (): JSX.Element => {
                                                 {/* 이 부분이 초록 원, 파란 원 부분 */}
                                                 <div className={style.priceIcons}>
                                                     {section['menu_pack'] === 1 && (
-                                                        <span className={style.redCircle}></span>
+                                                        <span className={style.blueCircle}></span>
                                                     )}
                                                     {section['menu_regist'] === 1 && (
-                                                        <span className={style.blueCircle}></span>
+                                                        <span className={style.greenCircle}></span>
                                                     )}
                                                 </div>
                                             </div>

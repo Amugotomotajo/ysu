@@ -47,22 +47,22 @@ export const MenuDetail = (): JSX.Element => {
     const userName = localStorage.getItem("user_name") || '';
     const userDept = localStorage.getItem("user_dept") || '';
 
-    const Button = styled.button`
+    // const Button = styled.button`
 
-        margin-top:10px;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        display: inline-block;
-        border-radius: 10px;
-        border: 0px;
-        background-color: rgb(80, 176, 209);
-        font-size: 1rem;
-        padding: 10px;
-        height: 100%;
-        color: white;
+    //     margin-top:10px;
+    //     justify-content: center;
+    //     align-items: center;
+    //     text-align: center;
+    //     display: inline-block;
+    //     border-radius: 10px;
+    //     border: 0px;
+    //     background-color: rgb(80, 176, 209);
+    //     font-size: 1rem;
+    //     padding: 10px;
+    //     height: 100%;
+    //     color: white;
 
-    `;
+    // `;
 
     useEffect(() => {
 
@@ -172,21 +172,15 @@ export const MenuDetail = (): JSX.Element => {
                                     },
                                 });
                             }}>메뉴 리뷰</button> */}
-                        <Button className={MdStyle.reviewWriteBtn} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); }}>
-                            장바구니에 담기
-                        </Button>
+
                         {/* <button id="inputCart" className={MdStyle.reviewButton} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); openModal(); }}> 장바구니에 담기</button> */}
                     </div>
 
-                    {/* {showModal && (
-                        <div className={MdStyle.modal}>
-                            <div className={MdStyle.modalContent}>
-                                <span className={MdStyle.close} onClick={closeModal}>&times;</span>
-                                <img src={require(`../img/${decodeURIComponent('InCart.gif')}`)} />
-                                <p>장바구니에 메뉴를 담았습니다.</p>
-                            </div>
-                        </div>
-                    )} */}
+                    <div className={MdStyle.bottom}>
+                        <button className={MdStyle.cartInsertBtn} onClick={() => { handleAddToCart(userInfo.u_id, menuId, menuPack); }}>
+                            장바구니에 담기
+                        </button>
+                    </div>
                 </div>
 
             ) : (

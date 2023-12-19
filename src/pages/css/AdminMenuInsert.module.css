@@ -1,17 +1,21 @@
 .body {
   margin: 0;
   background-color: #f1f1f1;
+  width: 100%;
+  height: 100vh;
 }
 
 
 .signupform {
+  height: calc(100vh-90px);
+  box-sizing: border-box;
   font-family: "NotoSans";
   width: 650px;
-  margin: 20px auto;
   background: linear-gradient(to right, #ffffff 0%, #fafafa 50%, #ffffff 99%);
   border-radius: 20px;
-  margin-top: 130px;
   align-items: center;
+  margin: 130px auto ;
+  padding-bottom: 40px;
 }
 
 /*---------------------------------------*/
@@ -66,7 +70,7 @@
 /* Form Body */
 /*---------------------------------------*/
 .formbody {
-  padding: 30px 25px 25px 25px;
+  padding: 30px 25px 10px 25px;
   color: #666;
   background-color: white;
   border-radius: 10px;
@@ -120,7 +124,28 @@
 .horizontalgroup .inputgroup label {
   margin-right: 10px;
   /* 라디오 버튼 간격 조절을 위한 마진 설정 */
+}
 
+.bottom {
+  height: 50px;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.menuRegistBtn {
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #555;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: 0;
+  cursor: pointer;
+  border-radius: 0px;
 }
 
 input[type="file"] {
@@ -128,19 +153,16 @@ input[type="file"] {
   outline: none;
   cursor: pointer;
   font-size: 17px;
-  margin-top: 8px;
-  border: 0.5px solid #bababa;
-    background-color: #ffffff;
-    border-radius: 20px;
-    align-items: center;
-    justify-content: center;
-    color: black;
-    padding: 5px 12px;
-  margin-bottom: 0px;
-    font-size: 12px;
-    height: 100%;
-    margin-right: 10px;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0.02);
+  background-color: #ffffff;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  padding: 5px 12px;
+  font-size: 12px;
+  height: 100%;
+  margin-right: 10px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.02);
 }
 
 #rangelabel {
@@ -283,7 +305,7 @@ input[type="file"] {
 
   .signupform {
     width: 100%;
-    margin-top: 120px;
+    /* margin-top: 120px; */
   }
 
   .horizontalgroup .formgroup {
@@ -304,7 +326,7 @@ input[type="file"] {
   }
 
   .formbody {
-    padding: 25px 25px 0px 25px;
+    padding: 25px;
   }
 
   .formfooter {

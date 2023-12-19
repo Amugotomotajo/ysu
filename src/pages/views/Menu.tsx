@@ -41,17 +41,15 @@ export const Menu = (): JSX.Element => {
     });
     
     useEffect(() => {
+        document.body.style.overflow = 'auto';
         window.scrollTo(0, 0);
         if (location.state && location.state.activeSection) {
-            // 로그아웃 상태에서 새로운 사용자가 접속할 때, localStorage에 값이 없으면 'S'로 초기화합니다.
             setActiveSection(location.state.activeSection);
-            localStorage.setItem('activeSection', 'S'); // 값이 있어도 무조건 'S'로 초기화
+            localStorage.setItem('activeSection', 'S'); 
         } else if (!localStorage.getItem('activeSection')) {
-            // 값이 없으면 무조건 'S'로 초기화
             setActiveSection('S');
             localStorage.setItem('activeSection', 'S');
         } else {
-            // 페이지가 로드될 때마다 localStorage에 activeSection을 저장합니다.
             localStorage.setItem('activeSection', activeSection);
         }
         axios.get("/menu").then((res) => {
@@ -83,7 +81,7 @@ export const Menu = (): JSX.Element => {
             <head>
                 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
             </head>
-            { userId ? (
+            {/* { userId ? ( */}
             <body className={style.mnbody}>
                 <div>
                     <div id="head" className={style.head}>
@@ -122,7 +120,10 @@ export const Menu = (): JSX.Element => {
 
                 <div className={style.menuList} >
                     {sections.map((section, idx) => (
-                        <div key={`${idx}-${section['menu_corner']}`} id={section['menu_corner']} className={activeSection === section['menu_corner'] || (activeSection === 'P' && section['menu_pack'] === 1) ? style.active : style.hidden}>
+                        <div key={`${idx}-${section['menu_corner']}`} 
+                                    id={section['menu_corner']} 
+                            className={activeSection === section['menu_corner'] || (activeSection === 'P' && section['menu_pack'] === 1) 
+                                                                                                                ? style.active : style.hidden}>
                             <button
                                 key={section['menu_id']}
                                 onClick={() => {
@@ -160,9 +161,9 @@ export const Menu = (): JSX.Element => {
                     ))}
                 </div>
             </body>
-            ) : (
+            {/* ) : (
                 <WrongApproach />
-            )}
+            )} */}
         </>
     );
 }

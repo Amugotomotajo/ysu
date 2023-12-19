@@ -11,7 +11,8 @@ import style from '../css/MyReview.module.css';
 import axios from 'axios';
 import noOrders from '../img/noOrders.png';
 import WrongApproach from './WrongApproach';
-import { Rate, message } from 'antd';
+import { Modal, Rate, message } from 'antd';
+import styled from 'styled-components';
 
 export const MyReview = (): JSX.Element => {
     const [menu_id, setMenuId] = useState < number > (0); // 메뉴 ID 상태 (숫자)
@@ -32,6 +33,7 @@ export const MyReview = (): JSX.Element => {
         review_star: number,
         review_time: string,
         review_regist: number,
+        review_img: string,
         menu_name: string,
         menu_corner: string,
         menu_price: number,
@@ -102,7 +104,7 @@ export const MyReview = (): JSX.Element => {
             const isMounted = false; // 컴포넌트가 언마운트되면 isMounted 값을 false로 변경하여 setState 호출 방지
         };
 
-    }, [localStorage, triggerEffect]);
+    }, [triggerEffect]);
 
     const [expandedOrders, setExpandedOrders] = useState < { [orderId: number]: boolean } > ({});
 
@@ -112,20 +114,6 @@ export const MyReview = (): JSX.Element => {
             [orderId]: !prevState[orderId]
         }));
     };
-
-    // const formatOrderDate = (orderDateStr: string): string => {
-    //     const orderDate = new Date(orderDateStr);
-    //     const options: Intl.DateTimeFormatOptions = {
-    //         year: 'numeric',
-    //         month: 'short',
-    //         day: 'numeric',
-    //         weekday: 'short',
-    //         hour: 'numeric',
-    //         minute: 'numeric',
-    //     };
-
-    //     return orderDate.toLocaleDateString('ko-KR', options);
-    // };
 
     const formatOrderDate = (dateString: string | number | Date) => {
         const date = new Date(dateString);
@@ -137,17 +125,15 @@ export const MyReview = (): JSX.Element => {
             hour: '2-digit',
             minute: '2-digit'
         };
-    
+
         const formattedDate = date.toLocaleDateString('ko-KR', options);
         let [year, month, day, weekday, time, hour] = formattedDate.split(' ');
         year = year.slice(0, -1);
         month = month.slice(0, -1);
         day = day.slice(0, -1);
-    
+
         return `${year}/${month}/${day} ${weekday} ${time} ${hour}`;
     };
-    
-      
 
     const starScore = (index: number) => {
         let star = [...score];
@@ -157,20 +143,46 @@ export const MyReview = (): JSX.Element => {
         setScore(star);
     };
 
-    const handleReviewDelete = (reviewId: number) => {
-        // 각 reviewId에 대해 순회하며 삭제 요청 보내기
-        axios.delete(`/review/delete/${reviewId}/${userId}`)
-            .then((res) => {
-                setTriggerEffect(prevState => !prevState);
-                // 서버로부터 성공적인 응답을 받으면, 현재 리뷰를 목록에서 제거
-                message.success("리뷰가 삭제되었습니다.");
-                console.log(res);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [deletingReviewId, setDeletingReviewId] = useState < number | null > (null);
 
-            })
-            .catch((error) => {
-                console.error("리뷰 삭제 중 오류:", error);
-                message.error("리뷰 삭제 중 오류가 발생했습니다.");
-            });
+    // 모달 열기/닫기
+    const showModal = (reviewId: number) => {
+        setDeletingReviewId(reviewId);
+        setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+        setDeletingReviewId(null);
+    };
+
+    // 삭제 버튼 클릭 시 실행되는 함수
+    const handleReviewDelete = (reviewId: number) => {
+        showModal(reviewId);
+    };
+
+
+    const handleConfirmDelete = () => {
+        if (deletingReviewId !== null) {
+            // 각 reviewId에 대해 순회하며 삭제 요청 보내기
+            axios.delete(`/review/delete/${deletingReviewId}/${userId}`)
+                .then((res) => {
+                    setTriggerEffect(prevState => !prevState);
+                    // 서버로부터 성공적인 응답을 받으면, 현재 리뷰를 목록에서 제거
+                    message.success("리뷰가 삭제되었습니다.");
+                    console.log(res);
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error("리뷰 삭제 중 오류:", error);
+                    message.error("리뷰 삭제 중 오류가 발생했습니다.");
+                })
+                .finally(() => {
+                    setIsModalVisible(false);
+                    setDeletingReviewId(null);
+                });
+        }
     };
 
     const handleLogout = () => {
@@ -185,6 +197,23 @@ export const MyReview = (): JSX.Element => {
         navigate('/');
     };
 
+    const CustomModal = styled(Modal)`
+        top: 250px;
+
+        .ant-btn-primary {
+            background-color:rgb(80, 176, 209);
+        }
+
+        @media screen and (max-width: 700px) {
+            top: 300px;
+            
+            .ant-modal-content {
+                width: 80%;
+                margin: 0 auto;
+            }
+        }
+    `;
+
     return (
         <>
             {userId ? (
@@ -195,12 +224,12 @@ export const MyReview = (): JSX.Element => {
                         </Link>
                         <img id="logo" className={MenuStyle.logo} src={ysuLogo} alt={"logo"} />
                         <Link className={MenuStyle.link} to="/">
-                        <IoCartSharp className={MenuStyle.faCartShopping} style={{color:'transparent'}}/>
+                            <IoCartSharp className={MenuStyle.faCartShopping} style={{ color: 'transparent' }} />
                         </Link>
                     </div>
 
                     <div className={style.pageHead}>
-                        마이 리뷰
+                        리뷰 관리
                     </div>
 
                     <div className={style.MyOrderList}>
@@ -216,9 +245,9 @@ export const MyReview = (): JSX.Element => {
                             <p>&nbsp;</p>
                         ) :
                             myReviews.length === 0 ? (
-                                <div className={style.noOrders}>
-                                    <img id="noOrdersImg" className={style.noOrdersImg} src={noOrders} alt={"logo"} />
-                                    <p>작성한 리뷰가 없습니다.</p>
+                                <div className={style.noReviews}>
+                                    <img id="noReviewsImg" className={style.noReviewsImg} src={noOrders} alt={"logo"} />
+                                    <p>작성한 리뷰가 없습니다</p>
                                 </div>
                             ) : (
                                 Array.from(new Set(myReviews.map(review => review.order_id))).map(orderId => (
@@ -226,7 +255,7 @@ export const MyReview = (): JSX.Element => {
                                         {/* 주문 번호를 클릭하여 상세 정보를 펼치거나 접는 부분 */}
                                         <div className={style.orderHeader}>
 
-                                            <span style={{ fontSize: '20px' }}>
+                                            <span style={{ fontSize: '19px' }}>
                                                 &nbsp;주문 번호 {orderId}
                                             </span>
 
@@ -279,6 +308,10 @@ export const MyReview = (): JSX.Element => {
                                                                 <>
                                                                     <div style={{ display: 'flex', justifyContent: 'flex-end', textAlign: 'right' }}>
                                                                         <div className={style.Review}>
+                                                                            {myReview['review_img'] && (
+                                                                                <div className={style.reviewImage}>
+                                                                                    <img src={require(`../img/${decodeURIComponent(myReview['review_img'])}`)} alt={myReview['menu_name']} />
+                                                                                </div>)}
                                                                             <div className={style.reviewStar}>
                                                                                 &nbsp;
 
@@ -299,6 +332,17 @@ export const MyReview = (): JSX.Element => {
                                                             ))
                                                         }
                                                     </>
+
+                                                    <CustomModal
+                                                        title="리뷰 삭제"
+                                                        visible={isModalVisible}
+                                                        onOk={handleConfirmDelete}
+                                                        onCancel={handleCancel}
+                                                        okText="삭제"
+                                                        cancelText="취소"
+                                                    >
+                                                        <p>리뷰를 삭제하시겠습니까?</p>
+                                                    </CustomModal>
                                                 </div>
                                             ))}
                                         </div>

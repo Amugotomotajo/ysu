@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import MenuStyle from '../css/Menu.module.css';
 import ysuLogo from '../img/ysu_logo.jpg';
 import profile from '../img/profile.png';
+import list from '../img/list.png';
+import logout from '../img/logout.png';
+import review from '../img/review.png';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { BiArrowBack } from "react-icons/bi";
 import { MdLogout, MdOutlineRateReview } from "react-icons/md";
@@ -63,7 +66,7 @@ export const MyPage = (): JSX.Element => {
 
     return (
         <>
-            {userId ? (
+            {/* {userId ? ( */}
                 <div>
                     <div id="head" className={MenuStyle.head}>
                         <Link className={MenuStyle.link} to="/Menu">
@@ -92,15 +95,18 @@ export const MyPage = (): JSX.Element => {
                             </div>
                             <div className={style.myPageButtons}>
                                 <Link to='/MyOrderList'>
-                                    <RiFileList3Line className={style.RiFileList3Line} />
+                                <img src={list} className={style.RiFileList3Line} />
+
                                     <button onClick={handleMyOrderListClick}>주문 내역</button>
                                 </Link>
                                 <Link to='/MyReview'>
-                                    <MdOutlineRateReview className={style.RiFileList3Line} />
+                                <img src={review} className={style.RiFileList3Line} />
+                        
                                     <button>리뷰 관리</button>
                                 </Link>
                                 <Link to="/" className={style.link} onClick={handleLogout}>
-                                    <MdLogout className={style.RiFileList3Line} />
+                                <img src={logout} className={style.RiFileList3Line} />
+                             
                                     <button>로그아웃</button>
                                 </Link>
                             </div>
@@ -108,9 +114,9 @@ export const MyPage = (): JSX.Element => {
                         {/* {showMyOrderList && <MyOrderList />} */}
                     </div>
                 </div>
-            ) : (
-                <WrongApproach />
-            )}
+            {/* // ) : (
+            //     <WrongApproach />
+            // )} */}
         </>
     );
 }

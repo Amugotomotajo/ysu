@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, message } from 'antd';
+import { Modal, Space, message } from 'antd';
 import { JSX } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
 import axios from 'axios'
@@ -14,6 +14,7 @@ import MStyle from '../css/Menu.module.css'
 import style from '../css/AdminMenuInsert.module.css'
 import WrongApproach from './WrongApproach';
 import { FaTrashAlt } from "react-icons/fa";
+import styled from 'styled-components';
 
 export const AdminMenuInsert = (): JSX.Element => {
   const [menu_name, setMenuName] = useState('');
@@ -29,6 +30,7 @@ export const AdminMenuInsert = (): JSX.Element => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const userDept = localStorage.getItem('user_dept');
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const MainPage = () => {
     navigate("/");
@@ -49,14 +51,11 @@ export const AdminMenuInsert = (): JSX.Element => {
 
     // 로그인 페이지로 이동
     navigate('/login');
-    window.alert("로그아웃 되었습니다.");
   };
 
   const handleBackClick = () => {
     navigate(-1);
   }
-
-
 
   const handleAddToMenu = async () => {
     setMenuNameError('');
@@ -106,12 +105,13 @@ export const AdminMenuInsert = (): JSX.Element => {
   const [showModal, setShowModal] = useState(false);
 
   const openCheckModal = () => {
+    setIsModalVisible(true);
     setCheckModal(true);
   }
 
   const openModal = () => {
-    setShowModal(true);
-
+    setIsModalVisible(false);
+  
     const formData = new FormData();
 
     // 폼 데이터에 필드 추가
@@ -133,37 +133,35 @@ export const AdminMenuInsert = (): JSX.Element => {
       })
         .then(response => {
           console.log('Data inserted successfully', response.data, formData);
+          const timeoutId = setTimeout(() => {
+            localStorage.removeItem('activeSection');
+            navigate('/adminMenu');
+          }, 1000);
+
           message.success({
             content: '메뉴를 추가하였습니다.',
             style: {
-                fontSize: '17px',
-            },
-        });
+              fontSize: '17px',
+            }  
+          });
+
+          return () => clearTimeout(timeoutId);
         })
         .catch(error => {
           console.error('Failed to insert data', error, formData);
         });
+        
+        
     } catch (error) {
       console.error('메뉴 업데이트 오류:', error, formData);
     }
 
-    const timeoutId = setTimeout(() => {
-
-      setShowModal(false);
-      navigate('/adminmenu');
-    }, 3000);
-
-    // 컴포넌트가 언마운트되면 타이머를 클리어하여 메모리 누수를 방지
-    return () => clearTimeout(timeoutId);
   };
 
   const closeChceckModal = () => {
+    setIsModalVisible(false);
     setCheckModal(false);
   }
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -171,8 +169,8 @@ export const AdminMenuInsert = (): JSX.Element => {
     if (file) {
       // 이미지를 Blob으로 변환
       const blobImage = await convertFileToBlob(file);
-      // Blob을 File 객체로 생성 (파일명을 생성하여)
-      const fileName = generateFileName();
+      // Blob을 File 객체로 생성
+      const fileName = generateFileName(menu_name || "");
       const blobFile = new File([blobImage], fileName);
 
       setMenuImage(blobFile);
@@ -181,11 +179,9 @@ export const AdminMenuInsert = (): JSX.Element => {
   };
 
   // 이미지 파일 이름 생성 함수
-  let imageCounter: number = parseInt(localStorage.getItem('imageCounter') || '1', 10);
-  const generateFileName = () => {
-    const fileName = `image${imageCounter}.jpg`;
-    imageCounter += 1;
-    localStorage.setItem('imageCounter', imageCounter.toString());
+  const generateFileName = (menu_name: string) => {
+    const sanitizedMenuName = menu_name.replace(/\s+/g, '_');
+    const fileName = `${sanitizedMenuName}.jpg`;
     return fileName;
   };
 
@@ -200,6 +196,23 @@ export const AdminMenuInsert = (): JSX.Element => {
       reader.readAsArrayBuffer(file);
     });
   };
+
+  const CustomModal = styled(Modal)`
+        top: 250px;
+
+        .ant-btn-primary {
+            background-color:rgb(80, 176, 209);
+        }
+
+        @media screen and (max-width: 700px) {
+            top: 300px;
+            
+            .ant-modal-content {
+                width: 80%;
+                margin: 0 auto;
+            }
+        }
+    `;
 
   return (
     <>
@@ -312,31 +325,33 @@ export const AdminMenuInsert = (): JSX.Element => {
 
               {/* 이미지 사진 */}
               <div className={style.horizontalgroup}>
-                <div className={style.formgroup} style={{marginBottom:'0px'}}>
+                <div className={style.formgroup} style={{ marginBottom: '0px' }}>
                   <label className={style.labeltitle}>메뉴 이미지</label><br />
                   <input type="file" accept="image/*" onChange={(e) => handleImageChange(e)} />
                   {menuImageError && <p className={style.errorMsg}>{menuImageError}</p>}
                 </div>
               </div>
             </div>
-            <hr className={style.hrline2}></hr>
-            <div className={style.formfooter}>
-              <button type="submit" className={style.btncancel} onClick={() => { handleBackClick(); }}>취소</button>
-              <button type="submit" className={style.btninsert} onClick={() => { handleAddToMenu(); }}>등록</button>
-            </div>
+          </div>
+          <div className={style.bottom}>
+            <button type="submit" className={style.menuRegistBtn} onClick={() => { handleAddToMenu(); }}>등록</button>
           </div>
 
 
           {/* 모달 창 */}
           {checkModal && (
-            <div className={style.modal}>
-              <div className={style.modalContent}>
-                <span className={style.close} onClick={closeChceckModal}>&times;</span>
-                <p>메뉴를 등록하시겠습니까?</p>
-                <button type="submit" className={style.btncancel} onClick={closeChceckModal}>취소</button>
-                <button type="submit" className={style.btninsert} onClick={openModal}>등록</button>
-              </div>
-            </div>
+
+            <CustomModal
+              title="메뉴 등록"
+              visible={isModalVisible}
+              onOk={openModal}
+              onCancel={closeChceckModal} 
+              okText="등록"
+              cancelText="취소"
+            ><p>메뉴를 등록하시겠습니까 ?</p>
+            </CustomModal>
+
+
           )}
 
           {/* {showModal && (

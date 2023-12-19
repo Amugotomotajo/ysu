@@ -8,7 +8,6 @@
     align-items: center;
     font-size: 1rem;
     text-align: center;
-    margin: 20px;
     margin-top: 120px;
     flex-direction: column;
     overflow-x: hidden;
@@ -28,6 +27,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-weight: 600;
     z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
     box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
 }
@@ -110,14 +110,24 @@
 
 .Hr {
     /* width: 100%; */
-    color: #b0b0b0;
+    background: #dadada;
+    height:1px;
+    border:0;
 }
+
+.noOrdersImg {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+
 
 .noOrders {
     width: 100%;
     height: 50vh;
     padding: 10px;
     border-radius: 6px;
+    letter-spacing: 2px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -130,7 +140,8 @@
 }
 
 .noOrders p {
-    font-size: 23px;
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .menuName {
@@ -186,5 +197,9 @@
         height: 70px; /* 이미지 높이 조정 */
         margin-right: 15px; /* 이미지와 텍스트 사이 간격 조정 */
         border-radius: 10px;
+    }
+
+    .noOrders p {
+        font-size: 18px;
     }
 }

@@ -1,11 +1,11 @@
-.body {
 
-    overflow-x: hidden;
-    overflow-y: scroll;
+.body {
+    margin: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgb(243, 243, 243);
-    font-size: 15px;
+    /* overflow-x: hidden; */
+    /* overflow: hidden; */
+    background-color: rgb(244, 244, 244);
 }
 
 ::-webkit-scrollbar {
@@ -82,44 +82,48 @@
 }
 
 .oTxt {
-    color:  rgb(87, 87, 87);
+    color: rgb(87, 87, 87);
 }
 
 .infoBox {
     margin-top: 30px;
-
     height: 50vh;
-
 }
 
 
 .infoBoxTop {
-    width: 100%;
+    box-sizing: border-box;
     height: 50px;
     /* 수직 중앙 정렬 */
     display: flex;
     align-items: center;
     padding: 10px;
-
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
     background-color: rgb(255, 255, 255);
+    z-index: 100000;
 }
 
 .orderInfoTxt {
     font-weight: bold;
+    margin-left: 5px;
 }
+
 
 .odMenuBox {
     width: 100%;
-
-    background-color: rgb(255, 255, 255);
+    margin-top: 10px;
+    /* background-color: rgb(255, 255, 255); */
 }
 
 .odInfoDiv {
     display: flex;
     width: 100%;
-    border-bottom: 1px solid rgb(150, 150, 150);
-    padding: 10px;
-    height: 18vh;
+    border-bottom: 1px solid #dadada;
+    padding: 10px 15px;
+    height: 135px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    background-color: white;
 }
 
 .odMenuInfo {
@@ -133,13 +137,14 @@
 .odMenuImgDiv {
     height: auto;
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
-
+    margin-top: 15px;
 }
 
 .odMenuImg {
     width: 70px;
+    border-radius: 6px;
     background-repeat: no-repeat;
     display: flex;
     align-items: center;
@@ -158,16 +163,14 @@
 
 .odMenuPrice {
     float: left;
-    margin-right: 10px;
-
-    padding: 10px;
+    padding: 5px;
 }
 
 .orderMenuInfoBox {
-
     margin-left: 15px;
     color: rgb(150, 150, 150);
-    width: 100%;
+    width: 50%;
+    font-size: 15px;
 }
 
 .odPriceBox {
@@ -176,8 +179,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    box-sizing: border-box;
     padding: 10px;
+    background-color: white;
+    margin: 0 auto;
 }
 
 .odTotalPriceTxt {
@@ -188,11 +193,8 @@
 }
 
 .odTotalPrice {
-
-    margin-right: 10px;
     color: rgb(80, 176, 209);
     font-weight: bold;
     font-size: 19px;
-
     padding: 10px;
 }

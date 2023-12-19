@@ -8,6 +8,7 @@ export interface Cart {
     menu_corner: string,
     menu_image: string, 
     is_packed: number,
+    cart_price: number
 }
 
 export interface Orders {
