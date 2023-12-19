@@ -46,13 +46,13 @@ export const OrderComplete = (): JSX.Element => {
   };
 
   //모바일 결제후 리디렉션 됐을 때 searchParam(URL Param)의 imp_success가 true(성공)일 경우 handleOrder()실행
-  if (searchParams.get("imp_success") === 'true') {
-    handleOrder();
-  }
-  //모바일 결제 중 취소했을 경우 이전 페이지(주문 확인 페이지)로 이동
-  if (searchParams.get("imp_success") === 'false' || searchParams.get("error_code") === "F400") {
-    navigate("/order/check");
-  }
+  useEffect(() => {
+    if (searchParams.get("imp_success") === 'true') {
+      handleOrder();
+    } else if (searchParams.get("imp_success") === 'false' || searchParams.get("error_code") === "F400") {
+      navigate("/order/check");
+    }
+  }, [searchParams]);
 
   // 주문 목록
   useEffect(() => {
@@ -62,7 +62,7 @@ export const OrderComplete = (): JSX.Element => {
       console.log(userId);
       console.log(res.data);
     })
-    
+
   }, []);
 
   // 주문 상세 정보 가져오기
@@ -74,7 +74,7 @@ export const OrderComplete = (): JSX.Element => {
         setOrderDetail((prevOrderDetail) => [...prevOrderDetail, res.data]);
         setOrderDetail([res.data]); // 새로운 주문 내역으로 업데이트
       });
-    } 
+    }
   }, [orderList]);
 
   return (
@@ -132,14 +132,19 @@ export const OrderComplete = (): JSX.Element => {
                                 )}
                               </div>
                               <div>
-                                <div className="odMenuPrice"> {detail.menu_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
+                                <div className="odMenuPrice"> {detail.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
                               </div>
                             </div>
 
                             <div>
                               <div className="orderMenuInfoBox">
                                 <div>• 수량 : {detail.quantity}개 </div>
-                                <div>• 방법 : {detail.is_packed} </div>
+                                {
+                                  detail.is_packed === 0 ? (
+                                    <div>• 방법 : 식당 </div>
+                                  ) : (
+                                    <div>• 방법 : 포장 </div>
+                                  )}
                                 <div>• 코너 : {detail.menu_corner} </div>
                               </div>
                             </div>

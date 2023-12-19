@@ -81,7 +81,7 @@ export const Menu = (): JSX.Element => {
             <head>
                 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
             </head>
-            {/* { userId ? ( */}
+            { userId ? (
             <body className={style.mnbody}>
                 <div>
                     <div id="head" className={style.head}>
@@ -161,9 +161,9 @@ export const Menu = (): JSX.Element => {
                     ))}
                 </div>
             </body>
-            {/* ) : (
+             ) : (
                 <WrongApproach />
-            )} */}
+            )} 
         </>
     );
 }

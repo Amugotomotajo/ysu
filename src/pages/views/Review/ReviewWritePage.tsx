@@ -227,11 +227,15 @@ export const ReviewWritePage = (): JSX.Element => {
               style={{ height: 100 }} />
 
           </div>
+          <div className={RwStyle.imgWrap}>
+        
           {review_img ? (
             <>
+            <div className={RwStyle.imgBox}>
               <img
                 className={RwStyle.previewImg}
                 src={URL.createObjectURL(new Blob([review_img]))} />
+                </div>
               <button className={RwStyle.deleteBtn} onClick={deleteImgHandler}>x</button>
             </>
           ) : (
@@ -246,6 +250,7 @@ export const ReviewWritePage = (): JSX.Element => {
             </label>
             </>
           )}
+          </div>
           <div className={RwStyle.reviewWriteBtnWrapper}>
             <button className={RwStyle.reviewWriteBtn} onClick={handleFormSubmit}>
               리뷰 등록

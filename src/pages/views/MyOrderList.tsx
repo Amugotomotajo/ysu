@@ -259,7 +259,7 @@ export const MyOrderList = (): JSX.Element => {
                                                                         </div>
                                                                         <div className={style.isPacked}>• 방법 : {myOrder.is_packed == 1 ? '포장' : '매장'}</div>
                                                                         <div className={style.menuCorner}>• 코너 : {myOrder.menu_corner}</div>
-                                                                        <div className={style.menuPrice}>{myOrder.menu_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
+                                                                        <div className={style.menuPrice}>{myOrder.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
                                                                     </div>
 
                                                                 </div><hr className={style.Hr}></hr></>

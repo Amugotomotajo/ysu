@@ -100,7 +100,7 @@ export const CartList = (): JSX.Element => {
   const handleOrder = () => {
     axios.put(`cart/update/${userId}`, cartItems)
       .then((updateRes) => {
-        axios.post(`/order/insert/${userId}`, orderInfo)
+        axios.post(`/order/insert`, orderInfo)
           .then((orderRes) => {
             setOrderList(orderInfo);
             navigate("/order");

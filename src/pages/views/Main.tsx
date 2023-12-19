@@ -26,7 +26,7 @@ export const Main = (): JSX.Element => {
                 <h2><MdRestaurantMenu /></h2>
             </div>
             <div className={style.content}>
-              <Link to="https://www.yeonsung.ac.kr/ko/cms/FR_CON/index.do?MENU_ID=850&CONTENTS_NO=1">학식 메뉴 보러 가기</Link>
+              <Link to="https://www.yeonsung.ac.kr/ko/582/subview.do">학식 메뉴 보러 가기</Link>
             </div>
         </div>
         <div className={style.card}>

@@ -88,9 +88,9 @@
     color: black;
 }
 
-.imgBox {
+/* .imgBox {
     height: 200px; 
-}
+} */
 
 @media screen and (max-width: 700px) {
     .imgWrap {
@@ -120,5 +120,6 @@
         cursor: pointer;
         font-size: 20px; 
     }
+
     
 }
